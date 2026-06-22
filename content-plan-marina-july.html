@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контент-план · Марина Духвалова · Июль 2025</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B2A47;
+    --navy-light: #243356;
+    --red: #C61A21;
+    --yellow: #E2D16D;
+    --ivory: #FAF8F3;
+    --ivory-dark: #F0ECE4;
+    --graphite: #2A2A2A;
+    --muted: #7A7A7A;
+    --border: #DDD8CC;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ivory);
+    color: var(--graphite);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 39px,
+      rgba(255,255,255,0.04) 39px,
+      rgba(255,255,255,0.04) 40px
+    );
+    padding: 48px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--yellow), var(--red));
+  }
+  .header-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 14px;
+  }
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* SUMMARY BAR */
+  .summary-bar {
+    background: var(--navy-light);
+    padding: 18px 40px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .summary-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-yt { background: var(--red); }
+  .dot-ig { background: var(--yellow); }
+  .dot-tg { background: #5DADE2; }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: var(--navy);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-label { color: rgba(255,255,255,0.5); font-size: 11px; }
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--yellow);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-count { color: var(--yellow); font-size: 11px; font-weight: 600; min-width: 60px; text-align: right; }
+
+  /* MAIN */
+  .main { padding: 32px 40px 60px; max-width: 1100px; }
+
+  /* WEEK BLOCK */
+  .week {
+    margin-bottom: 48px;
+  }
+  .week-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .week-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    opacity: 0.15;
+    flex-shrink: 0;
+    width: 44px;
+  }
+  .week-info { flex: 1; }
+  .week-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+  .tag-nauka { background: var(--navy); color: #fff; }
+  .tag-strakh { background: var(--red); color: #fff; }
+  .tag-uprazh { background: var(--yellow); color: var(--navy); }
+  .tag-razbor { background: var(--ivory-dark); color: var(--navy); border: 1px solid var(--border); }
+
+  .week-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .week-anchor {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .week-photo-hint {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--ivory-dark);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .photo-swatch {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* DAY BLOCKS */
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .day-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .day-head {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .day-head-left { display: flex; align-items: center; gap: 8px; }
+  .day-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .day-date {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .day-badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+  .badge-anchor { background: var(--navy); color: #fff; }
+  .badge-echo { background: var(--ivory-dark); color: var(--graphite); border: 1px solid var(--border); }
+  .badge-reach { background: var(--red); color: #fff; }
+
+  /* POSTS */
+  .posts { padding: 10px 0; }
+  .post-row {
+    padding: 8px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid var(--ivory-dark);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .post-row:last-child { border-bottom: none; }
+  .post-row:hover { background: var(--ivory); }
+
+  .post-check {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .post-check.done {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+  .post-check.done::after {
+    content: '✓';
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  .post-body { flex: 1; min-width: 0; }
+  .post-platform {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .pl-yt { color: var(--red); }
+  .pl-ig { color: #C13584; }
+  .pl-tg { color: #0088CC; }
+
+  .post-format {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .post-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--graphite);
+    line-height: 1.4;
+  }
+  .post-time {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* CHECKLIST */
+  .checklist-wrap {
+    margin-top: 10px;
+    background: var(--ivory-dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .checklist-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+  .check-item:last-child { margin-bottom: 0; }
+  .check-box {
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    background: #fff;
+  }
+  .check-box.done {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+  .check-box.done::after { content: '✓'; color: #fff; font-size: 8px; font-weight: 700; }
+  .check-text {
+    font-size: 11px;
+    color: var(--graphite);
+    line-height: 1.4;
+    transition: opacity 0.15s;
+  }
+  .check-text.done { opacity: 0.4; text-decoration: line-through; }
+
+  /* STAT ROW */
+  .stats-row {
+    margin-top: 12px;
+    background: var(--navy);
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--yellow);
+    line-height: 1;
+  }
+  .stat-lbl { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+  }
+  .footer-mission {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    font-style: italic;
+    max-width: 400px;
+    text-align: right;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .header, .main, .summary-bar, .progress-bar-wrap, .footer { padding-left: 20px; padding-right: 20px; }
+    .days-grid { grid-template-columns: 1fr; }
+    .week-header { flex-wrap: wrap; }
+    .week-photo-hint { white-space: normal; }
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 16px 40px;
+    background: var(--ivory-dark);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Марина Духвалова · PROFI-Speech · Фаза 1</div>
+  <div class="header-title">Контент-план<br>июль 2025</div>
+  <div class="header-sub">4 цикла · 12 активных дней · YouTube · Instagram · Telegram</div>
+</div>
+
+<div class="summary-bar">
+  <div class="summary-item"><span class="summary-dot dot-yt"></span> YouTube — глубина и авторитет</div>
+  <div class="summary-item"><span class="summary-dot dot-ig"></span> Instagram — охваты и личность</div>
+  <div class="summary-item"><span class="summary-dot dot-tg"></span> Telegram — тёплое ядро и конверсия</div>
+</div>
+
+<div class="progress-bar-wrap">
+  <span class="progress-label">Выполнено за месяц</span>
+  <div class="progress-track"><div class="progress-fill" id="mainProgress"></div></div>
+  <span class="progress-count" id="progressCount">0 / 36</span>
+</div>
+
+<div class="legend">
+  <div class="legend-item">📌 Якорь — главное видео недели</div>
+  <div class="legend-item">✨ Отголоски — производный контент из якоря</div>
+  <div class="legend-item">🌙 Охват — Reels + Telegram-пост</div>
+  <div class="legend-item">☐ Кликни на чекбокс — отметить выполненным</div>
+</div>
+
+<div class="main">
+
+  <!-- ===================== НЕДЕЛЯ 1 ===================== -->
+  <div class="week">
+    <div class="week-header">
+      <div class="week-num">1</div>
+      <div class="week-info">
+        <div><span class="week-tag tag-nauka">Наука речи</span></div>
+        <div class="week-title">Что прибор видит в вашей речи — и чего не слышит ухо</div>
+        <div class="week-anchor">Якорь: аппаратная диагностика LingWave, спектрограмма, измеримость речи</div>
+      </div>
+      <div class="week-photo-hint">
+        <div class="photo-swatch" style="background:#1B2A47;"></div>
+        Navy · пинстрайп · брошь
+      </div>
+    </div>
+
+    <div class="days-grid">
+      <!-- День 1 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 1</div>
+            <div class="day-date">вт, 1 июля</div>
+          </div>
+          <div class="day-badge badge-anchor">📌 Якорь</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · анонс (3 слайда)</div>
+              <div class="post-title">Тизер: «Покажу, что видит прибор в вашей речи — завтра»</div>
+              <div class="post-time">10:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Видео · 10–12 мин</div>
+              <div class="post-title">«Прибор видит в вашей речи то, чего не слышит ухо» — разбор спектрограммы</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · прогрев</div>
+              <div class="post-title">«Речь всегда оценивали на ощущениях. Я соединила логопедию, психологию и аппаратную диагностику — и теперь её можно измерить»</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить заранее</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Снять и смонтировать видео с демонстрацией LingWave / спектрограммы</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Подготовить скриншот спектрограммы для превью YouTube</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать описание и заголовок YouTube с ключами</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Сделать 3 Stories-слайда-анонса (navy-палитра)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 2 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 2</div>
+            <div class="day-date">чт, 3 июля</div>
+          </div>
+          <div class="day-badge badge-echo">✨ Отголоски</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Карусель · 6–7 слайдов</div>
+              <div class="post-title">«5 показателей речи, которые измеряет прибор — и что каждый из них значит»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · вовлечение</div>
+              <div class="post-title">Опрос: «Вы когда-нибудь слышали свою речь в записи — и удивились?»</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · экспертный</div>
+              <div class="post-title">«Эксперт — это тот, кто может объяснить свою интуицию. В речи это буквально: я показываю на спектрограмме, где именно сбивается ваш голос»</div>
+              <div class="post-time">17:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Сделать карусель из тезисов видео (Canva, navy-стиль)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать текст поста для Telegram (из расшифровки видео)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 3 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 3</div>
+            <div class="day-date">сб, 5 июля</div>
+          </div>
+          <div class="day-badge badge-reach">🌙 Охват</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Reels · 30–40 сек</div>
+              <div class="post-title">Хук: «Прибор видит в вашей речи то, чего не слышит ухо» — самый яркий момент видео</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Shorts · 50–60 сек</div>
+              <div class="post-title">«Секунда срыва» — что происходит со спектрограммой в момент стресса</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · закулисье</div>
+              <div class="post-title">Фото из студии / рабочего места с комментарием от Марины</div>
+              <div class="post-time">20:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Reels из видео (самый сочный момент — 30–40 сек)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Shorts для YouTube</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Добавить субтитры в Reels / Shorts</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">9</div><div class="stat-lbl">публикаций</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">канала</div></div>
+      <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">видео-якорь</div></div>
+      <div style="flex:1; display:flex; align-items:center; padding-left: 16px;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.45); font-style:italic;">Рубрика «Наука речи» · Одежда navy · Пинстрайп-костюм с брошью</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== НЕДЕЛЯ 2 ===================== -->
+  <div class="week">
+    <div class="week-header">
+      <div class="week-num">2</div>
+      <div class="week-info">
+        <div><span class="week-tag tag-strakh">Страх сцены</span></div>
+        <div class="week-title">Почему голос садится под стрессом — и что в этот момент происходит в мозге</div>
+        <div class="week-anchor">Якорь: адаптивные стратегии речи, «детектор ошибок», персеверации под давлением</div>
+      </div>
+      <div class="week-photo-hint">
+        <div class="photo-swatch" style="background:#C61A21;"></div>
+        Red · философия · тепло
+      </div>
+    </div>
+
+    <div class="days-grid">
+      <!-- День 1 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 1</div>
+            <div class="day-date">вт, 8 июля</div>
+          </div>
+          <div class="day-badge badge-anchor">📌 Якорь</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · анонс (3 слайда)</div>
+              <div class="post-title">Тизер: «Завтра расскажу, почему голос подводит именно тогда, когда нельзя»</div>
+              <div class="post-time">10:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Видео · 10–14 мин</div>
+              <div class="post-title">«Почему даже сильные спикеры рассыпаются под стрессом — и что в этот момент происходит в мозге»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · личный</div>
+              <div class="post-title">«"Мне кажется, я плохо говорю" — самая частая фраза за 35 лет. Разбираю, почему "кажется" нельзя исправить»</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить заранее</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Снять видео: объяснить «детектор ошибок» мозга и адаптивные стратегии</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Подготовить превью: эмоциональное фото Марины в red-образе</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать Telegram-пост по формуле PAS</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 2 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 2</div>
+            <div class="day-date">чт, 10 июля</div>
+          </div>
+          <div class="day-badge badge-echo">✨ Отголоски</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Карусель · 6 слайдов</div>
+              <div class="post-title">«5 адаптивных стратегий речи под стрессом — что делают профессионалы, когда голос начинает сбиваться»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · вовлечение</div>
+              <div class="post-title">Вопрос: «В какой момент ваш голос вас подводит чаще всего?» (варианты ответов)</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · глубокий</div>
+              <div class="post-title">«Профессионалы не перестают волноваться — они управляют волнением. Разбираю 3 конкретных техники»</div>
+              <div class="post-time">17:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Сделать карусель: 5 стратегий — замедление, паузирование, громкость, «дирижирование», восстановление</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Подготовить Stories с вариантами ответов</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 3 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 3</div>
+            <div class="day-date">сб, 12 июля</div>
+          </div>
+          <div class="day-badge badge-reach">🌙 Охват</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Reels · 30–40 сек</div>
+              <div class="post-title">Хук: «Почему даже сильные спикеры рассыпаются под стрессом» — самый острый момент</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Shorts · 50–60 сек</div>
+              <div class="post-title">«"Говорите медленнее" — плохой совет. Вот что работает на самом деле»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · итог недели</div>
+              <div class="post-title">Ответы на вопросы подписчиков из опроса Stories — личный формат</div>
+              <div class="post-time">18:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Reels и Shorts из якорного видео</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Собрать ответы из Stories-опроса для Telegram-поста</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">9</div><div class="stat-lbl">публикаций</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">канала</div></div>
+      <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">видео-якорь</div></div>
+      <div style="flex:1; display:flex; align-items:center; padding-left: 16px;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.45); font-style:italic;">Рубрика «Страх сцены и стресс» · Одежда red · Сидячий кадр, расслабленная поза</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== НЕДЕЛЯ 3 ===================== -->
+  <div class="week">
+    <div class="week-header">
+      <div class="week-num">3</div>
+      <div class="week-info">
+        <div><span class="week-tag tag-uprazh">Упражнения</span></div>
+        <div class="week-title">Упражнение, которое дикторы делают перед эфиром — 60 секунд</div>
+        <div class="week-anchor">Якорь: практическое упражнение на дикцию / артикуляцию — быстрая польза, сохранения</div>
+      </div>
+      <div class="week-photo-hint">
+        <div class="photo-swatch" style="background:#E2D16D;"></div>
+        Yellow · лёгкость · действие
+      </div>
+    </div>
+
+    <div class="days-grid">
+      <!-- День 1 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 1</div>
+            <div class="day-date">вт, 15 июля</div>
+          </div>
+          <div class="day-badge badge-anchor">📌 Якорь</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · анонс (3 слайда)</div>
+              <div class="post-title">Тизер: «Завтра покажу упражнение, которое дикторы делают прямо перед камерой»</div>
+              <div class="post-time">10:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Видео · 8–10 мин</div>
+              <div class="post-title">«Это упражнение делают дикторы перед эфиром. Шестьдесят секунд — и речь становится чище»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · с вовлечением</div>
+              <div class="post-title">«Сделайте упражнение прямо сейчас — и напишите в комментарии, что почувствовали. Жду»</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить заранее</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Снять видео: Марина показывает упражнение на камеру (yellow-образ)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Добавить субтитры и тайм-коды в видео</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Подготовить превью: Марина в действии (не статичный портрет)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 2 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 2</div>
+            <div class="day-date">чт, 17 июля</div>
+          </div>
+          <div class="day-badge badge-echo">✨ Отголоски</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Карусель · 5–6 слайдов</div>
+              <div class="post-title">«Алгоритм упражнения — шаг за шагом: сохраните и повторите утром»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · вовлечение</div>
+              <div class="post-title">Вопрос: «Вы когда-нибудь готовили речь перед важной встречей?» + шкала ответов</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · наставник</div>
+              <div class="post-title">«Красивая ясная чёткая речь — это не талант. Это мышца, которую тренируют точно так же, как тренируют тело»</div>
+              <div class="post-time">17:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Сделать карусель «шаг за шагом» — иллюстрации упражнения</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать Telegram-пост в формате «наставник»</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 3 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 3</div>
+            <div class="day-date">сб, 19 июля</div>
+          </div>
+          <div class="day-badge badge-reach">🌙 Охват</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Reels · 30–40 сек</div>
+              <div class="post-title">Хук: «Это упражнение делают дикторы перед эфиром — повторите за мной»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Shorts · 50–60 сек</div>
+              <div class="post-title">«Три признака, что голос вас выдаёт — и одно упражнение против каждого»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · закулисье</div>
+              <div class="post-title">«Как я сама готовлюсь к выступлениям» — короткое видео или фото</div>
+              <div class="post-time">20:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Reels из видео (момент с демонстрацией упражнения)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Shorts для YouTube</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Сделать Stories-закулисье (yellow-образ)</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">9</div><div class="stat-lbl">публикаций</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">канала</div></div>
+      <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">видео-якорь</div></div>
+      <div style="flex:1; display:flex; align-items:center; padding-left: 16px;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.45); font-style:italic;">Рубрика «Упражнения» · Одежда yellow · Динамичный кадр, жест</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== НЕДЕЛЯ 4 ===================== -->
+  <div class="week">
+    <div class="week-header">
+      <div class="week-num">4</div>
+      <div class="week-info">
+        <div><span class="week-tag tag-razbor">Разборы + лид-магнит</span></div>
+        <div class="week-title">Разбор типичных ошибок публичной речи — и ваш бесплатный голосовой чек-ап</div>
+        <div class="week-anchor">Якорь: разбор речевых ошибок на примерах + первый мягкий анонс «Голосового чек-апа»</div>
+      </div>
+      <div class="week-photo-hint">
+        <div class="photo-swatch" style="background:#1B2A47;"></div>
+        Navy · авторитет · уверенность
+      </div>
+    </div>
+
+    <div class="days-grid">
+      <!-- День 1 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 1</div>
+            <div class="day-date">вт, 22 июля</div>
+          </div>
+          <div class="day-badge badge-anchor">📌 Якорь</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · анонс (3 слайда)</div>
+              <div class="post-title">Тизер: «Покажу 4 ошибки, которые разрушают доверие к спикеру — даже если содержание сильное»</div>
+              <div class="post-time">10:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Видео · 12–15 мин</div>
+              <div class="post-title">«4 ошибки публичной речи, которые стоят карьеры — разбор с примерами»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · AIDA</div>
+              <div class="post-title">«Ваша речь говорит о вас больше, чем слова. Покажу, как это работает — и что с этим делать»</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить заранее</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Снять видео-разбор: 4 ошибки на конкретных примерах (без имён)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать текст Telegram-поста по формуле AIDA</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Подготовить превью: строгий navy-образ, взгляд в камеру</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 2 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 2</div>
+            <div class="day-date">чт, 24 июля</div>
+          </div>
+          <div class="day-badge badge-echo">✨ Отголоски</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Карусель · 7 слайдов</div>
+              <div class="post-title">«4 ошибки публичной речи — и как каждую из них исправить» (слайды с разбором)</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Stories · конверсия</div>
+              <div class="post-title">«Хотите узнать, есть ли эти ошибки в вашей речи? Пройдите бесплатный голосовой чек-ап» → ссылка</div>
+              <div class="post-time">19:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · лид-магнит</div>
+              <div class="post-title">«Профессиональный разбор вашей речи — то, что мои клиенты получают на первой консультации. Для подписчиков — бесплатно. Голосовой чек-ап»</div>
+              <div class="post-time">17:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Сделать карусель из тезисов видео (navy-стиль)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Настроить ссылку на «Голосовой чек-ап» в профиле и Stories</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать Telegram-пост с CTA на чек-ап (без давления, без таймера)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- День 3 -->
+      <div class="day-card">
+        <div class="day-head">
+          <div class="day-head-left">
+            <div class="day-label">День 3</div>
+            <div class="day-date">сб, 26 июля</div>
+          </div>
+          <div class="day-badge badge-reach">🌙 Охват</div>
+        </div>
+        <div class="posts">
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-ig">📸 Instagram</div>
+              <div class="post-format">Reels · 30–40 сек</div>
+              <div class="post-title">Хук: «Я готовила первых лиц к выступлениям. Вот первое, что мы меняли»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-yt">▶ YouTube</div>
+              <div class="post-format">Shorts · 50–60 сек</div>
+              <div class="post-title">«Три признака, что голос вас выдаёт — объясняю за минуту»</div>
+              <div class="post-time">12:00</div>
+            </div>
+          </div>
+          <div class="post-row" onclick="togglePost(this)">
+            <div class="post-check"></div>
+            <div class="post-body">
+              <div class="post-platform pl-tg">✈ Telegram</div>
+              <div class="post-format">Пост · итог месяца</div>
+              <div class="post-title">«Итог месяца: что мы разобрали — и один вопрос к вам, который я хочу взять в следующий контент»</div>
+              <div class="post-time">18:00</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding: 0 10px 10px;">
+          <div class="checklist-wrap">
+            <div class="checklist-title">Что подготовить</div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Reels из якорного видео (момент с «первым лицом»)</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Нарезать Shorts для YouTube</div></div>
+            <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-text">Написать итоговый Telegram-пост с вопросом к аудитории</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">9</div><div class="stat-lbl">публикаций</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">канала</div></div>
+      <div class="stat-item"><div class="stat-num">1</div><div class="stat-lbl">видео-якорь</div></div>
+      <div style="flex:1; display:flex; align-items:center; padding-left: 16px;">
+        <div style="font-size:11px; color:rgba(255,255,255,0.45); font-style:italic;">Рубрика «Разборы + лид-магнит» · Одежда navy · Первый анонс «Голосового чек-апа»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ИТОГО -->
+  <div style="background: var(--navy); border-radius: 10px; padding: 28px 32px; margin-top: 8px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:24px; color:#fff; margin-bottom:20px; font-weight:600;">Итого за июль</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:16px; margin-bottom: 20px;">
+      <div style="text-align:center; background:rgba(255,255,255,0.06); border-radius:6px; padding:16px 8px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--yellow); line-height:1;">4</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px;">якорных видео</div>
+      </div>
+      <div style="text-align:center; background:rgba(255,255,255,0.06); border-radius:6px; padding:16px 8px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--yellow); line-height:1;">8</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px;">Shorts + Reels</div>
+      </div>
+      <div style="text-align:center; background:rgba(255,255,255,0.06); border-radius:6px; padding:16px 8px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--yellow); line-height:1;">8</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px;">каруселей + постов IG</div>
+      </div>
+      <div style="text-align:center; background:rgba(255,255,255,0.06); border-radius:6px; padding:16px 8px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--yellow); line-height:1;">16</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px;">Stories</div>
+      </div>
+      <div style="text-align:center; background:rgba(255,255,255,0.06); border-radius:6px; padding:16px 8px;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; font-weight:700; color:var(--yellow); line-height:1;">12</div>
+        <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px;">постов Telegram</div>
+      </div>
+    </div>
+    <div style="font-size:12px; color:rgba(255,255,255,0.4); font-style:italic; border-top: 1px solid rgba(255,255,255,0.08); padding-top:14px;">
+      Принцип: одно якорное видео → все производные. Никакого нового контента с нуля в дни 2 и 3. Реализм важнее идеала.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-brand">Марина Духвалова · PROFI-Speech</div>
+  <div class="footer-mission">«Через красивую речь — к красоте человеческого мира»</div>
+</div>
+
+<script>
+  function togglePost(row) {
+    const check = row.querySelector('.post-check');
+    check.classList.toggle('done');
+    updateProgress();
+  }
+
+  function toggleCheck(item) {
+    const box = item.querySelector('.check-box');
+    const text = item.querySelector('.check-text');
+    box.classList.toggle('done');
+    text.classList.toggle('done');
+  }
+
+  function updateProgress() {
+    const total = document.querySelectorAll('.post-check').length;
+    const done = document.querySelectorAll('.post-check.done').length;
+    const pct = total > 0 ? (done / total * 100) : 0;
+    document.getElementById('mainProgress').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = done + ' / ' + total;
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
