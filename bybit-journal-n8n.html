@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Торговый журнал Bybit → Анализ | n8n ДЗ Урок 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f1117 60%);
+    border-bottom: 1px solid #1e2535;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: #f59e0b; }
+  .hero p {
+    color: #64748b;
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #1e293b;
+    border: 1px solid #2d3748;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+  .meta-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+
+  /* Container */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+  /* Section */
+  .section { margin-top: 48px; }
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #475569;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #1e293b;
+  }
+
+  /* Task card */
+  .task-card {
+    background: #1a1f2e;
+    border: 1px solid #1e2535;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .task-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 8px;
+  }
+  .task-card p {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.6;
+  }
+
+  /* Workflow nodes */
+  .workflow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 8px 0 16px;
+    scroll-snap-type: x mandatory;
+  }
+  .workflow::-webkit-scrollbar { height: 4px; }
+  .workflow::-webkit-scrollbar-track { background: #1e293b; border-radius: 2px; }
+  .workflow::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+  .node {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    background: #1a1f2e;
+    border: 1.5px solid #22c55e;
+    border-radius: 12px;
+    padding: 16px 20px;
+    min-width: 180px;
+    max-width: 200px;
+    position: relative;
+  }
+  .node-num {
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: #22c55e;
+    color: #0f1117;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .node-icon { font-size: 24px; margin-bottom: 8px; }
+  .node-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+  }
+  .node-type {
+    font-size: 11px;
+    color: #475569;
+    margin-bottom: 8px;
+  }
+  .node-note {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    background: #0f1117;
+    border-radius: 6px;
+    padding: 8px;
+    border-left: 2px solid #f59e0b;
+  }
+  .node-arrow {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    gap: 2px;
+  }
+  .arrow-line {
+    width: 32px;
+    height: 2px;
+    background: #334155;
+    position: relative;
+  }
+  .arrow-label {
+    font-size: 10px;
+    color: #475569;
+    white-space: nowrap;
+  }
+
+  /* Data table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: #1e293b;
+    color: #64748b;
+    font-weight: 500;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #0f1117;
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #1e293b;
+    color: #cbd5e1;
+    background: #1a1f2e;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .pnl-pos { color: #22c55e; font-weight: 600; }
+  .pnl-neg { color: #ef4444; font-weight: 600; }
+  .pair-badge {
+    background: #1e293b;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+    color: #94a3b8;
+  }
+
+  /* Output block */
+  .output-block {
+    background: #0f1117;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #94a3b8;
+    white-space: pre-wrap;
+  }
+  .output-block .hi { color: #f1f5f9; }
+  .output-block .gr { color: #22c55e; }
+  .output-block .yw { color: #f59e0b; }
+  .output-block .rd { color: #ef4444; }
+
+  /* Roadmap */
+  .roadmap { display: flex; flex-direction: column; gap: 0; }
+  .roadmap-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+  }
+  .roadmap-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: -16px;
+    width: 2px;
+    background: #1e293b;
+  }
+  .roadmap-num {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .roadmap-num.done { background: #14532d; color: #22c55e; border: 1.5px solid #22c55e; }
+  .roadmap-num.active { background: #1c1917; color: #f59e0b; border: 1.5px solid #f59e0b; }
+  .roadmap-num.future { background: #1e293b; color: #475569; border: 1.5px solid #334155; }
+  .roadmap-content { padding: 4px 0 28px; flex: 1; }
+  .roadmap-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+  }
+  .roadmap-content p {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+  }
+  .roadmap-content .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .tag.green { background: #14532d; color: #4ade80; }
+  .tag.yellow { background: #422006; color: #fbbf24; }
+  .tag.gray { background: #1e293b; color: #64748b; }
+
+  /* Stack */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .stack-item {
+    background: #1a1f2e;
+    border: 1px solid #1e2535;
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .stack-item .si { font-size: 24px; }
+  .stack-item .sname { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+  .stack-item .sdesc { font-size: 11px; color: #475569; line-height: 1.4; }
+  .stack-item .status {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    width: fit-content;
+    margin-top: 2px;
+  }
+  .status.ok { background: #14532d; color: #4ade80; }
+  .status.next { background: #422006; color: #fbbf24; }
+
+  /* Footer */
+  .footer {
+    margin-top: 60px;
+    border-top: 1px solid #1e293b;
+    padding-top: 24px;
+    text-align: center;
+    color: #334155;
+    font-size: 12px;
+  }
+  .footer span { color: #f59e0b; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Zerocoder · Курс n8n · Модуль 2 · Урок 3</div>
+  <h1>Торговый журнал<br><span>Bybit → анализ</span></h1>
+  <p>Домашнее задание: сценарий из трёх нод для сбора данных инвестиционных ботов и формирования ежедневного отчёта</p>
+  <div class="hero-meta">
+    <div class="meta-chip"><div class="dot"></div> Вариант 2 — Продвинутый</div>
+    <div class="meta-chip">3 ноды · Manual Trigger → Set → Code</div>
+    <div class="meta-chip">25 июня 2026</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ЗАДАЧА -->
+  <div class="section">
+    <div class="section-title">Задача</div>
+    <div class="task-card">
+      <h3>Что автоматизируем</h3>
+      <p>Регулярный сбор данных о завершённых торговых ботах с платформы Bybit: какая пара торговалась, тип стратегии (Мартингейл / Лонг / Шорт), объём инвестиций, итоговый P&L и ROI. Цель — ежедневно фиксировать результаты и анализировать динамику портфеля.</p>
+    </div>
+    <div class="task-card">
+      <h3>Почему именно три шага</h3>
+      <p><strong style="color:#f1f5f9">Запуск</strong> — инициируем сбор вручную (в будущем заменим на расписание или триггер от агента). <strong style="color:#f1f5f9">Данные</strong> — фиксируем структурированные поля по каждому боту: пара, стратегия, вложения, результат. <strong style="color:#f1f5f9">Результат</strong> — формируем читаемый отчёт, готовый к отправке в NocoDB, Google Sheets или Telegram.</p>
+    </div>
+  </div>
+
+  <!-- ВОРКФЛОУ -->
+  <div class="section">
+    <div class="section-title">Сценарий n8n — цепочка нод</div>
+    <div class="workflow">
+
+      <div class="node">
+        <div class="node-num">1</div>
+        <div class="node-icon">🖱️</div>
+        <div class="node-name">Запуск вручную</div>
+        <div class="node-type">Manual Trigger</div>
+        <div class="node-note">Запускаем сценарий вручную для сбора данных о портфеле</div>
+      </div>
+
+      <div class="node-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">1 item</div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">2</div>
+        <div class="node-icon">✏️</div>
+        <div class="node-name">Данные портфеля</div>
+        <div class="node-type">Edit Fields (Set)</div>
+        <div class="node-note">Вводим данные о балансе портфеля на сегодня. В реальном сценарии — будут приходить из API или Google Sheets</div>
+      </div>
+
+      <div class="node-arrow">
+        <div class="arrow-line"></div>
+        <div class="arrow-label">1 item</div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">3</div>
+        <div class="node-icon">{ }</div>
+        <div class="node-name">Формирование отчёта</div>
+        <div class="node-type">Code (JavaScript)</div>
+        <div class="node-note">Собираем все поля в читаемый текстовый отчёт для отправки в Notion или Telegram</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ДАННЫЕ -->
+  <div class="section">
+    <div class="section-title">Данные — завершённые боты (25.06.2026)</div>
+    <div style="overflow-x:auto; border-radius: 10px; border: 1px solid #1e2535;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Пара</th>
+            <th>Стратегия</th>
+            <th>Инвестиции</th>
+            <th>P&L (USDT)</th>
+            <th>ROI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="pair-badge">SOLUSDT</span></td><td>Мартингейл Лонг 3x</td><td>$35</td><td class="pnl-pos">+3.21</td><td class="pnl-pos">+9.18%</td></tr>
+          <tr><td><span class="pair-badge">SUIUSDT</span></td><td>Мартингейл Шорт 10x</td><td>$15</td><td class="pnl-pos">+1.19</td><td class="pnl-pos">+7.95%</td></tr>
+          <tr><td><span class="pair-badge">XRPUSDT</span></td><td>Мартингейл Лонг 5x</td><td>$50</td><td class="pnl-pos">+0.43</td><td class="pnl-pos">+0.85%</td></tr>
+          <tr><td><span class="pair-badge">SUIUSDT</span></td><td>Мартингейл Шорт 3x</td><td>$36</td><td class="pnl-pos">+0.33</td><td class="pnl-pos">+0.9%</td></tr>
+          <tr><td><span class="pair-badge">UNIUSDT</span></td><td>Мартингейл Шорт 3x</td><td>$10</td><td class="pnl-pos">+0.14</td><td class="pnl-pos">+1.38%</td></tr>
+          <tr><td><span class="pair-badge">XRPUSDT</span></td><td>Мартингейл Лонг 3x</td><td>$10</td><td class="pnl-pos">+0.13</td><td class="pnl-pos">+1.32%</td></tr>
+          <tr><td><span class="pair-badge">ADAUSDT</span></td><td>Мартингейл Шорт 3x</td><td>$10</td><td class="pnl-pos">+0.10</td><td class="pnl-pos">+0.97%</td></tr>
+          <tr><td><span class="pair-badge">SOLUSDT</span></td><td>Мартингейл Шорт 10x</td><td>$20</td><td class="pnl-neg">-7.40</td><td class="pnl-neg">-37%</td></tr>
+          <tr><td><span class="pair-badge">PIPPINUSDT</span></td><td>Мартингейл Лонг 15x</td><td>$20</td><td class="pnl-neg">-20.00</td><td class="pnl-neg">-99.98%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:#334155;margin-top:8px;padding-left:4px;">* Данные обезличены — использованы только публичные тикеры криптовалют</p>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="section">
+    <div class="section-title">Вывод ноды Code — пример отчёта</div>
+    <div class="output-block"><span class="yw">📊 Торговый отчёт — 25.06.2026</span>
+<span class="hi">Платформа: Bybit</span>
+
+<span class="hi">🤖 Завершённые боты:</span>
+1. SOLUSDT | Мартингейл Лонг 3x  | Инвест: $35 | P&L: <span class="gr">+3.21 USDT (+9.18%)</span>
+2. PIPPINUSDT | Мартингейл Лонг 15x | Инвест: $20 | P&L: <span class="rd">-20.00 USDT (-99.98%)</span>
+3. SUIUSDT | Мартингейл Шорт 10x | Инвест: $15 | P&L: <span class="gr">+1.19 USDT (+7.95%)</span>
+
+<span class="gr">✅ Итого инвестировано: $70.00 USDT</span>
+<span class="rd">⚠️ Суммарный P&L: -15.46 USDT</span>
+
+<span class="hi">📝 Готово к записи в NocoDB и анализу в Notion</span></div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div class="section">
+    <div class="section-title">Дорожная карта проекта</div>
+    <div class="roadmap">
+
+      <div class="roadmap-item">
+        <div class="roadmap-num done">✓</div>
+        <div class="roadmap-content">
+          <h4>Этап 1 — Базовый сценарий (ДЗ)</h4>
+          <p>Manual Trigger → Set → Code. Три ноды, ручной запуск, формирование отчёта.</p>
+          <div class="tags">
+            <span class="tag green">✅ Выполнено</span>
+            <span class="tag green">n8n</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-num active">2</div>
+        <div class="roadmap-content">
+          <h4>Этап 2 — Ввод данных через Telegram → NocoDB</h4>
+          <p>Отправляю боту сообщение с данными → Hermes Agent → n8n Webhook → запись строки в NocoDB. Google Sheets как зеркало для просмотра.</p>
+          <div class="tags">
+            <span class="tag yellow">🔜 Следующий шаг</span>
+            <span class="tag gray">Hermes</span>
+            <span class="tag gray">NocoDB</span>
+            <span class="tag gray">Webhook</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-num future">3</div>
+        <div class="roadmap-content">
+          <h4>Этап 3 — Автосбор с Bybit API</h4>
+          <p>Schedule Trigger каждый день в 23:00 → Bybit API (read-only ключ) → автоматическая запись в NocoDB без ручного ввода.</p>
+          <div class="tags">
+            <span class="tag gray">Bybit API</span>
+            <span class="tag gray">Schedule</span>
+            <span class="tag gray">NocoDB</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-item">
+        <div class="roadmap-num future">4</div>
+        <div class="roadmap-content">
+          <h4>Этап 4 — Ежедневный AI-анализ</h4>
+          <p>Schedule 08:00 → n8n читает NocoDB → Claude API анализирует: лучший бот, худший, тренды → страница в Notion → Hermes уведомляет в Telegram: «Отчёт готов».</p>
+          <div class="tags">
+            <span class="tag gray">Claude API</span>
+            <span class="tag gray">Notion</span>
+            <span class="tag gray">Telegram</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- СТЕК -->
+  <div class="section">
+    <div class="section-title">Технический стек</div>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="si">⚙️</div>
+        <div class="sname">n8n</div>
+        <div class="sdesc">Оркестратор воркфлоу, порт 5678</div>
+        <span class="status ok">✅ Работает</span>
+      </div>
+      <div class="stack-item">
+        <div class="si">🗄️</div>
+        <div class="sname">NocoDB</div>
+        <div class="sdesc">Основная БД, порт 8080</div>
+        <span class="status ok">✅ Работает</span>
+      </div>
+      <div class="stack-item">
+        <div class="si">🤖</div>
+        <div class="sname">Hermes Agent</div>
+        <div class="sdesc">AI-агент + Telegram бот</div>
+        <span class="status ok">✅ Работает</span>
+      </div>
+      <div class="stack-item">
+        <div class="si">📊</div>
+        <div class="sname">Google Sheets</div>
+        <div class="sdesc">Зеркало для просмотра папой</div>
+        <span class="status next">🔜 Этап 2</span>
+      </div>
+      <div class="stack-item">
+        <div class="si">🧠</div>
+        <div class="sname">Claude API</div>
+        <div class="sdesc">Анализ данных портфеля</div>
+        <span class="status next">🔜 Этап 4</span>
+      </div>
+      <div class="stack-item">
+        <div class="si">📝</div>
+        <div class="sname">Notion</div>
+        <div class="sdesc">Хранение аналитических отчётов</div>
+        <span class="status next">🔜 Этап 4</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Сделано в рамках курса <span>Zerocoder · n8n</span> · Фея Автоматизации 🧚‍♀️
+  </div>
+
+</div>
+</body>
+</html>
