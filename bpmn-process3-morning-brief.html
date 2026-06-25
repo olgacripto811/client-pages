@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Процесс 3 · Утренний брифинг — BPMN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e8e6df; min-height: 100vh; }
+  .header { background: #1a1d27; border-bottom: 1px solid #2a2d3a; padding: 20px 32px; }
+  .header h1 { font-size: 18px; font-weight: 600; color: #fff; }
+  .header p { font-size: 13px; color: #9c9a92; margin-top: 4px; }
+  .badge { display: inline-block; background: #122038; color: #85b7eb; font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 20px; margin-top: 8px; }
+  .content { padding: 28px 32px; max-width: 960px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 600; color: #9c9a92; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .formula-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .formula-box { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; padding: 12px 16px; text-align: center; min-width: 140px; }
+  .formula-box .label { font-size: 10px; color: #9c9a92; text-transform: uppercase; letter-spacing: 0.06em; }
+  .formula-box .value { font-size: 13px; font-weight: 500; color: #e8e6df; margin-top: 4px; }
+  .formula-arrow { color: #85b7eb; font-size: 20px; font-weight: 300; }
+  .lanes { border: 1px solid #2a2d3a; border-radius: 10px; overflow: hidden; margin-bottom: 28px; }
+  .lane { display: flex; border-bottom: 1px solid #2a2d3a; }
+  .lane:last-child { border-bottom: none; }
+  .lane-label { width: 90px; min-width: 90px; background: #14171f; padding: 16px 10px; display: flex; align-items: center; justify-content: center; border-right: 1px solid #2a2d3a; }
+  .lane-label span { font-size: 11px; color: #9c9a92; font-weight: 500; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; }
+  .lane-body { flex: 1; padding: 16px 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .node { border-radius: 8px; padding: 10px 14px; font-size: 12px; font-weight: 500; border: 1px solid; text-align: center; min-width: 110px; }
+  .node-blue { background: #122038; border-color: #378add; color: #85b7eb; }
+  .node-purple { background: #1e1a3a; border-color: #7f77dd; color: #afa9ec; }
+  .node-gray { background: #1a1d27; border-color: #444441; color: #b4b2a9; }
+  .node-start { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
+  .node-end { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent; border: 3px solid #9c9a92; padding: 0; font-size: 14px; color: #9c9a92; }
+  .arrow { color: #85b7eb; font-size: 16px; line-height: 1; }
+  .node-label { font-size: 10px; color: #9c9a92; margin-top: 4px; text-align: center; }
+  .node-wrap { display: flex; flex-direction: column; align-items: center; }
+  .parallel-group { display: flex; gap: 8px; align-items: flex-start; background: #14171f; border: 1px solid #2a2d3a; border-radius: 8px; padding: 10px 12px; }
+  .parallel-label { font-size: 10px; color: #9c9a92; margin-bottom: 6px; }
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .result-card { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; padding: 14px 16px; }
+  .result-card .icon { font-size: 20px; margin-bottom: 8px; }
+  .result-card .title { font-size: 12px; font-weight: 600; color: #e8e6df; margin-bottom: 4px; }
+  .result-card .desc { font-size: 12px; color: #9c9a92; line-height: 1.5; }
+  .result-card.blue { border-left: 3px solid #378add; }
+  .cron-box { background: #122038; border: 1px solid #378add; border-radius: 8px; padding: 14px 16px; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; }
+  .cron-box .cron-time { font-size: 32px; font-weight: 600; color: #85b7eb; }
+  .cron-box .cron-info { font-size: 12px; color: #9c9a92; }
+  .cron-box .cron-info strong { color: #e8e6df; display: block; margin-bottom: 2px; }
+  .footer { background: #14171f; border-top: 1px solid #2a2d3a; padding: 16px 32px; font-size: 11px; color: #5c5c58; display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Процесс 3 · Утренний брифинг «Фея Автоматизации»</h1>
+  <p>BPMN-схема · Домашнее задание, урок 1 · Zerocoder n8n курс</p>
+  <span class="badge">Вариант 2 — продвинутый уровень</span>
+</div>
+<div class="content">
+
+  <div class="section-label">Cron-триггер</div>
+  <div class="cron-box">
+    <div class="cron-time">08:00</div>
+    <div class="cron-info">
+      <strong>Ежедневно, МСК</strong>
+      Запускает цепочку автоматически — без участия человека. Каждый день ровно в 8 утра n8n собирает данные из трёх источников и отправляет брифинг в Telegram.
+    </div>
+  </div>
+
+  <div class="section-label">Формула автоматизации</div>
+  <div class="formula-row">
+    <div class="formula-box">
+      <div class="label">Событие (триггер)</div>
+      <div class="value">Cron 08:00 МСК</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-box">
+      <div class="label">Шаги</div>
+      <div class="value">3 источника данных → ИИ-сборка → Telegram</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-box">
+      <div class="label">Результат</div>
+      <div class="value">Готовый брифинг в Telegram каждое утро</div>
+    </div>
+  </div>
+
+  <div class="section-label">Схема процесса (BPMN, swim-lanes)</div>
+  <div class="lanes">
+    <!-- Система -->
+    <div class="lane">
+      <div class="lane-label"><span>Система</span></div>
+      <div class="lane-body">
+        <div class="node-wrap">
+          <div class="node node-blue node-start">●</div>
+          <div class="node-label">Cron 08:00<br>ежедневно</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div style="flex:1"></div>
+      </div>
+    </div>
+    <!-- n8n + ИИ -->
+    <div class="lane">
+      <div class="lane-label"><span>n8n + ИИ</span></div>
+      <div class="lane-body">
+        <div style="display:flex;flex-direction:column;gap:6px;background:#14171f;border:1px solid #2a2d3a;border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10px;color:#378add;font-weight:600;margin-bottom:2px;">ПАРАЛЛЕЛЬНЫЙ СБОР ДАННЫХ</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <div class="node node-blue" style="min-width:90px;">Биржа API<br><span style="font-size:10px;color:#9c9a92">SPC/USDT курс</span></div>
+            <div class="node node-blue" style="min-width:90px;">Notion<br><span style="font-size:10px;color:#9c9a92">задачи на сегодня</span></div>
+            <div class="node node-blue" style="min-width:90px;">Расписание<br><span style="font-size:10px;color:#9c9a92">уроки Zerocoder</span></div>
+          </div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node-wrap">
+          <div class="node node-purple">ИИ-агент<br><span style="font-size:10px;color:#9c9a92">Claude / OpenRouter</span></div>
+          <div class="node-label">сборка брифинга</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node-wrap">
+          <div class="node node-purple">Telegram-нода</div>
+          <div class="node-label">личный чат Ольги</div>
+        </div>
+      </div>
+    </div>
+    <!-- Ольга -->
+    <div class="lane">
+      <div class="lane-label"><span>Ольга</span></div>
+      <div class="lane-body">
+        <div style="flex:1"></div>
+        <div class="node-wrap">
+          <div class="node node-gray">Брифинг получен</div>
+          <div class="node-label">в Telegram</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node-wrap">
+          <div class="node-end">◉</div>
+          <div class="node-label">День начат</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Бизнес-результат автоматизации</div>
+  <div class="result-grid">
+    <div class="result-card blue">
+      <div class="icon">⏱</div>
+      <div class="title">Экономия времени</div>
+      <div class="desc">15–20 минут каждый день — ручная сборка информации из биржи, Notion и расписания уходит в ноль</div>
+    </div>
+    <div class="result-card blue">
+      <div class="icon">📊</div>
+      <div class="title">Не пропустить важное</div>
+      <div class="desc">Курс SPC/USDT, урок Zerocoder, ключевые задачи — всё в одном сообщении до начала рабочего дня</div>
+    </div>
+    <div class="result-card blue">
+      <div class="icon">💼</div>
+      <div class="title">Кейс для портфолио</div>
+      <div class="desc">Этот сценарий — готовый пример для продажи услуг автоматизации. Персональный ИИ-ассистент на базе n8n</div>
+    </div>
+  </div>
+
+  <div class="section-label">Словарь процесса</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#85b7eb;font-weight:600;margin-bottom:2px;">ТРИГГЕР</div>
+      <div style="font-size:12px;">Cron — расписание 0 8 * * * (UTC+3)</div>
+    </div>
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#85b7eb;font-weight:600;margin-bottom:2px;">ИСТОЧНИКИ</div>
+      <div style="font-size:12px;">Биржа API + Notion API + ICS/Google Calendar</div>
+    </div>
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#afa9ec;font-weight:600;margin-bottom:2px;">НОДА ИИ</div>
+      <div style="font-size:12px;">OpenRouter → Claude — сборка и форматирование</div>
+    </div>
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#9c9a92;font-weight:600;margin-bottom:2px;">РЕЗУЛЬТАТ</div>
+      <div style="font-size:12px;">Telegram-сообщение ежедневно в 08:00</div>
+    </div>
+  </div>
+
+</div>
+<div class="footer">
+  <span>Zerocoder · n8n Урок 1 · Домашнее задание (продвинутый уровень)</span>
+  <span>Ольга · Фея Автоматизации</span>
+</div>
+</body>
+</html>
