@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Процесс 1 · Онбординг клиента — BPMN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #0f1117; color: #e8e6df; min-height: 100vh; }
+  .header { background: #1a1d27; border-bottom: 1px solid #2a2d3a; padding: 20px 32px; }
+  .header h1 { font-size: 18px; font-weight: 600; color: #fff; }
+  .header p { font-size: 13px; color: #9c9a92; margin-top: 4px; }
+  .badge { display: inline-block; background: #1e4a3a; color: #5dcaa5; font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 20px; margin-top: 8px; }
+  .content { padding: 28px 32px; max-width: 960px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 600; color: #9c9a92; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .formula-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .formula-box { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; padding: 12px 16px; text-align: center; min-width: 140px; }
+  .formula-box .label { font-size: 10px; color: #9c9a92; text-transform: uppercase; letter-spacing: 0.06em; }
+  .formula-box .value { font-size: 13px; font-weight: 500; color: #e8e6df; margin-top: 4px; }
+  .formula-arrow { color: #5dcaa5; font-size: 20px; font-weight: 300; }
+  .lanes { border: 1px solid #2a2d3a; border-radius: 10px; overflow: hidden; margin-bottom: 28px; }
+  .lane { display: flex; border-bottom: 1px solid #2a2d3a; }
+  .lane:last-child { border-bottom: none; }
+  .lane-label { width: 90px; min-width: 90px; background: #14171f; padding: 16px 10px; display: flex; align-items: center; justify-content: center; border-right: 1px solid #2a2d3a; }
+  .lane-label span { font-size: 11px; color: #9c9a92; font-weight: 500; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; }
+  .lane-body { flex: 1; padding: 16px 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .node { border-radius: 8px; padding: 10px 14px; font-size: 12px; font-weight: 500; border: 1px solid; text-align: center; min-width: 110px; }
+  .node-teal { background: #0a2e24; border-color: #1d9e75; color: #5dcaa5; }
+  .node-purple { background: #1e1a3a; border-color: #7f77dd; color: #afa9ec; }
+  .node-gray { background: #1a1d27; border-color: #444441; color: #b4b2a9; }
+  .node-start { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; padding: 0; }
+  .node-end { width: 36px; height: 36px; min-width: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: transparent; border: 3px solid #9c9a92; padding: 0; font-size: 14px; color: #9c9a92; }
+  .gateway { width: 36px; height: 36px; min-width: 36px; transform: rotate(45deg); background: #1a1d27; border: 1px solid #9c9a92; display: inline-block; position: relative; }
+  .gateway-wrap { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+  .arrow { color: #5dcaa5; font-size: 16px; line-height: 1; }
+  .arrow-gray { color: #5c5c58; }
+  .arrow-dashed { color: #5c5c58; font-size: 13px; }
+  .node-label { font-size: 10px; color: #9c9a92; margin-top: 4px; }
+  .node-wrap { display: flex; flex-direction: column; align-items: center; }
+  .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .result-card { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; padding: 14px 16px; }
+  .result-card .icon { font-size: 20px; margin-bottom: 8px; }
+  .result-card .title { font-size: 12px; font-weight: 600; color: #e8e6df; margin-bottom: 4px; }
+  .result-card .desc { font-size: 12px; color: #9c9a92; line-height: 1.5; }
+  .result-card.green { border-left: 3px solid #1d9e75; }
+  .footer { background: #14171f; border-top: 1px solid #2a2d3a; padding: 16px 32px; font-size: 11px; color: #5c5c58; display: flex; justify-content: space-between; align-items: center; }
+  @media(max-width:600px) { .lane-body { gap: 6px; } .node { min-width: 90px; font-size: 11px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Процесс 1 · Онбординг нового клиента</h1>
+  <p>BPMN-схема · Домашнее задание, урок 1 · Zerocoder n8n курс</p>
+  <span class="badge">Вариант 2 — продвинутый уровень</span>
+</div>
+<div class="content">
+
+  <div class="section-label">Формула автоматизации</div>
+  <div class="formula-row">
+    <div class="formula-box">
+      <div class="label">Событие (триггер)</div>
+      <div class="value">Клиент заполнил анкету</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-box">
+      <div class="label">Шаги</div>
+      <div class="value">CRM → ИИ-анализ → уведомление → решение → письмо</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-box">
+      <div class="label">Результат</div>
+      <div class="value">Клиент онбордирован без ручного труда</div>
+    </div>
+  </div>
+
+  <div class="section-label">Схема процесса (BPMN, swim-lanes)</div>
+  <div class="lanes">
+    <!-- Клиент -->
+    <div class="lane">
+      <div class="lane-label"><span>Клиент</span></div>
+      <div class="lane-body">
+        <div class="node-wrap">
+          <div class="node node-teal node-start">●</div>
+          <div class="node-label">Анкета<br>заполнена</div>
+        </div>
+        <div class="arrow">↓</div>
+        <div style="flex:1"></div>
+      </div>
+    </div>
+    <!-- n8n + ИИ -->
+    <div class="lane">
+      <div class="lane-label"><span>n8n + ИИ</span></div>
+      <div class="lane-body">
+        <div class="node-wrap">
+          <div class="node node-purple">Карточка в CRM</div>
+          <div class="node-label">Notion / Airtable</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node-wrap">
+          <div class="node node-purple">ИИ-анализ брифа</div>
+          <div class="node-label">черновик позиционирования</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node node-gray">Уведомление<br><span style="font-size:10px;color:#9c9a92">→ Ольга в Telegram</span></div>
+      </div>
+    </div>
+    <!-- Ольга -->
+    <div class="lane">
+      <div class="lane-label"><span>Ольга</span></div>
+      <div class="lane-body">
+        <div class="node-wrap">
+          <div class="gateway-wrap"><div class="gateway"></div></div>
+          <div class="node-label" style="text-align:center">Одобрить?</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin:0 8px">
+          <div style="font-size:11px;color:#5dcaa5">Да →</div>
+          <div style="font-size:11px;color:#5c5c58">Нет ↩ (доработать)</div>
+        </div>
+        <div class="node-wrap">
+          <div class="node node-teal">Письмо клиенту</div>
+          <div class="node-label">авто-отправка</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node-wrap">
+          <div class="node-end">◉</div>
+          <div class="node-label">Готово</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Бизнес-результат автоматизации</div>
+  <div class="result-grid">
+    <div class="result-card green">
+      <div class="icon">⏱</div>
+      <div class="title">Экономия времени</div>
+      <div class="desc">1,5–2 часа на каждого нового клиента — ручной перенос данных и составление первичного ответа уходят в ноль</div>
+    </div>
+    <div class="result-card green">
+      <div class="icon">🎯</div>
+      <div class="title">Ноль потерянных лидов</div>
+      <div class="desc">Все заявки автоматически попадают в CRM. Ничего не теряется между мессенджерами и блокнотами</div>
+    </div>
+    <div class="result-card green">
+      <div class="icon">⚡</div>
+      <div class="title">Снижение рисков</div>
+      <div class="desc">Уведомление в Telegram исключает ситуацию «забыла ответить» — особенно при параллельном ведении нескольких клиентов</div>
+    </div>
+  </div>
+
+  <div class="section-label">Словарь процесса</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#5dcaa5;font-weight:600;margin-bottom:2px;">ТРИГГЕР</div>
+      <div style="font-size:12px;">Заполненная анкета (Tally / Google Form)</div>
+    </div>
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#afa9ec;font-weight:600;margin-bottom:2px;">НОДА ИИ</div>
+      <div style="font-size:12px;">Claude / OpenRouter — анализ брифа</div>
+    </div>
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#9c9a92;font-weight:600;margin-bottom:2px;">ШЛЮЗ</div>
+      <div style="font-size:12px;">Ручное одобрение или возврат на доработку</div>
+    </div>
+    <div style="background:#1a1d27;border:1px solid #2a2d3a;border-radius:6px;padding:10px 12px;">
+      <div style="font-size:10px;color:#9c9a92;font-weight:600;margin-bottom:2px;">РЕЗУЛЬТАТ</div>
+      <div style="font-size:12px;">Письмо клиенту отправлено автоматически</div>
+    </div>
+  </div>
+
+</div>
+<div class="footer">
+  <span>Zerocoder · n8n Урок 1 · Домашнее задание (продвинутый уровень)</span>
+  <span>Ольга · Фея Автоматизации</span>
+</div>
+</body>
+</html>
