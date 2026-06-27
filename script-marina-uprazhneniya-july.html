@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сценарий YouTube · Марина Духвалова · Неделя 3 · Упражнения</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A47;
+    --red: #C61A21;
+    --yellow: #E2D16D;
+    --yellow-dark: #C8B44A;
+    --ivory: #FAF8F3;
+    --gray: #6B7280;
+    --light: #F0EDE6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ivory);
+    color: var(--navy);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .header {
+    background: var(--navy);
+    color: var(--ivory);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: var(--yellow);
+    opacity: 0.08;
+    border-radius: 50%;
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4.5vw, 38px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-yellow {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .toolbar {
+    background: white;
+    border-bottom: 1px solid #E5E0D8;
+    padding: 12px 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-outline { background: white; border: 1.5px solid var(--navy); color: var(--navy); }
+  .btn-reading { background: var(--yellow); color: var(--navy); }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .block {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .block-header {
+    padding: 16px 24px 12px;
+    border-bottom: 1px solid var(--light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .block-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .block-timing {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .block-body { padding: 20px 24px; }
+
+  .script-line {
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .script-line:last-child { margin-bottom: 0; }
+
+  .direction {
+    display: inline-block;
+    background: var(--light);
+    color: #5A5A5A;
+    font-size: 12px;
+    font-style: italic;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin: 2px 0;
+  }
+
+  .highlight {
+    background: #F0F4FA;
+    border-left: 3px solid var(--navy);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .highlight-yellow {
+    background: #FDFAEE;
+    border-left: 3px solid var(--yellow-dark);
+  }
+  .highlight-red {
+    background: #FEF0F0;
+    border-left: 3px solid var(--red);
+  }
+
+  .transition-line {
+    text-align: center;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--gray);
+    font-style: italic;
+  }
+
+  /* EXERCISE STEPS */
+  .exercise-block {
+    border: 2px solid var(--yellow);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .exercise-header {
+    background: var(--yellow);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .exercise-num {
+    background: var(--navy);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .exercise-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .exercise-time {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+  .exercise-body {
+    padding: 16px 20px;
+    background: #FDFAEE;
+  }
+  .exercise-body p {
+    font-size: 15px;
+    line-height: 1.75;
+    margin-bottom: 10px;
+    color: var(--navy);
+  }
+  .exercise-body p:last-child { margin-bottom: 0; }
+  .exercise-script {
+    background: white;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+    margin-top: 10px;
+    border: 1px solid rgba(200,180,74,0.3);
+  }
+
+  /* EXTRA */
+  .extra-section {
+    background: var(--navy);
+    color: var(--ivory);
+    border-radius: 12px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+  }
+  .extra-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--yellow);
+    margin-bottom: 20px;
+  }
+  .extra-section h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+  .titles-list { list-style: none; counter-reset: titles; }
+  .titles-list li {
+    counter-increment: titles;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .titles-list li:last-child { border-bottom: none; }
+  .titles-list li::before {
+    content: counter(titles);
+    background: var(--red);
+    color: white;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .description-box, .preview-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+  .hashtags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .hashtag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+
+  /* READING MODE */
+  body.reading-mode { background: #1A1A1A; color: #F0EDE6; }
+  body.reading-mode .block { background: #2A2A2A; box-shadow: none; }
+  body.reading-mode .block-header { border-bottom-color: #3A3A3A; }
+  body.reading-mode .block-title, body.reading-mode .block-timing { color: #F0EDE6; }
+  body.reading-mode .script-line { font-size: 18px; line-height: 2; }
+  body.reading-mode .direction { background: #3A3A3A; color: #999; }
+  body.reading-mode .highlight { background: #2A3040; border-left-color: var(--yellow); }
+  body.reading-mode .highlight-yellow { background: #2A2810; border-left-color: var(--yellow-dark); }
+  body.reading-mode .highlight-red { background: #3A2020; border-left-color: var(--red); }
+  body.reading-mode .exercise-block { border-color: var(--yellow-dark); }
+  body.reading-mode .exercise-header { background: #2A2810; }
+  body.reading-mode .exercise-body { background: #242210; }
+  body.reading-mode .exercise-body p { color: #DDD; }
+  body.reading-mode .exercise-script { background: #1E1E1E; color: #AAA; border-color: #444; }
+  body.reading-mode .toolbar { background: #2A2A2A; border-bottom-color: #3A3A3A; }
+  body.reading-mode .btn-outline { background: transparent; border-color: #F0EDE6; color: #F0EDE6; }
+  body.reading-mode .transition-line { color: #777; }
+
+  @media print {
+    .toolbar { display: none; }
+    body { background: white; font-size: 14px; }
+    .block { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .exercise-block { break-inside: avoid; }
+    .extra-section { background: var(--navy) !important; -webkit-print-color-adjust: exact; }
+    .exercise-header { background: var(--yellow) !important; -webkit-print-color-adjust: exact; }
+    .exercise-body { background: #FDFAEE !important; -webkit-print-color-adjust: exact; }
+  }
+  @media (max-width: 600px) {
+    .block-header { gap: 6px; }
+    .block-timing { margin-left: 0; font-size: 18px; }
+    .exercise-time { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">YouTube · Сценарий · Неделя 3</div>
+  <h1>Это упражнение делают дикторы перед эфиром.<br>Шестьдесят секунд — и речь становится чище</h1>
+  <div class="header-meta">
+    <span class="badge">Марина Духвалова</span>
+    <span class="badge">Рубрика: Упражнения за 5 минут</span>
+    <span class="badge badge-yellow">15 июля 2026</span>
+    <span class="badge">8–10 минут</span>
+    <span class="badge">Образ: yellow · динамичный кадр · жест</span>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-reading" onclick="toggleReading()">🌙 Режим чтения</button>
+  <button class="btn btn-outline" onclick="window.print()">🖨 Распечатать</button>
+</div>
+
+<div class="container">
+
+  <!-- HOOK -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Хук</div>
+        <div class="block-title">Первые 30 секунд</div>
+      </div>
+      <div class="block-timing">0:00–0:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">динамичный кадр — стоя или в движении, жест, жёлтый образ, энергичное начало без паузы</span></p>
+      <p class="script-line">Сейчас я покажу вам упражнение. Шестьдесят секунд. Его делают профессиональные дикторы прямо перед тем, как войти в эфир.</p>
+      <p class="script-line">Не после разминки. Не в начале рабочего дня. Прямо перед. <span class="direction">пауза</span> Потому что оно работает мгновенно.</p>
+      <div class="highlight highlight-yellow">
+        Я покажу, как его делать — и объясню, что именно происходит с вашей артикуляцией в эти 60 секунд. Потому что понимание механики — это то, что отличает тренировку от бессмысленного повторения.
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ вступление</div>
+
+  <!-- INTRO -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Вступление</div>
+        <div class="block-title">Почему речь «замерзает» перед важным моментом</div>
+      </div>
+      <div class="block-timing">0:30–2:00</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Меня зовут Марина Духвалова, я занимаюсь техникой речи 35 лет. И один из вопросов, который я слышу чаще всего: как быстро привести речь в форму прямо перед выступлением?</p>
+      <p class="script-line">Не за неделю тренировок. Не за час подготовки. Прямо перед — когда уже поздно что-то менять, а речевой аппарат ещё «холодный».</p>
+      <p class="script-line">Вот что происходит, когда мы долго молчали или были в состоянии напряжения: мышцы артикуляционного аппарата — губы, язык, щёки — теряют тонус и подвижность. Речь становится менее чёткой, звуки «смазываются», темп нестабилен.</p>
+      <div class="highlight">
+        Это не дефект и не слабость. Это физиология — такая же, как у спортсмена, который выходит на старт без разминки. Холодная мышца работает хуже разогретой. Всегда.
+      </div>
+      <p class="script-line">Именно поэтому у профессиональных дикторов есть короткий протокол разогрева. Сегодня я разберу его по шагам — и объясню, зачем каждый из них нужен.</p>
+      <div class="highlight highlight-yellow">
+        Повторите упражнение вместе со мной прямо сейчас. Это лучше, чем смотреть. После — напишите в комментарии, что почувствовали.
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ основная часть — упражнение по шагам</div>
+
+  <!-- BLOCK 1 -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 1</div>
+        <div class="block-title">Подготовка: почему артикуляционный аппарат нужно разогревать</div>
+      </div>
+      <div class="block-timing">2:00–3:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Прежде чем перейти к упражнению — один важный момент, без которого вы будете делать его механически.</p>
+      <p class="script-line">Речь — это двигательный навык. Буквально. Когда вы говорите, работают мышцы: язык, губы, нижняя челюсть, мягкое нёбо, голосовые связки. Это скоординированная работа нескольких групп мышц одновременно.</p>
+      <p class="script-line">Когда эти мышцы «холодные» — координация хуже. Звуки получаются нечёткими не потому, что вы «говорите неправильно». А потому что мышца ещё не готова к точной работе.</p>
+      <div class="highlight">
+        Я работаю с системой LingWave — аппаратной диагностикой речи. Разница между спектрограммой «холодной» и разогретой речи видна отчётливо: в первом случае акустические характеристики нестабильны, в разогретой — ровнее, управляемее. Это не субъективное ощущение. Это измеримо.
+      </div>
+      <p class="script-line">Именно поэтому разминка перед речью работает. И именно поэтому 60 секунд достаточно — если делать правильно и с пониманием, что именно разогреваем.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ само упражнение</div>
+
+  <!-- BLOCK 2 — THE EXERCISE -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 2 — Упражнение</div>
+        <div class="block-title">Протокол разогрева: четыре шага, 60 секунд</div>
+      </div>
+      <div class="block-timing">3:30–7:00</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">встать прямо или сесть ровно, развернуться чуть ближе к камере, показывать каждый шаг на себе</span></p>
+      <p class="script-line">Итак, четыре шага. Повторяйте вместе со мной.</p>
+
+      <div class="exercise-block">
+        <div class="exercise-header">
+          <div class="exercise-num">1</div>
+          <div class="exercise-name">Дыхание — сброс напряжения</div>
+          <div class="exercise-time">~10 сек</div>
+        </div>
+        <div class="exercise-body">
+          <p>Медленный вдох через нос — и выдох ртом на звук «ш-ш-ш». Медленно, не торопясь. Ещё раз. <span class="direction">показывать на себе</span></p>
+          <p>Зачем это нужно: выдох на «ш» — это не просто дыхание. Это активация правильного речевого дыхания — диафрагмального. Голос опирается на дыхание. Если дыхание поверхностное, голос «плавает» и быстро садится.</p>
+          <div class="exercise-script">
+            <em>Говорите на камеру:</em> «Вдох — и выдох на "ш". Ещё раз, не спешите. Почувствуйте, как опускаются плечи. Это и есть правильное речевое дыхание.»
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-block">
+        <div class="exercise-header">
+          <div class="exercise-num">2</div>
+          <div class="exercise-name">Артикуляционная гимнастика — разогрев мышц</div>
+          <div class="exercise-time">~20 сек</div>
+        </div>
+        <div class="exercise-body">
+          <p>Три движения подряд, активно: <span class="direction">делать на камере, чётко и без стеснения</span></p>
+          <p><strong>Губы:</strong> широкая улыбка — трубочка — улыбка — трубочка. Пять раз быстро. Мышцы губ должны почувствовать работу.</p>
+          <p><strong>Язык:</strong> кончик языка — к верхним зубам, к нижним, вправо, влево. Пять повторов. Не медленно — активно.</p>
+          <p><strong>Челюсть:</strong> открыть рот шире, чем в обычной речи, и вернуть. Три раза. Снять зажим в жевательных мышцах.</p>
+          <div class="exercise-script">
+            <em>Говорите на камеру:</em> «Не стесняйтесь — это выглядит странно, но работает. Именно эти мышцы формируют чёткость ваших звуков. Если они зажаты, речь будет смазанной, сколько бы вы ни старались говорить правильно.»
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-block">
+        <div class="exercise-header">
+          <div class="exercise-num">3</div>
+          <div class="exercise-name">Диадохокинетический тест — скорость артикуляции</div>
+          <div class="exercise-time">~20 сек</div>
+        </div>
+        <div class="exercise-body">
+          <p>Произносите быстро и чётко: <strong>«батеркап — батеркап — батеркап»</strong>. <span class="direction">показать темп на себе — достаточно быстро, но без «каши»</span></p>
+          <p>Зачем именно «батеркап»? В этом слове собраны звуки, которые требуют быстрого переключения между разными положениями артикуляционного аппарата: губно-зубные, переднеязычные, заднеязычные. Это проверка — и одновременно тренировка — артикуляционной ловкости.</p>
+          <p>Если слово «размазывается» — значит, мышцы ещё не разогрелись. Повторите ещё раз, медленнее, потом снова наберите темп.</p>
+          <div class="exercise-script">
+            <em>Говорите на камеру:</em> «Этот тест я использую в аппаратной диагностике. По скорости и ритмичности "батеркапа" видно, насколько автоматизирована артикуляция. Сейчас нас интересует не результат — а сам разогрев. Повторите три раза подряд.»
+          </div>
+        </div>
+      </div>
+
+      <div class="exercise-block">
+        <div class="exercise-header">
+          <div class="exercise-num">4</div>
+          <div class="exercise-name">Голосовой посыл — активация резонаторов</div>
+          <div class="exercise-time">~10 сек</div>
+        </div>
+        <div class="exercise-body">
+          <p>Произнесите на одном выдохе, с опорой на дыхание: <strong>«м-м-м-м-м»</strong> — ощутите вибрацию в груди и в области носа. <span class="direction">положить руку на грудь, показать ощущение</span></p>
+          <p>Затем — короткую фразу полным голосом, не вполголоса. Любую. Например: «Добрый день». <span class="direction">произнести уверенно, с посылом</span></p>
+          <p>Это «включение» резонаторов. Голос, который звучит только в горле — устаёт быстро и садится. Голос с грудным резонансом — устойчив и слышен в зале.</p>
+          <div class="exercise-script">
+            <em>Говорите на камеру:</em> «Чувствуете разницу? До этого упражнения и после — голос звучит иначе. Это не эффект плацебо. Резонаторы реально активировались.»
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight highlight-yellow">
+        Весь протокол — 60 секунд. Дыхание → артикуляция → «батеркап» → голосовой посыл. Можно делать в лифте, в коридоре перед переговорной, в машине перед выходом. Без зрителей — но с результатом.
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ почему это работает — механика</div>
+
+  <!-- BLOCK 3 -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 3</div>
+        <div class="block-title">Красивая речь — это не талант. Это мышца</div>
+      </div>
+      <div class="block-timing">7:00–8:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Я хочу сказать одну вещь, которую говорю всем своим клиентам на первой встрече.</p>
+      <p class="script-line">Красивая, ясная, чёткая речь — это не то, с чем рождаются. Это навык. Двигательный навык, как умение печатать или играть на инструменте. Он тренируется. Точно так же, как тренируют тело.</p>
+      <p class="script-line">За 35 лет я исправила речь более чем 2500 детям и работала с более чем тысячью взрослых — руководителей, политиков, предпринимателей. И в каждом случае путь был один: сначала понять механику, потом тренировать прицельно.</p>
+      <div class="highlight">
+        Упражнение, которое я показала сегодня, — это не волшебство. Это физиология. 60 секунд мышечной работы, которая переводит артикуляционный аппарат из «холодного» состояния в «рабочее». Этого достаточно, чтобы первые слова вашего выступления прозвучали чётко и уверенно — а не прогревались на глазах у аудитории.
+      </div>
+      <p class="script-line">Сделайте это завтра утром. Или прямо сейчас — если ещё не сделали. И напишите в комментарии, что почувствовали. Мне важно знать.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ призыв к действию</div>
+
+  <!-- CTA -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">CTA</div>
+        <div class="block-title">Призыв к действию</div>
+      </div>
+      <div class="block-timing">8:30–9:10</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">взгляд прямо в камеру, чуть замедлиться</span></p>
+      <p class="script-line">Если вы хотите понять, что именно происходит с вашей речью — не в упражнениях, а в реальных выступлениях — я предлагаю бесплатный голосовой чек-ап.</p>
+      <p class="script-line">Это экспресс-диагностика по аудио: вы присылаете запись, я разбираю конкретно вашу речь — что работает, что стоит скорректировать. Без общих фраз. Ссылка в описании и в закреплённом посте. <span class="direction">пауза</span></p>
+      <p class="script-line">Сохраните это видео — чтобы вернуться к протоколу перед следующим важным выступлением. Именно для этого кнопка «сохранить» и существует.</p>
+      <p class="script-line">Подпишитесь, если хотите продолжить. В следующем видео я разберу реальные ошибки публичной речи — те, которые разрушают доверие к спикеру, даже когда содержание сильное. Это будет разговор с примерами и без лишней мягкости.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ закрытие</div>
+
+  <!-- OUTRO -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Закрытие</div>
+        <div class="block-title">Вопрос в комментарии</div>
+      </div>
+      <div class="block-timing">9:10–9:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">И вопрос к вам. <span class="direction">пауза, спокойно</span></p>
+      <p class="script-line">Вы когда-нибудь готовили речь — голос, дикцию, дыхание — специально перед важной встречей? Или это кажется лишним? Напишите в комментарии — мне интересно, как вы сейчас готовитесь к выступлениям.</p>
+      <p class="script-line"><span class="direction">лёгкий кивок, тепло</span></p>
+    </div>
+  </div>
+
+  <!-- EXTRA -->
+  <div class="extra-section">
+    <h2>📋 Дополнительные материалы</h2>
+
+    <h3>5 вариантов заголовка</h3>
+    <ul class="titles-list">
+      <li>Это упражнение делают дикторы перед эфиром. Шестьдесят секунд — и речь становится чище</li>
+      <li>Разминка для речи перед выступлением: протокол дикторов — объясняю механику</li>
+      <li>Почему первые слова выступления звучат нечётко — и как это исправить за 60 секунд</li>
+      <li>Артикуляционная разминка: 4 шага, которые дикторы делают перед каждым эфиром</li>
+      <li>«Батеркап» и ещё три упражнения: как разогреть речь перед важной встречей</li>
+    </ul>
+
+    <h3>Описание для видео</h3>
+    <div class="description-box">
+      Профессиональные дикторы разогревают речь перед каждым эфиром. Показываю их протокол: дыхание, артикуляционная гимнастика, диадохокинетический тест («батеркап») и голосовой посыл. Объясняю механику каждого шага — почему это работает, а не просто «полезная привычка». Повторите вместе со мной прямо сейчас. 35+ лет практики · школа PROFI-Speech.
+
+      🎤 Бесплатный голосовой чек-ап — ссылка в закреплённом посте.
+
+      Ключевые слова: упражнения для речи, дикция упражнения, артикуляционная гимнастика, техника речи, постановка голоса, как говорить чётко, техника публичного выступления
+    </div>
+
+    <h3>Хэштеги</h3>
+    <div class="hashtags">
+      <span class="hashtag">#упражнениядляречи</span>
+      <span class="hashtag">#дикция</span>
+      <span class="hashtag">#техникаречи</span>
+      <span class="hashtag">#постановкаголоса</span>
+      <span class="hashtag">#МаринаДухвалова</span>
+      <span class="hashtag">#PROFISpeech</span>
+      <span class="hashtag">#артикуляция</span>
+      <span class="hashtag">#публичноевыступление</span>
+      <span class="hashtag">#голосоратора</span>
+      <span class="hashtag">#ораторскоеискусство</span>
+    </div>
+
+    <h3>Рекомендация по превью</h3>
+    <div class="preview-box">
+      <strong>Фото:</strong> Марина в yellow-образе — динамичный кадр, жест (например, поднятый палец «один» или раскрытая ладонь). Энергия, лёгкость, действие — не статичная поза.<br><br>
+      <strong>Текст на превью:</strong> крупно — «60 секунд» / «и речь чище» — или: «Упражнение дикторов» / «перед эфиром». Тёмный текст на жёлтом акценте или светлый на navy-фоне.<br><br>
+      <strong>Акцент:</strong> жёлтый цвет на превью работает как визуальный контраст в ленте — большинство превью тёмные или нейтральные. Yellow-образ Марины + крупный текст с цифрой «60» — сильная комбинация. Можно добавить таймер или иконку микрофона как графический элемент.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleReading() {
+    document.body.classList.toggle('reading-mode');
+    const btn = document.querySelector('.btn-reading');
+    btn.textContent = document.body.classList.contains('reading-mode')
+      ? '☀️ Обычный режим' : '🌙 Режим чтения';
+  }
+</script>
+</body>
+</html>
