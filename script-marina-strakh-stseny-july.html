@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сценарий YouTube · Марина Духвалова · Неделя 2 · Страх сцены и стресс</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A47;
+    --red: #C61A21;
+    --yellow: #E2D16D;
+    --ivory: #FAF8F3;
+    --gray: #6B7280;
+    --light: #F0EDE6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ivory);
+    color: var(--navy);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .header {
+    background: var(--red);
+    color: var(--ivory);
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4.5vw, 38px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-dark { background: var(--navy); border-color: var(--navy); }
+
+  .toolbar {
+    background: white;
+    border-bottom: 1px solid #E5E0D8;
+    padding: 12px 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-outline { background: white; border: 1.5px solid var(--navy); color: var(--navy); }
+  .btn-reading { background: var(--yellow); color: var(--navy); }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .block {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .block-header {
+    padding: 16px 24px 12px;
+    border-bottom: 1px solid var(--light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .block-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .block-timing {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .block-body { padding: 20px 24px; }
+
+  .script-line {
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .script-line:last-child { margin-bottom: 0; }
+
+  .direction {
+    display: inline-block;
+    background: var(--light);
+    color: #5A5A5A;
+    font-size: 12px;
+    font-style: italic;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin: 4px 0;
+  }
+
+  .highlight {
+    background: #F0F4FA;
+    border-left: 3px solid var(--navy);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .highlight-red {
+    background: #FEF0F0;
+    border-left-color: var(--red);
+  }
+  .highlight-yellow {
+    background: #FDFAEE;
+    border-left-color: #C8B44A;
+  }
+
+  .transition-line {
+    text-align: center;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--gray);
+    font-style: italic;
+  }
+
+  .strategies-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  @media (max-width: 520px) { .strategies-grid { grid-template-columns: 1fr; } }
+  .strategy-card {
+    background: #F7F4EE;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .strategy-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .strategy-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .strategy-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  .extra-section {
+    background: var(--navy);
+    color: var(--ivory);
+    border-radius: 12px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+  }
+  .extra-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--yellow);
+    margin-bottom: 20px;
+  }
+  .extra-section h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+  .titles-list {
+    list-style: none;
+    counter-reset: titles;
+  }
+  .titles-list li {
+    counter-increment: titles;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .titles-list li:last-child { border-bottom: none; }
+  .titles-list li::before {
+    content: counter(titles);
+    background: var(--red);
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .description-box, .preview-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+  .hashtags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .hashtag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+
+  /* READING MODE */
+  body.reading-mode { background: #1A1A1A; color: #F0EDE6; }
+  body.reading-mode .block { background: #2A2A2A; box-shadow: none; }
+  body.reading-mode .block-header { border-bottom-color: #3A3A3A; }
+  body.reading-mode .block-title, body.reading-mode .block-timing { color: #F0EDE6; }
+  body.reading-mode .script-line { font-size: 18px; line-height: 2; }
+  body.reading-mode .direction { background: #3A3A3A; color: #999; }
+  body.reading-mode .highlight { background: #2F3A50; border-left-color: var(--yellow); }
+  body.reading-mode .highlight-red { background: #3A2020; border-left-color: var(--red); }
+  body.reading-mode .toolbar { background: #2A2A2A; border-bottom-color: #3A3A3A; }
+  body.reading-mode .btn-outline { background: transparent; border-color: #F0EDE6; color: #F0EDE6; }
+  body.reading-mode .transition-line { color: #777; }
+  body.reading-mode .strategy-card { background: #333; }
+  body.reading-mode .strategy-name { color: #F0EDE6; }
+  body.reading-mode .strategy-desc { color: #aaa; }
+
+  @media print {
+    .toolbar { display: none; }
+    body { background: white; font-size: 14px; }
+    .block { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .extra-section { background: var(--navy) !important; -webkit-print-color-adjust: exact; }
+  }
+  @media (max-width: 600px) {
+    .block-header { flex-wrap: wrap; gap: 6px; }
+    .block-timing { margin-left: 0; font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">YouTube · Сценарий · Неделя 2</div>
+  <h1>Почему даже сильные спикеры рассыпаются под стрессом — и что в этот момент происходит в мозге</h1>
+  <div class="header-meta">
+    <span class="badge">Марина Духвалова</span>
+    <span class="badge">Рубрика: Страх сцены и стресс</span>
+    <span class="badge badge-dark">8 июля 2026</span>
+    <span class="badge">10–14 минут</span>
+    <span class="badge">Образ: red · сидячий кадр · расслабленная поза</span>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-reading" onclick="toggleReading()">🌙 Режим чтения</button>
+  <button class="btn btn-outline" onclick="window.print()">🖨 Распечатать</button>
+</div>
+
+<div class="container">
+
+  <!-- HOOK -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Хук</div>
+        <div class="block-title">Первые 30 секунд</div>
+      </div>
+      <div class="block-timing">0:00–0:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">сидячий кадр, расслабленная поза, прямой взгляд в камеру, пауза перед началом</span></p>
+      <p class="script-line">«Мне кажется, я плохо говорю» — за 35 лет практики это самая частая фраза, которую я слышу.</p>
+      <p class="script-line">Не от новичков. <span class="direction">пауза</span> От руководителей, от опытных спикеров, от людей, которые выступают регулярно и выступают хорошо.</p>
+      <p class="script-line">Они знают материал. Они готовились. Они уже стояли на сцене сотни раз. Но в какой-то момент голос садится, мысль рвётся, и человек чувствует: что-то пошло не так — а остановить это невозможно.</p>
+      <div class="highlight highlight-red">
+        Сегодня я объясню, что именно происходит в этот момент. Не «нужно меньше волноваться». Не «просто дышите». Механика — что происходит в мозге и в голосе, и почему это случается даже с теми, кто умеет выступать.
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ вступление</div>
+
+  <!-- INTRO -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Вступление</div>
+        <div class="block-title">Почему «просто не бойтесь» — плохой совет</div>
+      </div>
+      <div class="block-timing">0:30–1:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Меня зовут Марина Духвалова. 35 лет я работаю с речью — начинала логопедом, потом добавила психологию и имиджелогию. Работала с публичными людьми: политиками, руководителями, предпринимателями. Готовила к ответственным выступлениям — тем, где нельзя ошибиться.</p>
+      <p class="script-line">И главное, что я поняла за эти годы: страх сцены — это не слабость и не отсутствие опыта. Это физиология. Она происходит у всех.</p>
+      <p class="script-line">Разница между теми, кто справляется, и теми, кто рассыпается, — не в том, боятся они или нет. В том, что происходит с их речью в момент стресса — и умеют ли они этим управлять.</p>
+      <div class="highlight highlight-yellow">
+        Досмотрите до конца — в третьей части я разберу конкретные стратегии, которые работают. Не советы. Механики.
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ основная часть</div>
+
+  <!-- BLOCK 1 -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 1</div>
+        <div class="block-title">Что происходит в мозге под давлением сцены</div>
+      </div>
+      <div class="block-timing">1:30–4:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Начну с механики. Потому что без неё всё остальное — просто набор советов, которым непонятно зачем следовать.</p>
+      <p class="script-line">Когда человек выходит выступать в привычной обстановке — речь работает во многом автоматически. Мозг не думает о том, как двигать языком или как строить фразу. Он думает о смысле. Это и называется автоматизацией речи — навык, который формируется годами.</p>
+      <p class="script-line">Но в ситуации стресса происходит кое-что интересное.</p>
+      <div class="highlight">
+        Мозг активирует систему контроля — то, что можно назвать «детектором ошибок». Это механизм, который начинает проверять речь ещё до того, как слово произнесено. Он пытается поймать ошибку — и в этот момент перехватывает управление у автоматизма.
+      </div>
+      <p class="script-line">Результат: речь, которая до этого шла без усилий, вдруг требует сознательного контроля. А сознательный контроль медленный. И ресурсозатратный. Человек начинает думать о том, как говорит — и перестаёт думать о том, что говорит.</p>
+      <p class="script-line">Именно в этот момент появляются характерные признаки: <span class="direction">можно загибать пальцы или считать на жестах</span> голос садится или «плывёт», темп становится неровным, возникают паузы не там, где нужно, слова начинают повторяться или меняться местами.</p>
+      <p class="script-line">Это не случайность и не паника. Это конкретная нейрофизиологическая реакция — срыв автоматизации под давлением.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ следующий блок</div>
+
+  <!-- BLOCK 2 -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 2</div>
+        <div class="block-title">Персеверации, инверсии и «секунда срыва» — что это такое</div>
+      </div>
+      <div class="block-timing">4:30–7:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Давайте назовём эти явления своими именами, потому что, когда понимаешь, что именно происходит — это уже не страшно.</p>
+      <p class="script-line"><strong>Персеверации</strong> — это непроизвольные повторы. Человек произносит слово или фразу дважды, трижды, не замечая этого. Или возвращается к уже сказанному без намерения. Это не оговорка. Это признак того, что «детектор ошибок» застрял на одном фрагменте и не отпускает его.</p>
+      <p class="script-line"><strong>Инверсии</strong> — нарушение привычного порядка слов. «Я хотел сказать... то есть, я сказать хотел...». Фраза строится неправильно — и человек либо замечает это и теряется, либо не замечает — и слушатели чувствуют что-то не то, хотя не могут объяснить, что именно.</p>
+      <div class="highlight highlight-red">
+        Важно понимать: это не ошибки говорящего. Это симптомы срыва адаптации — того момента, когда стресс превысил порог, при котором речь ещё управляется привычными механизмами. Я называю этот момент «секундой срыва».
+      </div>
+      <p class="script-line">На прибore — в системе LingWave, с которой я работаю, — «секунда срыва» видна на спектрограмме как зона акустической турбулентности. Параметры джиттера и шиммера в этот момент скачут. <span class="direction">пауза</span> Слушатели этого не видят — но они это чувствуют.</p>
+      <p class="script-line">И вот здесь начинается самое важное: «секунда срыва» — это не финал. Это точка, после которой речь либо восстанавливается, либо разрушается дальше. И это зависит от того, есть ли у человека адаптивные стратегии.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ практическая часть</div>
+
+  <!-- BLOCK 3 -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 3</div>
+        <div class="block-title">Пять адаптивных стратегий речи под стрессом</div>
+      </div>
+      <div class="block-timing">7:30–11:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Адаптивные стратегии — это не трюки и не самоуспокоение. Это конкретные речевые действия, которые мозг может выполнять даже в условиях высокой нагрузки, потому что они простые и тренируемые.</p>
+      <p class="script-line">Я разберу пять. <span class="direction">можно показывать пальцами или сделать визуальный список на экране</span></p>
+
+      <div class="strategies-grid">
+        <div class="strategy-card">
+          <div class="strategy-num">Стратегия 1</div>
+          <div class="strategy-name">Замедление</div>
+          <div class="strategy-desc">Не «говорите медленнее» как общий совет — а конкретное снижение темпа именно тогда, когда автоматизм начинает давать сбои. Медленный темп возвращает контроль, не останавливая речь.</div>
+        </div>
+        <div class="strategy-card">
+          <div class="strategy-num">Стратегия 2</div>
+          <div class="strategy-name">Паузирование</div>
+          <div class="strategy-desc">Пауза — не признак слабости. Для слушателя это момент осмысления. Для говорящего — момент восстановления. Профессиональные спикеры используют паузы намеренно, а не заполняют их «эм» и «ну».</div>
+        </div>
+        <div class="strategy-card">
+          <div class="strategy-num">Стратегия 3</div>
+          <div class="strategy-name">Работа с громкостью</div>
+          <div class="strategy-desc">Изменение громкости — намеренное — переключает внимание аудитории и одновременно возвращает говорящего в тело. Это физический якорь, который останавливает спираль тревоги.</div>
+        </div>
+        <div class="strategy-card">
+          <div class="strategy-num">Стратегия 4</div>
+          <div class="strategy-name">«Дирижирование»</div>
+          <div class="strategy-desc">Вставка нейтрального звука или фразы — небольшого моста между мыслями. Это даёт мозгу долю секунды на перезагрузку, не разрушая контакт с аудиторией.</div>
+        </div>
+      </div>
+
+      <div class="strategy-card" style="margin-bottom:14px;">
+        <div class="strategy-num">Стратегия 5</div>
+        <div class="strategy-name">Восстановление</div>
+        <div class="strategy-desc" style="font-size:14px;">Самая важная — и самая редкая. Это умение после сбоя не уходить в оценку («я всё испортил»), а возвращаться к речи без паузы на самокритику. Восстановление тренируется отдельно — именно оно отличает опытного спикера от того, кто умеет выступать только в комфортных условиях.</div>
+      </div>
+
+      <div class="highlight">
+        Эти стратегии — не интуиция. Профессионалы не перестают волноваться. Они владеют конкретными инструментами, которые держат речь управляемой, пока стресс делает своё дело.
+      </div>
+      <p class="script-line">«Говорите медленнее» — это плохой совет именно потому, что он общий. Работает не замедление как таковое, а точечное применение конкретной стратегии в нужный момент. Этому учатся — и это тренируется.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ личный угол</div>
+
+  <!-- BLOCK 4 -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 4</div>
+        <div class="block-title">Что я видела за 27 лет консалтинга</div>
+      </div>
+      <div class="block-timing">11:30–12:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">чуть ближе к камере, доверительно</span></p>
+      <p class="script-line">За 27 лет психологического и политического консалтинга я работала с людьми, у которых цена ошибки в речи была очень высокой. Публичные выступления, переговоры, медиа-ситуации, где одна фраза не так — и это уже новость.</p>
+      <p class="script-line">Никто из них не был свободен от стресса. <span class="direction">пауза</span> Ни один человек.</p>
+      <p class="script-line">Но те, кто справлялся, умели одно: они знали, что с ними происходит в момент давления — и у них было, что с этим делать. Не «держать себя в руках». Конкретные действия в конкретный момент.</p>
+      <p class="script-line">Именно поэтому я верю: работа с речью под стрессом — это не психология, не «позитивный настрой». Это техника. Которой можно научить любого, кто готов разобраться в механике.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ призыв к действию</div>
+
+  <!-- CTA -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">CTA</div>
+        <div class="block-title">Призыв к действию</div>
+      </div>
+      <div class="block-timing">12:30–13:10</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">взгляд в камеру, небольшая пауза</span></p>
+      <p class="script-line">Если вы узнали в этом видео что-то про себя — это хороший знак. Значит, есть точка роста, и она конкретная.</p>
+      <p class="script-line">Я предлагаю бесплатный голосовой чек-ап — экспресс-диагностику по аудио. Это не общие советы: я разбираю конкретно вашу речь и показываю, что именно происходит, когда вы говорите под нагрузкой. То, что мои клиенты получают на первой консультации. Для подписчиков — бесплатно.</p>
+      <p class="script-line">Ссылка в описании и в закреплённом посте. <span class="direction">пауза</span></p>
+      <p class="script-line">Подпишитесь на канал, если хотите продолжить этот разговор. В следующем видео — практика: упражнение, которое дикторы делают перед эфиром. Шестьдесят секунд, и речь становится чище. Покажу, как и почему это работает.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ закрытие</div>
+
+  <!-- OUTRO -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Закрытие</div>
+        <div class="block-title">Вопрос в комментарии</div>
+      </div>
+      <div class="block-timing">13:10–13:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">И напоследок — вопрос к вам. <span class="direction">пауза, спокойно</span></p>
+      <p class="script-line">В какой момент ваш голос вас подводит чаще всего? В начале выступления — или когда кажется, что всё идёт хорошо? Напишите в комментарии — мне интересно, и это поможет мне лучше выстроить следующие разборы.</p>
+      <p class="script-line"><span class="direction">небольшой кивок</span></p>
+    </div>
+  </div>
+
+  <!-- EXTRA -->
+  <div class="extra-section">
+    <h2>📋 Дополнительные материалы</h2>
+
+    <h3>5 вариантов заголовка</h3>
+    <ul class="titles-list">
+      <li>Почему даже сильные спикеры рассыпаются под стрессом — и что в этот момент происходит в мозге</li>
+      <li>Страх сцены: почему голос подводит именно тогда, когда нельзя — объясняю механику</li>
+      <li>«Детектор ошибок»: как мозг разрушает вашу речь под давлением и как это остановить</li>
+      <li>5 адаптивных стратегий речи под стрессом — то, чем пользуются профессиональные спикеры</li>
+      <li>Голос садится под стрессом: что происходит и что с этим делать — техника речи</li>
+    </ul>
+
+    <h3>Описание для видео</h3>
+    <div class="description-box">
+      «Мне кажется, я плохо говорю» — самая частая фраза за 35 лет практики. Объясняю, что именно происходит с речью под давлением сцены: детектор ошибок, персеверации, инверсии и «секунда срыва». И пять адаптивных стратегий, которыми пользуются профессионалы. 35+ лет практики · 1000+ публичных персон · школа PROFI-Speech.
+
+      🎤 Бесплатный голосовой чек-ап — ссылка в закреплённом посте.
+
+      Ключевые слова: страх публичного выступления, как перестать бояться выступлений, техника речи под стрессом, голос оратора, техника публичного выступления, как улучшить речь
+    </div>
+
+    <h3>Хэштеги</h3>
+    <div class="hashtags">
+      <span class="hashtag">#страхсцены</span>
+      <span class="hashtag">#публичноевыступление</span>
+      <span class="hashtag">#техникаречи</span>
+      <span class="hashtag">#страхвыступления</span>
+      <span class="hashtag">#МаринаДухвалова</span>
+      <span class="hashtag">#PROFISpeech</span>
+      <span class="hashtag">#голосоратора</span>
+      <span class="hashtag">#ораторскоеискусство</span>
+      <span class="hashtag">#стрессименеджмент</span>
+      <span class="hashtag">#карьерарост</span>
+    </div>
+
+    <h3>Рекомендация по превью</h3>
+    <div class="preview-box">
+      <strong>Фото:</strong> Марина в red-образе — сидячий кадр, расслабленная поза, но взгляд сосредоточен. Эмоция: понимание, а не тревога — «я знаю, что с этим делать».<br><br>
+      <strong>Текст на превью:</strong> крупно — «Почему голос» / «подводит в самый важный момент» — или короче: «Голос рассыпается?» / «Вот почему». Шрифт светлый на red-фоне или тёмный на ivory.<br><br>
+      <strong>Акцент:</strong> эмоциональное фото работает для рубрики «Страх сцены» сильнее, чем инфографика. Взгляд должен создавать контакт — «она понимает, о чём я». Избегать тревожного выражения лица на превью: доверие, не страх.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleReading() {
+    document.body.classList.toggle('reading-mode');
+    const btn = document.querySelector('.btn-reading');
+    btn.textContent = document.body.classList.contains('reading-mode')
+      ? '☀️ Обычный режим' : '🌙 Режим чтения';
+  }
+</script>
+</body>
+</html>
