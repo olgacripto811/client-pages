@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сценарий YouTube · Марина Духвалова · Неделя 4 · Разборы речи</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A47;
+    --red: #C61A21;
+    --yellow: #E2D16D;
+    --yellow-dark: #C8B44A;
+    --ivory: #FAF8F3;
+    --gray: #6B7280;
+    --light: #F0EDE6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ivory);
+    color: var(--navy);
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .header {
+    background: var(--navy);
+    color: var(--ivory);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--yellow) 50%, var(--red) 100%);
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4.5vw, 38px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-red { background: var(--red); border-color: var(--red); }
+  .badge-yellow { background: var(--yellow); border-color: var(--yellow); color: var(--navy); font-weight: 700; }
+
+  .toolbar {
+    background: white;
+    border-bottom: 1px solid #E5E0D8;
+    padding: 12px 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-outline { background: white; border: 1.5px solid var(--navy); color: var(--navy); }
+  .btn-reading { background: var(--yellow); color: var(--navy); }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .block {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .block-header {
+    padding: 16px 24px 12px;
+    border-bottom: 1px solid var(--light);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .block-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .block-timing {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .block-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .block-body { padding: 20px 24px; }
+
+  .script-line {
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .script-line:last-child { margin-bottom: 0; }
+
+  .direction {
+    display: inline-block;
+    background: var(--light);
+    color: #5A5A5A;
+    font-size: 12px;
+    font-style: italic;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin: 2px 0;
+  }
+
+  .highlight {
+    background: #F0F4FA;
+    border-left: 3px solid var(--navy);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .highlight-red { background: #FEF0F0; border-left-color: var(--red); }
+  .highlight-yellow { background: #FDFAEE; border-left-color: var(--yellow-dark); }
+  .highlight-navy {
+    background: var(--navy);
+    color: var(--ivory);
+    border-left: none;
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .highlight-navy strong { color: var(--yellow); }
+
+  .transition-line {
+    text-align: center;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--gray);
+    font-style: italic;
+  }
+
+  /* ERROR CARDS */
+  .error-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid #E0DBD2;
+  }
+  .error-header {
+    background: var(--navy);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .error-num {
+    background: var(--red);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .error-title-wrap { flex: 1; }
+  .error-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 3px;
+  }
+  .error-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+  .error-timing {
+    font-size: 12px;
+    color: var(--yellow);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .error-body {
+    padding: 18px 20px;
+    background: white;
+  }
+  .error-body p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: var(--navy);
+  }
+  .error-body p:last-child { margin-bottom: 0; }
+  .error-symptom {
+    background: #FEF0F0;
+    border-left: 3px solid var(--red);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #7A1010;
+    font-style: italic;
+  }
+  .error-fix {
+    background: #F0F7F0;
+    border-left: 3px solid #2E7D32;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #1B4A1D;
+  }
+  .error-direction {
+    display: block;
+    font-size: 12px;
+    font-style: italic;
+    color: #888;
+    margin: 8px 0;
+    padding: 4px 10px;
+    background: var(--light);
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* LEAD MAGNET BLOCK */
+  .leadmagnet {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A3F6A 100%);
+    border-radius: 12px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .leadmagnet::before {
+    content: '🎤';
+    position: absolute;
+    top: 20px; right: 24px;
+    font-size: 48px;
+    opacity: 0.15;
+  }
+  .leadmagnet-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 10px;
+  }
+  .leadmagnet h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .leadmagnet p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .leadmagnet p:last-child { margin-bottom: 0; }
+
+  /* EXTRA */
+  .extra-section {
+    background: var(--navy);
+    color: var(--ivory);
+    border-radius: 12px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+  }
+  .extra-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--yellow);
+    margin-bottom: 20px;
+  }
+  .extra-section h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+  .titles-list { list-style: none; counter-reset: titles; }
+  .titles-list li {
+    counter-increment: titles;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    gap: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .titles-list li:last-child { border-bottom: none; }
+  .titles-list li::before {
+    content: counter(titles);
+    background: var(--red);
+    color: white;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .description-box, .preview-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 8px;
+  }
+  .hashtags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .hashtag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+
+  /* READING MODE */
+  body.reading-mode { background: #1A1A1A; color: #F0EDE6; }
+  body.reading-mode .block { background: #2A2A2A; box-shadow: none; }
+  body.reading-mode .block-header { border-bottom-color: #3A3A3A; }
+  body.reading-mode .block-title, body.reading-mode .block-timing { color: #F0EDE6; }
+  body.reading-mode .script-line { font-size: 18px; line-height: 2; }
+  body.reading-mode .direction { background: #3A3A3A; color: #999; }
+  body.reading-mode .highlight { background: #2A3040; border-left-color: var(--yellow); }
+  body.reading-mode .highlight-red { background: #3A2020; border-left-color: var(--red); }
+  body.reading-mode .highlight-yellow { background: #2A2810; }
+  body.reading-mode .toolbar { background: #2A2A2A; border-bottom-color: #3A3A3A; }
+  body.reading-mode .btn-outline { background: transparent; border-color: #F0EDE6; color: #F0EDE6; }
+  body.reading-mode .transition-line { color: #777; }
+  body.reading-mode .error-card { border-color: #3A3A3A; }
+  body.reading-mode .error-body { background: #2A2A2A; }
+  body.reading-mode .error-body p { color: #DDD; }
+  body.reading-mode .error-symptom { background: #3A2020; color: #F0A0A0; }
+  body.reading-mode .error-fix { background: #1A2E1A; color: #90C090; }
+
+  @media print {
+    .toolbar { display: none; }
+    body { background: white; font-size: 14px; }
+    .block { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+    .error-card { break-inside: avoid; }
+    .extra-section, .leadmagnet { background: var(--navy) !important; -webkit-print-color-adjust: exact; }
+    .error-header { background: var(--navy) !important; -webkit-print-color-adjust: exact; }
+  }
+  @media (max-width: 600px) {
+    .block-header { gap: 6px; }
+    .block-timing { margin-left: 0; font-size: 18px; }
+    .error-timing { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">YouTube · Сценарий · Неделя 4</div>
+  <h1>4 ошибки публичной речи,<br>которые стоят карьеры</h1>
+  <div class="header-meta">
+    <span class="badge">Марина Духвалова</span>
+    <span class="badge">Рубрика: Разборы речи</span>
+    <span class="badge badge-red">22 июля 2026</span>
+    <span class="badge">12–15 минут</span>
+    <span class="badge">Образ: navy · пинстрайп · брошь</span>
+    <span class="badge badge-yellow">Голосовой чек-ап</span>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-reading" onclick="toggleReading()">🌙 Режим чтения</button>
+  <button class="btn btn-outline" onclick="window.print()">🖨 Распечатать</button>
+</div>
+
+<div class="container">
+
+  <!-- HOOK -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Хук</div>
+        <div class="block-title">Первые 30 секунд</div>
+      </div>
+      <div class="block-timing">0:00–0:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">стоя, navy пинстрайп с брошью, уверенная поза, прямой взгляд, небольшая пауза перед началом</span></p>
+      <p class="script-line">Ваша речь говорит о вас больше, чем слова.</p>
+      <p class="script-line"><span class="direction">пауза — дать фразе осесть</span></p>
+      <p class="script-line">Содержание может быть сильным. Аргументы — убедительными. Но если в речи есть определённые ошибки — доверие к спикеру разрушается раньше, чем он успевает донести главное. И самое неприятное: человек об этих ошибках, как правило, не знает.</p>
+      <div class="highlight highlight-red">
+        Сегодня я разберу четыре таких ошибки. Без мягкости — потому что мягкость здесь не помогает. Зато помогает понимание: что именно происходит, почему это работает против вас — и как это исправить.
+      </div>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ вступление</div>
+
+  <!-- INTRO -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Вступление</div>
+        <div class="block-title">Почему сильное содержание не спасает слабую речь</div>
+      </div>
+      <div class="block-timing">0:30–2:00</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Меня зовут Марина Духвалова. 35 лет я работаю с речью — логопед, психолог, специалист по технике публичного выступления. Работала с руководителями, политиками, людьми, для которых публичная речь — рабочий инструмент, а не редкое событие.</p>
+      <p class="script-line">И вот что я знаю точно: слушатели не разделяют «что говорят» и «как говорят». Для них это одно целое. Если речь вызывает дискомфорт — содержание считывается хуже, доверие падает, решения принимаются против вас — даже когда вы правы.</p>
+      <p class="script-line">Это не несправедливо. Это физиология восприятия.</p>
+      <div class="highlight">
+        Четыре ошибки, которые я разберу сегодня — не редкие случаи. Я встречаю их у большинства людей, которые приходят ко мне на диагностику. Даже у тех, кто выступает регулярно и считает, что «в целом всё нормально».
+      </div>
+      <p class="script-line">Досмотрите до конца — в финале я скажу, как узнать, есть ли эти ошибки в вашей речи.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ четыре ошибки</div>
+
+  <!-- ERRORS -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Блок 1–4</div>
+        <div class="block-title">Разбор ошибок</div>
+      </div>
+      <div class="block-timing">2:00–11:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">можно сесть — авторитетная, спокойная поза; разбирать ошибки методично, без спешки</span></p>
+
+      <!-- ERROR 1 -->
+      <div class="error-card">
+        <div class="error-header">
+          <div class="error-num">1</div>
+          <div class="error-title-wrap">
+            <div class="error-label">Ошибка первая</div>
+            <div class="error-name">Голос без опоры — речь «в голове»</div>
+          </div>
+          <div class="error-timing">2:00–4:00</div>
+        </div>
+        <div class="error-body">
+          <p>Первая ошибка — и самая частая. Человек говорит, но голос звучит как будто зажатым, неполным, «уходящим внутрь». Без объёма. Без посыла.</p>
+          <div class="error-symptom">Симптомы: голос быстро садится, к концу выступления почти пропадает. Слушатели в дальних рядах не слышат. Ощущение, что спикер «не уверен в том, что говорит» — хотя он уверен.</div>
+          <p>Что происходит на самом деле: речевое дыхание поверхностное. Голос опирается на гортань, а не на диафрагму. Резонаторы — грудной, головной — не задействованы. Голос тратит энергию на сам процесс звукоизвлечения, а не на посыл к аудитории.</p>
+          <p>Это не вопрос уверенности. Это вопрос техники дыхания и голосоведения. <span class="direction">пауза</span> Человек может быть абсолютно уверен в содержании — и при этом звучать неубедительно, потому что тело не умеет правильно подавать голос.</p>
+          <div class="error-fix">Что с этим делать: диафрагмальное дыхание + активация грудного резонатора. Упражнение «м-м-м» с рукой на груди — то, что я показывала в прошлом видео. Не разовое, а как ежедневная привычка перед любым выступлением.</div>
+          <p><span class="error-direction">на экране можно показать: сравнение спектрограмм — голос без опоры vs с опорой на дыхание</span></p>
+        </div>
+      </div>
+
+      <!-- ERROR 2 -->
+      <div class="error-card">
+        <div class="error-header">
+          <div class="error-num">2</div>
+          <div class="error-title-wrap">
+            <div class="error-label">Ошибка вторая</div>
+            <div class="error-name">Монотонность — речь без интонационного рисунка</div>
+          </div>
+          <div class="error-timing">4:00–6:00</div>
+        </div>
+        <div class="error-body">
+          <p>Монотонная речь — это не когда человек говорит тихо или скучно. Это когда интонационный рисунок исчезает: все фразы звучат примерно одинаково по высоте, темпу, акцентам.</p>
+          <div class="error-symptom">Симптомы: слушатели «отключаются» через 3–5 минут — не потому что неинтересно, а потому что мозг перестаёт улавливать сигналы важности. Всё звучит одинаково значимым — значит, ничто не значимо.</div>
+          <p>Интонация — это навигация для слушателя. Повышение тона сигнализирует: «обратите внимание». Пауза говорит: «это важно, подождите». Замедление акцентирует ключевую мысль. Когда этих сигналов нет — слушатель теряет ориентацию в тексте.</p>
+          <p>Часто монотонность возникает именно под стрессом — мозг «выравнивает» речь, экономя ресурс. Человек думает, что говорит нормально. Запись показывает другое.</p>
+          <div class="error-fix">Что с этим делать: работать с паузами осознанно. Выделить в тексте три-четыре ключевые мысли — и поставить после каждой намеренную паузу в 2–3 секунды. Это уже разрушает монотонность. Дальше — работа с темпом и высотой тона на конкретных фрагментах.</div>
+          <p><span class="error-direction">можно продемонстрировать: произнести одну фразу монотонно — и с интонационным рисунком; пусть зрители услышат разницу</span></p>
+        </div>
+      </div>
+
+      <!-- ERROR 3 -->
+      <div class="error-card">
+        <div class="error-header">
+          <div class="error-num">3</div>
+          <div class="error-title-wrap">
+            <div class="error-label">Ошибка третья</div>
+            <div class="error-name">Слова-паразиты и заполнители пауз</div>
+          </div>
+          <div class="error-timing">6:00–8:30</div>
+        </div>
+        <div class="error-body">
+          <p>«Э-э-э», «ну», «как бы», «в общем-то», «то есть» — это не оговорки. Это симптом.</p>
+          <div class="error-symptom">Симптомы: слушатель начинает считать «ну» вместо того, чтобы слушать содержание. Доверие падает — не сознательно, а как фоновый сигнал: «этот человек не уверен в том, что говорит».</div>
+          <p>Что происходит на самом деле: заполнители паузы — это защитная реакция. Мозг боится тишины в речи и заполняет её автоматически, пока подбирает следующее слово. Это тренируемый рефлекс — и он поддаётся коррекции.</p>
+          <p>Важно понимать: проблема не в самих словах. Проблема в их количестве и в том, что они заменяют паузу. Пауза — это профессионально. Заполнитель паузы — это сигнал о потере контроля над речью.</p>
+          <p><span class="direction">пауза — намеренная, несколько секунд</span> Вот так выглядит пауза. Без «э-э-э». Без «ну». Просто тишина — и она не пугает слушателя. Она заставляет его ждать.</p>
+          <div class="error-fix">Что с этим делать: первый шаг — услышать себя. Записать одно своё выступление или деловой разговор и посчитать заполнители. Когда человек слышит себя со стороны — мотивация к работе появляется сама. Дальше — тренировка осознанной паузы вместо рефлекторного «э-э».</div>
+        </div>
+      </div>
+
+      <!-- ERROR 4 -->
+      <div class="error-card">
+        <div class="error-header">
+          <div class="error-num">4</div>
+          <div class="error-title-wrap">
+            <div class="error-label">Ошибка четвёртая</div>
+            <div class="error-name">Темп без управления — речь «на одной скорости»</div>
+          </div>
+          <div class="error-timing">8:30–11:00</div>
+        </div>
+        <div class="error-body">
+          <p>Есть два варианта этой ошибки. Первый — слишком быстрый темп, когда слова сливаются и слушатель не успевает за мыслью. Второй — темп равномерный, без ускорений и замедлений, что возвращает нас к монотонности.</p>
+          <div class="error-symptom">Симптомы быстрого темпа: артикуляция смазывается, согласные «проглатываются», слушатель устаёт и переспрашивает — или не переспрашивает, но теряет нить. Симптомы равномерного темпа: всё звучит одинаково важным, ключевые мысли не выделяются.</div>
+          <p>Темп — это инструмент. Быстрый темп уместен на фоновой информации, которую можно пробежать. Медленный — на ключевых мыслях, которые должны запомниться. Когда спикер владеет темпом — он буквально управляет вниманием аудитории.</p>
+          <p>«Говорите медленнее» — я уже говорила об этом — плохой совет именно потому, что он общий. Нужно не замедление как таковое, а умение варьировать темп осознанно: ускориться там, где можно, и намеренно замедлиться там, где важно.</p>
+          <div class="error-fix">Что с этим делать: взять любой текст и отметить маркером ключевые мысли. Читать вслух — с осознанным замедлением на маркированных фрагментах. Постепенно это становится навыком, который переходит в живую речь.</div>
+          <p><span class="error-direction">демонстрация: произнести один абзац с одинаковым темпом — и с управляемым. Контраст должен быть очевидным</span></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="transition-line">↓ итог разбора</div>
+
+  <!-- BLOCK SUMMARY -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Итог</div>
+        <div class="block-title">Что объединяет все четыре ошибки</div>
+      </div>
+      <div class="block-timing">11:00–12:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line">Заметили, что общего у всех четырёх ошибок? <span class="direction">пауза</span></p>
+      <p class="script-line">Ни одна из них не связана с содержанием. Ни одна не говорит о том, что человек некомпетентен или неумён. Все четыре — это технические параметры речи, которые существуют независимо от того, что вы говорите.</p>
+      <p class="script-line">И все четыре поддаются коррекции. Не за счёт «поверьте в себя» — а за счёт конкретной работы с конкретными механизмами.</p>
+      <div class="highlight highlight-navy">
+        За 35 лет я не видела ни одного человека, речь которого нельзя было бы улучшить. <strong>Ни одного.</strong> Разница только в том, знает ли человек, что именно корректировать. Когда есть точная картина — работа идёт прицельно. Когда нет — работают вслепую, и прогресс медленный.
+      </div>
+      <p class="script-line">Именно поэтому я всегда начинаю с диагностики. Сначала — объективная картина. Потом — план.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ голосовой чек-ап</div>
+
+  <!-- LEAD MAGNET -->
+  <div class="leadmagnet">
+    <div class="leadmagnet-label">Специально для подписчиков</div>
+    <h3>Голосовой чек-ап — бесплатно</h3>
+    <p>Профессиональный разбор вашей речи — то, что мои клиенты получают на первой консультации. Для подписчиков канала — бесплатно.</p>
+    <p>Вы присылаете аудиозапись своей речи. Я разбираю конкретно вашу ситуацию: что в вашей речи работает, какие из этих четырёх ошибок — или других — присутствуют, и что с этим делать. Без общих фраз.</p>
+    <p>Ссылка — в описании под видео и в закреплённом посте. <span style="color:var(--yellow);font-weight:600;">Это не навсегда</span> — количество разборов в месяц ограничено временем.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">CTA</div>
+        <div class="block-title">Призыв к действию</div>
+      </div>
+      <div class="block-timing">12:30–13:30</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">взгляд прямо в камеру, замедлиться, говорить спокойно и с весом</span></p>
+      <p class="script-line">Прежде чем идти работать над речью — узнайте, что именно работать. Это разница между прицельной тренировкой и работой вслепую.</p>
+      <p class="script-line">Голосовой чек-ап — ссылка в описании. Пришлите запись, и я разберу вашу речь лично. <span class="direction">пауза</span></p>
+      <p class="script-line">Если это видео было полезным — поделитесь им с кем-то, кому публичная речь важна. Это лучшее, что вы можете сделать для канала.</p>
+      <p class="script-line">Подпишитесь, если ещё не подписаны. В этом месяце мы разобрали аппаратную диагностику, страх сцены, разминку перед выступлением и ошибки речи. В следующем — продолжим. Тем будет не меньше.</p>
+    </div>
+  </div>
+
+  <div class="transition-line">↓ закрытие</div>
+
+  <!-- OUTRO -->
+  <div class="block">
+    <div class="block-header">
+      <div>
+        <div class="block-tag">Закрытие</div>
+        <div class="block-title">Итог месяца и вопрос в комментарии</div>
+      </div>
+      <div class="block-timing">13:30–14:00</div>
+    </div>
+    <div class="block-body">
+      <p class="script-line"><span class="direction">чуть теплее, ближе к разговорному тону</span></p>
+      <p class="script-line">За этот месяц мы прошли путь от того, как речь выглядит на спектрограмме — до конкретных ошибок, которые можно исправить уже сегодня. Это был важный разговор, и я рада, что вы его прошли до конца.</p>
+      <p class="script-line">И вопрос к вам: какая из четырёх ошибок, которые я разобрала сегодня, откликнулась больше всего? Напишите в комментарии. Это поможет мне понять, что разбирать дальше — и глубже.</p>
+      <p class="script-line"><span class="direction">небольшая пауза, спокойный кивок</span></p>
+    </div>
+  </div>
+
+  <!-- EXTRA -->
+  <div class="extra-section">
+    <h2>📋 Дополнительные материалы</h2>
+
+    <h3>5 вариантов заголовка</h3>
+    <ul class="titles-list">
+      <li>4 ошибки публичной речи, которые стоят карьеры — разбор с примерами</li>
+      <li>Ваша речь говорит о вас больше, чем слова: 4 ошибки, которые разрушают доверие</li>
+      <li>Почему сильное содержание не спасает слабую речь — разбираю 4 конкретные ошибки</li>
+      <li>Голос без опоры, монотонность, слова-паразиты, темп: как эти ошибки мешают карьере</li>
+      <li>Техника публичного выступления: 4 ошибки речи, которые я вижу у большинства клиентов</li>
+    </ul>
+
+    <h3>Описание для видео</h3>
+    <div class="description-box">
+      Содержание может быть сильным — но если в речи есть эти четыре ошибки, доверие к спикеру разрушается раньше, чем он успевает донести главное. Разбираю: голос без опоры, монотонность, слова-паразиты и неуправляемый темп. Для каждой — механика и конкретный способ коррекции. 35+ лет практики · 1000+ публичных персон · школа PROFI-Speech.
+
+      🎤 Бесплатный голосовой чек-ап — ссылка в закреплённом посте.
+
+      Ключевые слова: ошибки публичной речи, техника публичного выступления, как говорить убедительно, слова-паразиты, постановка голоса, техника речи, голос оратора
+    </div>
+
+    <h3>Хэштеги</h3>
+    <div class="hashtags">
+      <span class="hashtag">#ошибкиречи</span>
+      <span class="hashtag">#техникаречи</span>
+      <span class="hashtag">#публичноевыступление</span>
+      <span class="hashtag">#словапаразиты</span>
+      <span class="hashtag">#МаринаДухвалова</span>
+      <span class="hashtag">#PROFISpeech</span>
+      <span class="hashtag">#голосоратора</span>
+      <span class="hashtag">#ораторскоеискусство</span>
+      <span class="hashtag">#карьерарост</span>
+      <span class="hashtag">#постановкаголоса</span>
+    </div>
+
+    <h3>Рекомендация по превью</h3>
+    <div class="preview-box">
+      <strong>Фото:</strong> Марина в navy пинстрайп-костюме с брошью — взгляд прямо в камеру, руки сложены или одна рука указывает. Выражение лица: спокойная уверенность, не строгость. «Я знаю, о чём говорю».<br><br>
+      <strong>Текст на превью:</strong> крупно — «4 ошибки речи» / «которые стоят карьеры» — или: «Ваша речь» / «говорит о вас больше, чем слова». Светлый текст на navy-фоне.<br><br>
+      <strong>Акцент:</strong> цифра «4» крупно — хорошо работает в ленте, создаёт ощущение конкретики и списка. Navy-образ возвращает к серьёзному, авторитетному регистру после жёлтого видео прошлой недели — это правильная смена тональности внутри месяца.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleReading() {
+    document.body.classList.toggle('reading-mode');
+    const btn = document.querySelector('.btn-reading');
+    btn.textContent = document.body.classList.contains('reading-mode')
+      ? '☀️ Обычный режим' : '🌙 Режим чтения';
+  }
+</script>
+</body>
+</html>
