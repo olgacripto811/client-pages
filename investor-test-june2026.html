@@ -288,6 +288,45 @@
   }
   footer span { color: var(--accent); }
 
+
+  /* ── REPORTS ──────────────────────────────────── */
+  .reports-list { display: flex; flex-direction: column; gap: 2px; }
+  .report-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: grid;
+    grid-template-columns: 110px 1fr 130px 80px 90px;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color .2s;
+  }
+  .report-row.active { border-color: rgba(61,255,160,.3); }
+  .report-row:not(.empty):hover { border-color: rgba(61,255,160,.5); }
+  .report-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .report-name { font-size: 13px; font-weight: 500; }
+  .report-pnl  { font-family: var(--mono); font-size: 13px; font-weight: 600; text-align: right; }
+  .report-roi  { font-family: var(--mono); font-size: 13px; text-align: right; }
+  .report-pnl.pos, .report-roi.pos { color: var(--accent); }
+  .report-pnl.neg, .report-roi.neg { color: var(--red); }
+  .report-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(61,255,160,.1);
+    color: var(--accent);
+    border: 1px solid rgba(61,255,160,.2);
+    text-align: center;
+    white-space: nowrap;
+  }
+  @media (max-width: 600px) {
+    .report-row { grid-template-columns: 1fr auto; }
+    .report-date, .report-roi, .report-badge { display: none; }
+  }
+
   /* ── RESPONSIVE ───────────────────────────────── */
   @media (max-width: 600px) {
     .kpi-row { grid-template-columns: 1fr; }
@@ -488,6 +527,28 @@
         <div class="link-title">Автоматизация</div>
         <div class="link-desc">Как работает система ботов</div>
       </a>
+    </div>
+  </div>
+
+
+  <!-- REPORTS -->
+  <div class="section">
+    <div class="section-label">06 · Последние отчёты</div>
+    <div class="reports-list">
+      <a class="report-row active" href="#">
+        <div class="report-date">28.06.2026</div>
+        <div class="report-name">Торговый отчёт · Июнь 2026</div>
+        <div class="report-pnl pos">+84.66 USDT</div>
+        <div class="report-roi pos">+5.64%</div>
+        <div class="report-badge">Текущий</div>
+      </a>
+      <div class="report-row empty">
+        <div class="report-date" style="color:#2a2d3a">—</div>
+        <div class="report-name" style="color:#2a2d3a">Следующие отчёты появятся здесь</div>
+        <div class="report-pnl"></div>
+        <div class="report-roi"></div>
+        <div class="report-badge" style="opacity:0">—</div>
+      </div>
     </div>
   </div>
 
