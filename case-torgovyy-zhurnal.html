@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ольга — n8n automation specialist | Кейс: Торговый журнал</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1115;
+    --surface: #171B22;
+    --surface-2: #1E232C;
+    --line: #2A3038;
+    --text: #E9E7E1;
+    --muted: #8A93A3;
+    --amber: #E8A33D;
+    --cyan: #4FD1C5;
+    --red: #E2665A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{ background:var(--amber); color:#0F1115; }
+
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  .wrap{ max-width:960px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,17,21,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ font-family:'Space Grotesk'; font-weight:600; font-size:16px; color:var(--text); text-decoration:none; display:flex; align-items:center; gap:8px;}
+  .brand-dot{ width:8px; height:8px; border-radius:50%; background:var(--amber); box-shadow:0 0 12px var(--amber); }
+  .navlinks{ display:flex; gap:28px; font-size:13px; }
+  .navlinks a{ color:var(--muted); text-decoration:none; font-family:'IBM Plex Mono'; }
+  .navlinks a:hover{ color:var(--amber); }
+  @media (max-width:640px){ .navlinks{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:100px 0 70px; position:relative; }
+  .eyebrow{
+    font-family:'IBM Plex Mono'; font-size:12px; color:var(--amber);
+    text-transform:uppercase; letter-spacing:0.12em; margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{ content:''; width:24px; height:1px; background:var(--amber); }
+  .hero h1{
+    font-size:clamp(32px,5.5vw,52px); font-weight:700; line-height:1.12;
+    max-width:760px; color:#fff;
+  }
+  .hero h1 span{ color:var(--amber); }
+  .hero p.lead{ margin-top:24px; font-size:17px; color:var(--muted); max-width:560px; }
+
+  /* pipeline animation */
+  .pipeline{
+    margin-top:56px; display:flex; align-items:center; gap:0;
+    overflow-x:auto; padding-bottom:12px;
+  }
+  .node{
+    flex:0 0 auto; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; padding:14px 18px; min-width:140px;
+    font-family:'IBM Plex Mono'; font-size:12px; color:var(--text);
+    position:relative;
+  }
+  .node .tag{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; display:block;}
+  .node.active{ border-color:var(--amber); box-shadow:0 0 0 1px var(--amber) inset; }
+  .node.active .tag{ color:var(--amber); }
+  .connector{
+    flex:0 0 44px; height:2px; background:linear-gradient(90deg, var(--line), var(--cyan), var(--line));
+    background-size:200% 100%; position:relative;
+    animation:flow 2.4s linear infinite;
+  }
+  .connector::after{
+    content:'▸'; position:absolute; right:-2px; top:50%; transform:translateY(-50%);
+    color:var(--cyan); font-size:10px;
+  }
+  @keyframes flow{ 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+  @media (prefers-reduced-motion: reduce){ .connector{ animation:none; } }
+
+  /* ---------- SECTION shared ---------- */
+  section{ padding:70px 0; border-top:1px solid var(--line); }
+  .section-head{ margin-bottom:40px; }
+  .section-num{ font-family:'IBM Plex Mono'; font-size:12px; color:var(--muted); }
+  .section-head h2{ font-size:clamp(24px,3.5vw,34px); color:#fff; margin-top:8px; }
+  .section-head p{ color:var(--muted); margin-top:12px; max-width:600px; font-size:15px; }
+
+  /* problem grid */
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:24px; }
+  .card h3{ font-size:15px; color:var(--red); margin-bottom:10px; font-family:'IBM Plex Mono'; }
+  .card.good h3{ color:var(--cyan); }
+  .card ul{ list-style:none; }
+  .card li{ font-size:14px; color:var(--muted); padding:6px 0; padding-left:18px; position:relative; }
+  .card li::before{ content:'—'; position:absolute; left:0; color:var(--line); }
+
+  /* scenario cards (workflow style) */
+  .scenario{
+    display:grid; grid-template-columns:64px 1fr; gap:20px;
+    padding:24px 0; border-top:1px solid var(--line);
+  }
+  .scenario:first-of-type{ border-top:none; }
+  .scenario .idx{ font-family:'IBM Plex Mono'; color:var(--amber); font-size:13px; padding-top:2px; }
+  .scenario h3{ font-size:18px; color:#fff; margin-bottom:8px; }
+  .scenario .meta{ display:flex; gap:18px; flex-wrap:wrap; margin-top:12px; }
+  .meta-item{ font-size:12.5px; }
+  .meta-item .k{ font-family:'IBM Plex Mono'; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; font-size:10.5px; display:block; margin-bottom:3px;}
+  .meta-item .v{ color:var(--text); }
+
+  /* terminal log */
+  .terminal{
+    background:#0A0C10; border:1px solid var(--line); border-radius:10px;
+    padding:20px 22px; font-family:'IBM Plex Mono'; font-size:13px;
+    overflow-x:auto;
+  }
+  .terminal .line{ padding:5px 0; color:var(--muted); white-space:pre-wrap;}
+  .terminal .line .status{ color:var(--red); }
+  .terminal .line .status.fix{ color:var(--cyan); }
+  .terminal .line .path{ color:var(--amber); }
+
+  /* stack badges */
+  .badges{ display:flex; flex-wrap:wrap; gap:10px; }
+  .badge{
+    font-family:'IBM Plex Mono'; font-size:12px; color:var(--text);
+    border:1px solid var(--line); background:var(--surface);
+    padding:7px 13px; border-radius:20px;
+  }
+
+  /* results */
+  .results{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:720px){ .results{ grid-template-columns:1fr; } }
+  .result-card{ padding:20px 0; }
+  .result-card .before{ font-family:'IBM Plex Mono'; font-size:12px; color:var(--red); text-decoration:line-through; opacity:0.7; }
+  .result-card .arrow{ color:var(--muted); margin:6px 0; font-size:12px; }
+  .result-card .after{ font-family:'IBM Plex Mono'; font-size:14px; color:var(--cyan); }
+  .result-card .label{ margin-top:10px; font-size:13px; color:var(--muted); }
+
+  /* employer value */
+  .value-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--line); border-radius:12px; overflow:hidden; }
+  @media (max-width:720px){ .value-grid{ grid-template-columns:1fr; } }
+  .value-cell{ background:var(--surface); padding:26px; }
+  .value-cell .q{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--amber); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px; }
+  .value-cell p{ font-size:14.5px; color:var(--text); }
+
+  footer{ padding:60px 0 80px; text-align:center; }
+  footer .brand2{ font-family:'Space Grotesk'; font-weight:600; font-size:15px; color:#fff; }
+  footer p{ color:var(--muted); font-size:13px; margin-top:8px; }
+  footer .tags{ margin-top:20px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#" class="brand"><span class="brand-dot"></span>Фея Автоматизации</a>
+    <div class="navlinks">
+      <a href="#problem">Задача</a>
+      <a href="#scenarios">Сценарии</a>
+      <a href="#errors">Ошибки</a>
+      <a href="#value">Ценность</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">кейс для портфолио · n8n automation</div>
+  <h1>Бот торгует. <span>Система решает</span>, что критично, а что подождёт.</h1>
+  <p class="lead">Автоматический торговый бот на Bybit генерирует поток алертов и обращений. Я построила систему, которая сама отделяет срочное от рутинного, хранит данные централизованно и отвечает клиентам без участия человека.</p>
+
+  <div class="pipeline">
+    <div class="node active"><span class="tag">Trigger</span>Webhook / Form</div>
+    <div class="connector"></div>
+    <div class="node"><span class="tag">Model</span>Claude Haiku 4.5</div>
+    <div class="connector"></div>
+    <div class="node active"><span class="tag">Route</span>IF: priority</div>
+    <div class="connector"></div>
+    <div class="node"><span class="tag">Action</span>Gmail / NocoDB</div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">01 / Контекст</span>
+      <h2>Ручная обработка не масштабируется</h2>
+      <p>Bybit-бот торгует по трём парам (SOLUSDT, XRPUSDT, SUIUSDT), стратегия Martingale Long/Short. Все уведомления и обращения клиентов разбирались вручную — без фильтра приоритета и без единого хранилища данных.</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>// до автоматизации</h3>
+        <ul>
+          <li>Алерты бота (стоп-лосс, ошибка API) идут единым потоком в Telegram</li>
+          <li>Критичность оценивается на глаз, вручную</li>
+          <li>Обращения клиентов — без шаблона и без истории</li>
+          <li>Данные о сделках нигде не консолидированы</li>
+        </ul>
+      </div>
+      <div class="card good">
+        <h3>// цель</h3>
+        <ul>
+          <li>Алерты классифицируются по приоритету автоматически</li>
+          <li>Критичные события маршрутизируются мгновенно</li>
+          <li>Клиенты получают персональный ответ без задержки</li>
+          <li>Все сделки — в едином API-доступном хранилище</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scenarios">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">02 / Архитектура</span>
+      <h2>Четыре сценария, один процесс</h2>
+      <p>Каждый сценарий — рабочий n8n-воркфлоу, протестированный на реальных данных.</p>
+    </div>
+
+    <div class="scenario">
+      <div class="idx">01</div>
+      <div>
+        <h3>Приём заявок и первичное хранение</h3>
+        <p style="color:var(--muted); font-size:14px;">Form Trigger нормализует данные и пишет в NocoDB через Header Auth, параллельно уходит уведомление в Telegram.</p>
+        <div class="meta">
+          <div class="meta-item"><span class="k">Trigger</span><span class="v">Form Trigger</span></div>
+          <div class="meta-item"><span class="k">Storage</span><span class="v">NocoDB (REST API)</span></div>
+          <div class="meta-item"><span class="k">Результат</span><span class="v">Заявка не теряется</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="idx">02</div>
+      <div>
+        <h3>Работа с данными сделок через API</h3>
+        <p style="color:var(--muted); font-size:14px;">GET получает список сделок, POST добавляет новую запись — пара, стратегия, плечо, инвестиция, PnL, ROI.</p>
+        <div class="meta">
+          <div class="meta-item"><span class="k">Methods</span><span class="v">GET / POST</span></div>
+          <div class="meta-item"><span class="k">Auth</span><span class="v">xc-token Header Auth</span></div>
+          <div class="meta-item"><span class="k">Результат</span><span class="v">Единая таблица для аналитики</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="idx">03</div>
+      <div>
+        <h3>ИИ-классификация алертов бота</h3>
+        <p style="color:var(--muted); font-size:14px;">Текст алерта уходит в Claude Haiku 4.5, модель возвращает структурированный JSON (priority, event_type, action), IF-нода маршрутизирует critical/high в «Срочно».</p>
+        <div class="meta">
+          <div class="meta-item"><span class="k">Model</span><span class="v">OpenRouter · Claude Haiku 4.5</span></div>
+          <div class="meta-item"><span class="k">Output</span><span class="v">Строгий JSON</span></div>
+          <div class="meta-item"><span class="k">Результат</span><span class="v">Критичное — сразу, рутина — в дайджест</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="idx">04</div>
+      <div>
+        <h3>Webhook → ИИ → персональный email</h3>
+        <p style="color:var(--muted); font-size:14px;">Заявка клиента → промпт с жёсткими ограничениями (без выдуманных цифр доходности) → Gmail OAuth2 отправляет письмо.</p>
+        <div class="meta">
+          <div class="meta-item"><span class="k">Trigger</span><span class="v">Webhook (POST)</span></div>
+          <div class="meta-item"><span class="k">Delivery</span><span class="v">Gmail OAuth2</span></div>
+          <div class="meta-item"><span class="k">Результат</span><span class="v">Ответ без участия оператора</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="errors">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">03 / Надёжность</span>
+      <h2>Ошибки — это часть процесса, не то, что прячут</h2>
+      <p>Реальные проблемы, найденные и устранённые в ходе разработки.</p>
+    </div>
+    <div class="terminal">
+<div class="line"><span class="status">✗</span> JSON.parse() → SyntaxError: model wraps response in ```json fences
+<span class="status fix">✓ fix</span> strip markdown wrapper before parse</div>
+<div class="line"><span class="status">✗</span> HTTP Request Body → bad control character in JSON at position N
+<span class="status fix">✓ fix</span> switch to expression-object body instead of text template</div>
+<div class="line"><span class="status">✗</span> ECONNREFUSED <span class="path">n8n → nocodb</span>: different Docker networks
+<span class="status fix">✓ fix</span> docker network connect n8n_default nocodb</div>
+<div class="line"><span class="status">✗</span> nginx serving static defaults instead of proxying to n8n
+<span class="status fix">✓ fix</span> removed conflicting sites-enabled/default</div>
+<div class="line"><span class="status">✗</span> API key exposed in plaintext chat
+<span class="status fix">✓ fix</span> key rotation recommended + docker inspect output sanitized before sharing</div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">04 / Стек</span>
+      <h2>Инструменты</h2>
+    </div>
+    <div class="badges">
+      <span class="badge">n8n (self-hosted)</span>
+      <span class="badge">Docker</span>
+      <span class="badge">NocoDB</span>
+      <span class="badge">OpenRouter / Claude Haiku 4.5</span>
+      <span class="badge">Gmail OAuth2</span>
+      <span class="badge">Telegram Bot API</span>
+      <span class="badge">nginx + Let's Encrypt</span>
+      <span class="badge">nip.io</span>
+      <span class="badge">VPS / Ubuntu 24.04</span>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">05 / Результат</span>
+      <h2>До → После</h2>
+      <p style="font-style:italic;">Личный проект — точные бизнес-метрики отсутствуют, оценка дана по изменению процесса.</p>
+    </div>
+    <div class="results">
+      <div class="result-card">
+        <div class="before">разбор алертов вручную</div>
+        <div class="arrow">↓</div>
+        <div class="after">автоматическая маршрутизация по priority</div>
+        <div class="label">реакция на критичное — сразу при получении</div>
+      </div>
+      <div class="result-card">
+        <div class="before">ответ клиенту "по возможности"</div>
+        <div class="arrow">↓</div>
+        <div class="after">персональное письмо сразу после заявки</div>
+        <div class="label">без ручного составления текста</div>
+      </div>
+      <div class="result-card">
+        <div class="before">данные сделок нигде не хранятся</div>
+        <div class="arrow">↓</div>
+        <div class="after">единый API-слой (NocoDB)</div>
+        <div class="label">готово к дальнейшей аналитике</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="value">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-num">06 / Для работодателя</span>
+      <h2>Почему этот кейс полезен бизнесу</h2>
+    </div>
+    <div class="value-grid">
+      <div class="value-cell">
+        <div class="q">Операционная задача</div>
+        <p>Фильтрация и маршрутизация входящего потока по приоритету — вместо ручного прочтения каждого сообщения.</p>
+      </div>
+      <div class="value-cell">
+        <div class="q">Ценность для бизнеса</div>
+        <p>Секунды вместо «когда заметят» на критичных событиях; рутинные ответы — без участия сотрудников.</p>
+      </div>
+      <div class="value-cell">
+        <div class="q">Где ещё применимо</div>
+        <p>Служба поддержки, e-commerce (возвраты/жалобы), логистика — любой поток, где нужно отделить срочное от рутинного.</p>
+      </div>
+      <div class="value-cell">
+        <div class="q">Инфраструктурная база</div>
+        <p>Готовый HTTPS + OAuth2 слой — можно подключать любые сервисы, требующие безопасной авторизации, без повторной настройки.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand2">Ольга — Фея Автоматизации</div>
+    <p>n8n · интеграции · ИИ-классификация · процессная автоматизация</p>
+    <div class="tags">
+      <span class="badge">Zerocoder n8n course</span>
+      <span class="badge">Портфолио-кейс</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
