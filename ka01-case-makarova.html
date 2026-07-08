@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квиз → amoCRM + Telegram: кейс автоматизации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF8F5;
+    --ink:#2B2733;
+    --ink-soft:#5C5568;
+    --lavender:#B794F4;
+    --lavender-deep:#8B5FE0;
+    --mint:#5FBF8F;
+    --peach:#F5B860;
+    --line:#E5DFF0;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:64px 24px 96px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--lavender-deep);
+    margin-bottom:18px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(28px,4.8vw,42px);
+    line-height:1.15;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:56ch;
+    margin:0 0 40px;
+  }
+  .metrics{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:56px;
+  }
+  .metric{
+    background:var(--card);
+    padding:22px 16px;
+    text-align:center;
+  }
+  .metric .num{
+    font-family:'Fraunces',serif;
+    font-size:26px;
+    font-weight:600;
+    color:var(--lavender-deep);
+    display:block;
+  }
+  .metric .lbl{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:4px;
+  }
+  section{margin-bottom:44px;}
+  .step-label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .step-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--lavender);
+    flex-shrink:0;
+  }
+  .step-dot.mint{background:var(--mint);}
+  .step-dot.peach{background:var(--peach);}
+  .step-title{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-weight:600;
+  }
+  p{margin:0 0 12px;font-size:16px;color:#3A3542;}
+  figure{
+    margin:22px 0 0;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--card);
+  }
+  figcaption{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    padding:10px 16px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;
+  }
+  hr.divider{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:56px 0 44px;
+  }
+  .note{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    background:#F3EEFC;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-top:24px;
+  }
+  footer{
+    margin-top:64px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-size:13px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  @media(max-width:520px){
+    .metrics{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Кейс автоматизации · KA01</div>
+  <h1>Квиз на Тильде → amoCRM + Telegram: ответ клиенту за 2 минуты вместо 10 часов</h1>
+  <p class="subtitle">Как ручной приём заявок эксперта превратился в связку из трёх нод — без потерь и без ночных звонков по дублям.</p>
+
+  <div class="metrics">
+    <div class="metric"><span class="num">2 мин</span><span class="lbl">время ответа (было ~10 часов)</span></div>
+    <div class="metric"><span class="num">0%</span><span class="lbl">потерянных заявок (было ~20%)</span></div>
+    <div class="metric"><span class="num">5 ч/нед</span><span class="lbl">освобождено времени эксперта</span></div>
+  </div>
+
+  <section>
+    <div class="step-label"><span class="step-dot"></span><span class="step-title">Проблема</span></div>
+    <p>Эксперт принимал заявки с квиза на Тильде вручную: раз в день открывал таблицу с ответами, вручную набирал номера и переносил данные в свою Google-таблицу. К вечеру часть заявок уже «остывала» — клиенты не дожидались ответа и уходили к тем, кто отвечает быстрее. По оценке эксперта, из ~30 заявок в неделю терялось до 20% — либо забывали, либо не успевали связаться вовремя. Отдельная головная боль — дубли: если клиент из тревожности нажимал «отправить» дважды, это создавало путаницу и повторные звонки. Ручной перенос данных занимал у эксперта около часа каждый день.</p>
+  </section>
+
+  <section>
+    <div class="step-label"><span class="step-dot mint"></span><span class="step-title">Решение</span></div>
+    <p>Собрали связку на n8n: форма на Тильде отправляет заявку через вебхук → сценарий проверяет номер телефона на повтор за последние 24 часа и отбрасывает дубли → создаёт или обновляет сделку в amoCRM с полями из формы (имя, запрос, желаемый бюджет) → параллельно уходит уведомление в Telegram эксперту с карточкой заявки и меткой «горячая», если в ответах указан конкретный срок. Никакого нового софта эксперту ставить не пришлось: всё управление — из привычного Telegram.</p>
+    <figure>
+      <svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <rect width="640" height="160" fill="#FFFFFF"/>
+        <g font-family="Inter, sans-serif" font-size="12" fill="#2B2733">
+          <rect x="20" y="55" width="120" height="50" rx="10" fill="#F3EEFC" stroke="#B794F4"/>
+          <text x="80" y="76" text-anchor="middle" font-weight="600">Webhook</text>
+          <text x="80" y="92" text-anchor="middle" fill="#5C5568" font-size="10">форма Тильды</text>
+
+          <path d="M140 80 L182 80" stroke="#B794F4" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <rect x="184" y="55" width="120" height="50" rx="10" fill="#EAF6EF" stroke="#5FBF8F"/>
+          <text x="244" y="76" text-anchor="middle" font-weight="600">Фильтр</text>
+          <text x="244" y="92" text-anchor="middle" fill="#5C5568" font-size="10">проверка дублей</text>
+
+          <path d="M304 80 L346 80" stroke="#5FBF8F" stroke-width="2" marker-end="url(#arrow)"/>
+
+          <rect x="348" y="55" width="120" height="50" rx="10" fill="#FCF2E3" stroke="#F5B860"/>
+          <text x="408" y="76" text-anchor="middle" font-weight="600">amoCRM</text>
+          <text x="408" y="92" text-anchor="middle" fill="#5C5568" font-size="10">создать сделку</text>
+
+          <path d="M408 105 L408 128" stroke="#F5B860" stroke-width="2" marker-end="url(#arrow)"/>
+          <path d="M244 105 L244 128" stroke="#8B5FE0" stroke-width="2" stroke-dasharray="3 3"/>
+          <path d="M244 128 L 460 128" stroke="#8B5FE0" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrow2)"/>
+
+          <rect x="470" y="105" width="150" height="50" rx="10" fill="#F3EEFC" stroke="#8B5FE0"/>
+          <text x="545" y="126" text-anchor="middle" font-weight="600">Telegram</text>
+          <text x="545" y="142" text-anchor="middle" fill="#5C5568" font-size="10">уведомление менеджеру</text>
+        </g>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#5FBF8F"/></marker>
+          <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#8B5FE0"/></marker>
+        </defs>
+      </svg>
+      <figcaption>Схема сценария n8n (реконструкция для кейса, без реальных данных)</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="step-label"><span class="step-dot peach"></span><span class="step-title">Результат</span></div>
+    <p>Среднее время первого ответа клиенту сократилось с ~10 часов до 2 минут. За месяц теста — 0 потерянных заявок вместо прежних ~20% в неделю. Эксперт освободил около 5 часов в неделю, которые раньше уходили на перенос данных и звонки по дублям. Вся история заявок теперь видна в одной воронке amoCRM вместо разрозненных таблиц — учёт стал прозрачным.</p>
+
+    <figure>
+      <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <rect width="640" height="150" fill="#F3EEFC"/>
+        <rect x="24" y="20" width="300" height="110" rx="16" fill="#FFFFFF" stroke="#B794F4"/>
+        <circle cx="52" cy="48" r="10" fill="#8B5FE0"/>
+        <text x="70" y="52" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#2B2733">Новая заявка · 🔥 горячая</text>
+        <text x="48" y="78" font-family="Inter, sans-serif" font-size="11" fill="#5C5568">Имя: Клиент А***</text>
+        <text x="48" y="96" font-family="Inter, sans-serif" font-size="11" fill="#5C5568">Запрос: нужна консультация до пятницы</text>
+        <text x="48" y="114" font-family="Inter, sans-serif" font-size="11" fill="#5C5568">Источник: квиз Тильда</text>
+
+        <rect x="344" y="20" width="272" height="110" rx="16" fill="#FFFFFF" stroke="#5FBF8F"/>
+        <text x="368" y="48" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600" fill="#2B2733">amoCRM · сделка #10234</text>
+        <text x="368" y="72" font-family="Inter, sans-serif" font-size="11" fill="#5C5568">Статус: Новая заявка</text>
+        <text x="368" y="90" font-family="Inter, sans-serif" font-size="11" fill="#5C5568">Телефон: +7 9** *** ** **</text>
+        <text x="368" y="108" font-family="Inter, sans-serif" font-size="11" fill="#5C5568">Ответственный: эксперт</text>
+      </svg>
+      <figcaption>Пример уведомления в Telegram и строки в CRM (макет, персональные данные замаскированы)</figcaption>
+    </figure>
+
+    <div class="note">Иллюстрации выше — схематичная реконструкция сценария для учебного кейса, а не скрины реального интерфейса. Все данные вымышлены.</div>
+  </section>
+
+  <footer>
+    <span>KA01 · Кейс автоматизации</span>
+    <span>Фея Автоматизации ✨</span>
+  </footer>
+
+</div>
+</body>
+</html>
