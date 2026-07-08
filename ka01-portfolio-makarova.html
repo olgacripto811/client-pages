@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ольга — автоматизация на n8n</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF8F5;
+    --ink:#2B2733;
+    --ink-soft:#5C5568;
+    --lavender:#B794F4;
+    --lavender-deep:#8B5FE0;
+    --mint:#5FBF8F;
+    --peach:#F5B860;
+    --line:#E5DFF0;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:72px 24px 100px;}
+
+  .hero{margin-bottom:60px;}
+  .avatar-mark{
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg,var(--lavender),var(--mint));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-size:20px;color:#fff;font-weight:600;
+    margin-bottom:22px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:clamp(30px,5vw,44px);
+    line-height:1.1;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .role{
+    font-size:15px;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+  }
+  .utp{
+    font-size:18px;
+    max-width:52ch;
+    color:#3A3542;
+    border-left:3px solid var(--lavender);
+    padding-left:16px;
+    margin-bottom:26px;
+  }
+  .contacts{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .contact{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:8px 14px;
+    border-radius:20px;
+    color:var(--ink);
+  }
+
+  .section-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--lavender-deep);
+    margin-bottom:20px;
+  }
+
+  .case-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:26px 26px 22px;
+    margin-bottom:20px;
+    transition:border-color .15s ease;
+  }
+  .case-card:hover{border-color:var(--lavender);}
+  .case-title{
+    font-family:'Fraunces',serif;
+    font-size:21px;
+    font-weight:600;
+    margin:0 0 14px;
+    line-height:1.3;
+  }
+  .theses{
+    list-style:none;
+    margin:0 0 18px;
+    padding:0;
+    display:grid;
+    gap:8px;
+  }
+  .theses li{
+    font-size:14.5px;
+    color:#3A3542;
+    display:flex;
+    gap:10px;
+  }
+  .theses li b{
+    color:var(--lavender-deep);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    flex-shrink:0;
+    padding-top:2px;
+  }
+  .case-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--lavender-deep);
+    text-decoration:none;
+  }
+  .case-link:hover{text-decoration:underline;}
+
+  .cta{
+    margin-top:52px;
+    background:linear-gradient(135deg,#F3EEFC,#EAF6EF);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:32px 28px;
+    text-align:center;
+  }
+  .cta h2{
+    font-family:'Fraunces',serif;
+    font-size:22px;
+    font-weight:600;
+    margin:0 0 10px;
+  }
+  .cta p{
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin:0 0 18px;
+  }
+  .cta-btn{
+    display:inline-block;
+    background:var(--lavender-deep);
+    color:#fff;
+    font-weight:600;
+    font-size:14.5px;
+    padding:12px 26px;
+    border-radius:30px;
+    text-decoration:none;
+  }
+  footer{
+    margin-top:50px;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="avatar-mark">ОМ</div>
+    <h1>Ольга Макарова</h1>
+    <div class="role">No-code автоматизатор · n8n · SMM-стратег</div>
+    <p class="utp">Настраиваю no-code-автоматизации на n8n: экономлю 3–5 часов в неделю и исключаю потери заявок.</p>
+    <div class="contacts">
+      <span class="contact">@olgamakarovacoach</span>
+      <span class="contact">olgamakarova0811@gmail.com</span>
+    </div>
+  </div>
+
+  <div class="section-title">Кейс</div>
+
+  <div class="case-card">
+    <h3 class="case-title">Квиз на Тильде → amoCRM + Telegram: ответ клиенту за 2 минуты вместо 10 часов</h3>
+    <ul class="theses">
+      <li><b>До</b> До 20% заявок в неделю терялось, ответ занимал часы, дубли путали учёт</li>
+      <li><b>Стало</b> Webhook → фильтр дублей → amoCRM → уведомление в Telegram, без нового софта</li>
+      <li><b>Эффект</b> Ответ за 2 минуты, 0 потерянных заявок, 5 часов в неделю свободного времени</li>
+    </ul>
+    <a class="case-link" href="case.html">Смотреть полный кейс →</a>
+  </div>
+
+  <div class="case-card">
+    <h3 class="case-title">Bybit-бот → приоритизация алертов + автоответ клиентам: секунды вместо «когда заметят»</h3>
+    <ul class="theses">
+      <li><b>До</b> Алерты бота и обращения клиентов разбирались вручную, без фильтра приоритета и единого хранилища сделок</li>
+      <li><b>Стало</b> 4 сценария в n8n: приём заявок в NocoDB, API для данных сделок, ИИ-классификация алертов (Claude Haiku), автоответ клиенту через Gmail</li>
+      <li><b>Эффект</b> Критичные события — мгновенная маршрутизация, рутинные ответы клиентам — без участия оператора</li>
+    </ul>
+    <a class="case-link" href="https://olgacripto811.github.io/client-pages/case-torgovyy-zhurnal">Смотреть полный кейс →</a>
+  </div>
+
+  <div class="cta">
+    <h2>Хотите так же?</h2>
+    <p>Разберём вашу рутину и соберём сценарий, который её закроет.</p>
+    <a class="cta-btn" href="https://t.me/olgamakarovacoach">Написать в Telegram</a>
+  </div>
+
+  <footer>KA01 · Мини-портфолио</footer>
+
+</div>
+</body>
+</html>
