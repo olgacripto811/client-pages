@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как автоматизировать расписание, не превращая себя в бота — Фея Автоматизации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lavender: #B794F4;
+    --lavender-deep: #9F7AEA;
+    --peach: #FBD38D;
+    --mint: #68D391;
+    --air-white: #F8F9FA;
+    --slate-card: #E8EBF0;
+    --ink: #2D3748;
+    --ink-soft: #718096;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--air-white);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--lavender) 0%, var(--lavender-deep) 55%, var(--peach) 130%);
+    padding: 56px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before { content: "✨"; position: absolute; top: 14%; left: 8%; font-size: 26px; opacity: .5; }
+  .hero::after  { content: "✨"; position: absolute; bottom: 18%; right: 10%; font-size: 18px; opacity: .5; }
+
+  .eyebrow {
+    color: #fff; font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+    opacity: .85; margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+    color: #fff;
+    font-size: clamp(26px, 5vw, 42px);
+    max-width: 640px;
+    margin: 0 auto 16px;
+  }
+
+  .hero .subtitle {
+    color: #fff; opacity: .92; font-size: 16px; max-width: 520px; margin: 0 auto 28px;
+  }
+
+  .mascot {
+    max-width: 150px;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0 12px 24px rgba(0,0,0,0.15));
+  }
+  .mascot.small { max-width: 110px; }
+
+  /* CONTENT */
+  section.block {
+    padding: 44px 0;
+    border-bottom: 1px solid var(--slate-card);
+  }
+  section.block:last-of-type { border-bottom: none; }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--lavender-deep);
+    font-size: 24px;
+    margin: 0 0 18px;
+  }
+
+  p { margin: 0 0 16px; font-size: 16px; }
+
+  blockquote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink);
+    background: var(--slate-card);
+    border-left: 4px solid var(--lavender);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 0 0 20px;
+  }
+
+  .quote-with-mascot {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .quote-with-mascot blockquote { flex: 1 1 320px; margin: 0; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+
+  .col-card {
+    border-radius: 14px;
+    padding: 18px 20px;
+    font-size: 15px;
+  }
+  .col-card.yes { background: #EFFAF3; border: 1.5px solid var(--mint); }
+  .col-card.no  { background: #FDF1E7; border: 1.5px solid var(--peach); }
+  .col-card h3 { margin: 0 0 10px; font-size: 15px; font-family: 'Inter'; font-weight: 600; }
+  .col-card.yes h3 { color: #2F855A; }
+  .col-card.no h3 { color: #9C4221; }
+  .col-card ul { margin: 0; padding-left: 18px; }
+  .col-card li { margin-bottom: 6px; }
+
+  .case-note {
+    background: var(--air-white);
+    border: 1.5px solid var(--slate-card);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+  .case-note strong { color: var(--lavender-deep); }
+
+  .objection {
+    margin-bottom: 20px;
+  }
+  .objection .q {
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .objection .a { color: var(--ink-soft); font-size: 15px; margin: 0; }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1.5px solid var(--slate-card);
+    padding: 12px 10px;
+    text-align: left;
+  }
+  th { background: var(--slate-card); font-weight: 600; color: var(--ink); }
+  td { height: 34px; }
+
+  .table-with-mascot {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .table-with-mascot .table-col { flex: 1 1 380px; }
+
+  .bridge-card {
+    background: #fff;
+    border: 1.5px solid var(--slate-card);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+  .bridge-card h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--lavender-deep);
+    font-size: 17px;
+    margin: 0 0 8px;
+  }
+  .bridge-card p { margin: 0; font-size: 15px; color: var(--ink-soft); }
+
+  /* FORM SECTION */
+  .form-section {
+    background: linear-gradient(180deg, var(--air-white) 0%, #F1ECFB 100%);
+    padding: 56px 0 64px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 36px clamp(20px, 5vw, 40px);
+    box-shadow: 0 24px 60px -24px rgba(155,122,234,0.35);
+  }
+
+  .card .lead { color: var(--ink-soft); font-size: 15px; margin-bottom: 24px; }
+
+  label { display: block; font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+  .field { margin-bottom: 20px; }
+
+  input[type="text"], input[type="email"], textarea {
+    width: 100%; border: 1.5px solid var(--slate-card); border-radius: 12px;
+    padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 15px;
+    color: var(--ink); background: var(--air-white); transition: border-color .2s ease;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--lavender); }
+  textarea { min-height: 100px; resize: vertical; }
+  .hint { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+
+  .checklist-toggle {
+    background: var(--slate-card); border: none; border-radius: 12px; padding: 12px 16px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: var(--lavender-deep);
+    cursor: pointer; width: 100%; text-align: left; margin-bottom: 14px;
+  }
+  .checklist-toggle:hover { background: #DCD6EF; }
+  .checklist { display: none; margin-bottom: 20px; }
+  .checklist.open { display: block; }
+  .check-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 4px; border-bottom: 1px solid var(--slate-card); font-size: 14.5px; }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type="checkbox"] { margin-top: 3px; width: 17px; height: 17px; accent-color: var(--lavender-deep); flex-shrink: 0; }
+
+  .submit-btn {
+    width: 100%; background: linear-gradient(135deg, var(--lavender) 0%, var(--lavender-deep) 100%);
+    color: #fff; border: none; border-radius: 14px; padding: 15px 20px;
+    font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 4px;
+    transition: opacity .2s ease;
+  }
+  .submit-btn:hover { opacity: .92; }
+  .submit-btn:disabled { opacity: .6; cursor: default; }
+  .promise { text-align: center; font-size: 13px; color: var(--ink-soft); margin-top: 14px; }
+
+  .divider { display: flex; align-items: center; gap: 12px; margin: 30px 0 22px; color: var(--ink-soft); font-size: 13px; }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: var(--slate-card); }
+
+  .alt-contacts { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .alt-contacts a {
+    text-decoration: none; color: var(--lavender-deep); background: var(--air-white);
+    border: 1.5px solid var(--slate-card); border-radius: 999px; padding: 9px 18px; font-size: 14px; font-weight: 500;
+    transition: border-color .2s ease;
+  }
+  .alt-contacts a:hover { border-color: var(--lavender); }
+
+  .success { display: none; text-align: center; padding: 16px 0 4px; }
+  .success.open { display: block; }
+  .success .icon { font-size: 32px; margin-bottom: 10px; }
+  .success h3 { font-family: 'Playfair Display', serif; color: var(--lavender-deep); margin: 0 0 8px; }
+  .success p { color: var(--ink-soft); font-size: 14.5px; margin: 0; }
+
+  .safety-note {
+    max-width: 560px; margin: 24px auto 0; text-align: center; color: var(--ink-soft); font-size: 13.5px;
+  }
+  .safety-note strong { color: var(--ink); font-weight: 500; }
+
+  footer { text-align: center; padding: 28px 20px 48px; color: var(--ink-soft); font-size: 13px; }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="eyebrow">Фея Автоматизации ✨</div>
+    <h1>Как автоматизировать расписание, не превращая себя в бота</h1>
+    <p class="subtitle">Разбор одной простой задачи, после которой автоматизация перестаёт пугать</p>
+    <img class="mascot" src="assets/maskot-reading.png" alt="Люникс с гримуаром">
+  </div>
+
+  <div class="wrap">
+
+    <section class="block">
+      <p>Если ты работаешь с людьми — ведёшь сессии, консультации, программы — у тебя наверняка была эта мысль:</p>
+      <blockquote>«Я работаю с людьми в кризисе... А если между мной и человеком встанет бот — что он почувствует?»</blockquote>
+      <p>Это не глупый страх. Это правильный страх — если бы автоматизация действительно вставала между тобой и клиентом, стоило бы бояться.</p>
+      <p>Но она не должна. И в этом разборе я покажу тебе ровно то, где заканчивается рутина — и начинаешься ты.</p>
+    </section>
+
+    <section class="block">
+      <h2>Одна фраза, которая всё расставляет по местам</h2>
+      <div class="quote-with-mascot">
+        <blockquote>Пусть бот берёт на себя расписание и рутину — а ты освобождаешь силы для того единственного, ради чего к тебе приходят.</blockquote>
+        <img class="mascot small" src="assets/maskot-secret.png" alt="Люникс заговорщицки улыбается">
+      </div>
+      <p>Автоматизация не заменяет тебя. Она забирает то, что и так не требовало твоего присутствия — чтобы у тебя осталось больше присутствия там, где оно действительно нужно.</p>
+    </section>
+
+    <section class="block">
+      <h2>Что считать рутиной</h2>
+      <p>Смотри на два списка. Это не теория — это то, что реально работает в практике коучей и консультантов.</p>
+      <div class="two-col">
+        <div class="col-card yes">
+          <h3>Можно смело отдавать системе</h3>
+          <ul>
+            <li>Напоминание о встрече</li>
+            <li>Отправка ссылки на созвон</li>
+            <li>Сбор и контроль оплаты</li>
+            <li>Домашнее задание после сессии</li>
+            <li>Чек-ин «как продвигается задание»</li>
+          </ul>
+        </div>
+        <div class="col-card no">
+          <h3>Нельзя отдавать никому и никогда</h3>
+          <ul>
+            <li>Саму сессию</li>
+            <li>Кризисный разговор</li>
+            <li>Эмоциональную поддержку</li>
+            <li>Персональную обратную связь</li>
+          </ul>
+        </div>
+      </div>
+
+      <p><strong>Спорные случаи, чтобы рутина не оставалась абстрактной:</strong></p>
+      <div class="case-note"><strong>Напоминание о домашнем задании</strong> — можно автоматизировать. Это забота о порядке, не о человеке.</div>
+      <div class="case-note"><strong>Ответ на сообщение «мне сейчас очень плохо»</strong> — нельзя. Никогда. Это тот самый момент, ради которого клиент вообще пришёл к живому специалисту, а не к приложению.</div>
+      <p>Если задача ближе к «расписанию» — отдавай смело. Если ближе к «человеку в моменте» — она твоя, и только твоя.</p>
+    </section>
+
+    <section class="block">
+      <h2>А что, если клиент подумает…</h2>
+      <div class="objection">
+        <p class="q">«А вдруг клиент подумает, что я перестала следить лично»</p>
+        <p class="a">Решается не отказом от автоматизации, а тоном сообщения. Одно дело — сухое «Уведомление: встреча завтра в 15:00». Другое — «Увидимся завтра в 15:00, буду рада 💜» — то же напоминание, но написанное твоим голосом.</p>
+      </div>
+      <div class="objection">
+        <p class="q">«А если что-то сломается — и клиент решит, что мне всё равно»</p>
+        <p class="a">Здесь спасает не отказ от системы «на всякий случай», а простое правило: у клиента всегда должен быть один явный способ дотянуться до тебя напрямую, если автоматическое не сработало. Это не страховка от багов — это ощущение, что за системой всё равно стоит человек.</p>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Твой личный шаблон-конструктор</h2>
+      <p>Не читай дальше как теорию — заполни. Это займёт 10–15 минут. Впиши 5–7 своих регулярных задач и реши для каждой: система или ты.</p>
+      <div class="table-with-mascot">
+        <div class="table-col">
+          <table>
+            <thead><tr><th>Задача</th><th>Я / система</th><th>Почему</th></tr></thead>
+            <tbody>
+              <tr><td></td><td></td><td></td></tr>
+              <tr><td></td><td></td><td></td></tr>
+              <tr><td></td><td></td><td></td></tr>
+              <tr><td></td><td></td><td></td></tr>
+              <tr><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <img class="mascot small" src="assets/maskot-guide.png" alt="Люникс-гид указывает на таблицу">
+      </div>
+      <p>Это уже не абстрактный список рутины — это твоя личная карта. У тебя перед глазами то, что можно отдать системе уже на этой неделе.</p>
+    </section>
+
+    <section class="block">
+      <h2>Что дальше</h2>
+      <p>Ты только что увидела на бумаге, какую именно рутину реально можно отдать системе. Дальше есть два пути.</p>
+      <div class="bridge-card">
+        <h3>Настрою за тебя</h3>
+        <p>Один рабочий сценарий из твоей таблицы — не «весь бизнес под ключ», а ровно одна задача, которая крадёт у тебя больше всего времени прямо сейчас. Готово за 1–3 дня, без твоего погружения в технические детали.</p>
+      </div>
+      <div class="bridge-card">
+        <h3>Магическая мастерская</h3>
+        <p>Готовое решение каждый месяц — плюс разбор и возможность спросить меня напрямую. Не собираешь всё заново сама, получаешь по одному сценарию регулярно.</p>
+      </div>
+      <p>Оба варианта — не про «учись программировать». Про то, чтобы рутина ушла сама, а ты осталась собой.</p>
+    </section>
+
+  </div>
+
+  <div class="form-section">
+    <div class="wrap" style="max-width:600px;">
+      <div class="card" id="formCard">
+        <h2 style="text-align:center;">Заполнила таблицу? Расскажи мне — дам рекомендацию</h2>
+        <p class="lead" style="text-align:center;">Перенеси сюда рутины из своей таблицы — я лично отвечу с рекомендацией, что и как автоматизировать именно у тебя.</p>
+
+        <form id="requestForm">
+          <div class="field">
+            <label for="name">Как к тебе обращаться</label>
+            <input type="text" id="name" name="name" placeholder="Твоё имя" required>
+          </div>
+
+          <div class="field">
+            <label for="contact">Куда ответить</label>
+            <input type="text" id="contact" name="contact" placeholder="Email, Telegram (@username) или Instagram" required>
+          </div>
+
+          <div class="field">
+            <label for="routines">Какие рутины хочешь передать системе</label>
+            <textarea id="routines" name="routines" placeholder="Например: сама напоминаю клиентам о встречах, вручную собираю оплату…"></textarea>
+            <p class="hint">Скопируй сюда то, что выписала в таблице выше — или воспользуйся списком ниже, если пока не знаешь, с чего начать.</p>
+          </div>
+
+          <button type="button" class="checklist-toggle" id="checklistToggle">Не знаю, с чего начать — показать список ▾</button>
+
+          <div class="checklist" id="checklistBlock">
+            <div class="check-item"><input type="checkbox" id="c1" value="Клиенты забывают о встрече, и я вручную всем напоминаю"><label for="c1" style="margin:0;">Клиенты забывают о встрече, и я вручную всем напоминаю</label></div>
+            <div class="check-item"><input type="checkbox" id="c2" value="Трачу время на сбор и контроль оплаты"><label for="c2" style="margin:0;">Трачу время на сбор и контроль оплаты</label></div>
+            <div class="check-item"><input type="checkbox" id="c3" value="Сама отправляю ссылки на созвон перед каждой сессией"><label for="c3" style="margin:0;">Сама отправляю ссылки на созвон перед каждой сессией</label></div>
+            <div class="check-item"><input type="checkbox" id="c4" value="Вручную собираю и отправляю домашние задания"><label for="c4" style="margin:0;">Вручную собираю и отправляю домашние задания</label></div>
+            <div class="check-item"><input type="checkbox" id="c5" value="Забываю проверить, как продвигается задание у клиента"><label for="c5" style="margin:0;">Забываю проверить, как продвигается задание у клиента</label></div>
+            <div class="check-item"><input type="checkbox" id="c6" value="Не успеваю ответить всем, кто написал в директ"><label for="c6" style="margin:0;">Не успеваю ответить всем, кто написал в директ</label></div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
+          <p class="promise">Отвечаю лично — обычно в течение суток ✨</p>
+        </form>
+
+        <div class="success" id="successBlock">
+          <img class="mascot small" src="assets/maskot-victory.png" alt="Люникс радуется" style="margin-bottom:10px;">
+          <h3>Заявка получена</h3>
+          <p>Спасибо! Загляну в твои рутины и отвечу лично с рекомендацией — обычно в течение суток.</p>
+        </div>
+
+        <div class="divider">или напиши напрямую</div>
+        <div class="alt-contacts">
+          <a href="https://instagram.com/oniksaifairy" target="_blank" rel="noopener">Instagram</a>
+          <a href="#" target="_blank" rel="noopener">Telegram</a>
+          <a href="#" target="_blank" rel="noopener">ВКонтакте</a>
+        </div>
+      </div>
+
+      <p class="safety-note">
+        <strong>Про безопасность:</strong> эта форма — пример того, что автоматизация работает на доверие, а не против него: твои данные уходят напрямую мне, без риска, что личные контакты кто-то соберёт и начнёт спамить. Такую же форму можно настроить и для твоей практики.
+      </p>
+    </div>
+  </div>
+
+  <footer>Фея Автоматизации · Магия без кода ✨</footer>
+
+  <script>
+    const WEBHOOK_URL = "https://ЗАМЕНИТЬ-НА-РЕАЛЬНЫЙ-N8N-ВЕБХУК";
+
+    const form = document.getElementById('requestForm');
+    const toggle = document.getElementById('checklistToggle');
+    const checklistBlock = document.getElementById('checklistBlock');
+    const successBlock = document.getElementById('successBlock');
+    const submitBtn = document.getElementById('submitBtn');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = checklistBlock.classList.toggle('open');
+      toggle.textContent = isOpen ? 'Скрыть список ▴' : 'Не знаю, с чего начать — показать список ▾';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const checkedPains = Array.from(checklistBlock.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+      const payload = {
+        name: document.getElementById('name').value,
+        contact: document.getElementById('contact').value,
+        routines: document.getElementById('routines').value,
+        checked_pains: checkedPains,
+        source: "lead-magnet-raspisanie-bez-bota",
+        submitted_at: new Date().toISOString()
+      };
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Отправляю…";
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Ошибка отправки:", err);
+      }
+      form.style.display = 'none';
+      toggle.style.display = 'none';
+      successBlock.classList.add('open');
+    });
+  </script>
+
+</body>
+</html>
