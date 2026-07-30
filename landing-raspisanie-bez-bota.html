@@ -75,6 +75,41 @@
   }
   .mascot.small { max-width: 110px; }
 
+  .hero-photo-wrap {
+    position: relative;
+    width: 168px;
+    height: 168px;
+    margin: 0 auto 24px;
+  }
+
+  .hero-photo {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 16px 32px -8px rgba(0,0,0,0.25);
+    display: block;
+  }
+
+  .hero-photo-wrap .mascot-peek {
+    position: absolute;
+    bottom: -14px;
+    right: -22px;
+    max-width: 66px;
+    margin: 0;
+    filter: drop-shadow(0 8px 14px rgba(0,0,0,0.2));
+  }
+
+  .hero-name {
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    opacity: 0.95;
+    margin: 0 0 22px;
+  }
+
   /* CONTENT */
   section.block {
     padding: 44px 0;
@@ -269,9 +304,13 @@
 
   <div class="hero">
     <div class="eyebrow">Фея Автоматизации ✨</div>
+    <div class="hero-photo-wrap">
+      <img class="hero-photo" src="assets/olga-photo.jpg" alt="Ольга, Фея Автоматизации">
+      <img class="mascot-peek" src="assets/maskot-reading.png" alt="Люникс выглядывает">
+    </div>
+    <p class="hero-name">Ольга · Фея Автоматизации</p>
     <h1>Как автоматизировать расписание, не превращая себя в бота</h1>
     <p class="subtitle">Разбор одной простой задачи, после которой автоматизация перестаёт пугать</p>
-    <img class="mascot" src="assets/maskot-reading.png" alt="Люникс с гримуаром">
   </div>
 
   <div class="wrap">
