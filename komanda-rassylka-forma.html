@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Рассылка команде · Фея Автоматизации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF9FC;
+    --card: #FFFFFF;
+    --lavender: #B794F4;
+    --lavender-deep: #8B5CF6;
+    --lavender-ink: #5B3FA0;
+    --peach: #FBD38D;
+    --peach-deep: #F6AD55;
+    --ink: #2D3748;
+    --ink-soft: #718096;
+    --line: #E8E3F5;
+    --mint: #68D391;
+    --red: #C53030;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(60% 50% at 12% 0%, rgba(183,148,244,0.10), transparent 60%),
+      radial-gradient(50% 40% at 100% 20%, rgba(251,211,141,0.14), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-weight:300;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  a{color:inherit;}
+
+  header.nav{
+    border-bottom:1px solid var(--line);
+    background:rgba(251,249,252,0.85);
+    backdrop-filter: blur(10px);
+    position:sticky; top:0; z-index:10;
+  }
+  .nav-inner{
+    max-width:640px; margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-size:18px;
+    color:var(--lavender-ink);
+  }
+  .brand b{ font-style:normal; font-weight:600; }
+  .nav-links{ display:flex; gap:16px; font-size:12.5px; }
+  .nav-links a{ color:var(--ink-soft); text-decoration:none; }
+  .nav-links a:hover{ color:var(--lavender-ink); }
+
+  main{ flex:1; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+  .wrap{ max-width:520px; width:100%; }
+
+  .kicker{
+    font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--lavender-ink); font-weight:500; margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size:28px;
+    margin-bottom:8px;
+  }
+  .lead{ color:var(--ink-soft); font-size:14.5px; margin-bottom:30px; }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:36px 32px;
+    box-shadow: 0 30px 60px -30px rgba(91,63,160,0.30);
+  }
+
+  .field{ margin-bottom:20px; }
+  .field label{
+    display:block; font-size:13px; font-weight:500; color:var(--ink);
+    margin-bottom:8px;
+  }
+  .field .hint{ font-size:12px; color:var(--ink-soft); font-weight:400; margin-top:6px; }
+  .field input, .field textarea{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    background:#FDFCFE;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-color:var(--lavender-deep);
+    box-shadow:0 0 0 4px rgba(183,148,244,0.18);
+  }
+  .field textarea{ resize:vertical; min-height:130px; }
+
+  .submit-btn{
+    width:100%;
+    margin-top:6px;
+    background: linear-gradient(100deg, var(--lavender-deep), #A579EF 55%, var(--peach-deep));
+    color:#fff;
+    border:none;
+    border-radius:100px;
+    padding:16px 24px;
+    font-family:'Inter', sans-serif;
+    font-size:15.5px;
+    font-weight:500;
+    cursor:pointer;
+    box-shadow: 0 14px 30px -10px rgba(139,92,246,0.5);
+    transition: transform .25s ease, box-shadow .25s ease, opacity .2s ease;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .submit-btn:hover{ transform:translateY(-2px); box-shadow:0 18px 34px -8px rgba(139,92,246,0.55); }
+  .submit-btn:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
+  .submit-btn .spin{
+    width:16px;height:16px;
+    border:2px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin 0.7s linear infinite;
+    display:none;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .submit-btn.loading .spin{ display:inline-block; }
+
+  .form-result{
+    margin-top:16px;
+    padding:14px 18px;
+    border-radius:14px;
+    font-size:13.5px;
+    display:none;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .form-result.success{
+    background: rgba(104,211,145,0.12);
+    color:#2F855A;
+    border:1px solid rgba(104,211,145,0.35);
+  }
+  .form-result.error{
+    background: rgba(245,101,101,0.10);
+    color:var(--red);
+    border:1px solid rgba(245,101,101,0.3);
+  }
+
+  .form-note{ margin-top:16px; font-size:12px; color:var(--ink-soft); text-align:center; }
+
+  footer{ text-align:center; padding:20px; font-size:11.5px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Фея <b>Автоматизации</b> · команда</div>
+    <div class="nav-links">
+      <a href="komanda-lenta.html">Лента</a>
+      <a href="komanda-podklyuchit-rassylku.html">Подключить</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="kicker">🔒 Только для админа рассылки</div>
+    <h1>Написать рассылку</h1>
+    <p class="lead">Сообщение уйдёт всем активным участникам команды в Telegram и на email, и появится в ленте на сайте.</p>
+
+    <div class="card">
+      <form id="broadcastForm">
+        <div class="field">
+          <label for="token">Токен доступа</label>
+          <input type="password" id="token" name="token" placeholder="Токен из настройки n8n" required>
+          <div class="hint">Запрашивается один раз — дальше браузер запомнит его сам.</div>
+        </div>
+
+        <div class="field">
+          <label for="message">Текст сообщения</label>
+          <textarea id="message" name="message" placeholder="Например: завтра в 11:00 общий созвон по проекту…" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="sender">Подпись отправителя (необязательно)</label>
+          <input type="text" id="sender" name="sender" placeholder="Ольга">
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="spin"></span>
+          <span class="btn-label">Разослать команде</span>
+        </button>
+
+        <div class="form-result success" id="resultSuccess">✅ Разослано! Проверьте ленту — сообщение уже там.</div>
+        <div class="form-result error" id="resultError">Не получилось отправить. Проверьте токен или попробуйте ещё раз.</div>
+      </form>
+    </div>
+
+    <div class="form-note">Тот же результат — если написать боту в Telegram напрямую (для авторизованных админов).</div>
+  </div>
+</main>
+
+<footer>Внутренний инструмент команды · Фея Автоматизации</footer>
+
+<script>
+  // ====== ВАЖНО: подставь сюда реальный webhook-URL из n8n (team-broadcast-webhook-compose) ======
+  const WEBHOOK_URL = "ЗАМЕНИТЬ-НА-РЕАЛЬНЫЙ-N8N-ВЕБХУК/broadcast/send";
+
+  const form = document.getElementById('broadcastForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const resultSuccess = document.getElementById('resultSuccess');
+  const resultError = document.getElementById('resultError');
+  const tokenInput = document.getElementById('token');
+
+  // Подставляем ранее сохранённый (рабочий) токен, если он есть
+  const savedToken = localStorage.getItem('broadcastAdminToken');
+  if (savedToken) tokenInput.value = savedToken;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    resultSuccess.style.display = 'none';
+    resultError.style.display = 'none';
+
+    const payload = {
+      token: tokenInput.value.trim(),
+      message: document.getElementById('message').value.trim(),
+      sender: document.getElementById('sender').value.trim() || 'Ольга'
+    };
+
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+
+    try {
+      if (WEBHOOK_URL.includes('ЗАМЕНИТЬ-НА-РЕАЛЬНЫЙ-N8N-ВЕБХУК')) {
+        console.warn('Webhook URL не настроен. Замени WEBHOOK_URL в <script> на реальный URL из n8n.');
+        await new Promise(r => setTimeout(r, 500));
+        throw new Error('webhook_not_configured');
+      }
+
+      const response = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error('bad_response');
+
+      localStorage.setItem('broadcastAdminToken', payload.token);
+      resultSuccess.style.display = 'flex';
+      document.getElementById('message').value = '';
+    } catch (err) {
+      resultError.style.display = 'flex';
+    } finally {
+      submitBtn.classList.remove('loading');
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>

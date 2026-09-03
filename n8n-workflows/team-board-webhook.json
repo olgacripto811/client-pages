@@ -1,0 +1,133 @@
+{
+  "name": "Команда · Лента на сайте (webhook, чтение)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "team/board",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-board",
+      "name": "Webhook: team/board",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-160, 200],
+      "webhookId": "ЗАМЕНИТЬ_ПОСЛЕ_АКТИВАЦИИ"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Токен для просмотра ленты (см. страницу komanda-lenta.html).\nconst BOARD_TOKEN = \"ЗАМЕНИТЬ_НА_СВОЙ_ТОКЕН_ЛЕНТЫ\";\nconst headers = $json.headers || {};\nconst query = $json.query || {};\nconst headerToken = headers['x-board-token'] || query.token || '';\nreturn [{ json: { valid: headerToken === BOARD_TOKEN } }];"
+      },
+      "id": "code-validate",
+      "name": "Проверить токен ленты",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [80, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-valid",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "Токен верный?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [320, 200]
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": { "__rl": true, "mode": "id", "value": "ЗАМЕНИТЬ_AIRTABLE_BASE_ID" },
+        "table": { "__rl": true, "mode": "name", "value": "Messages" },
+        "limit": 50,
+        "options": {
+          "sort": {
+            "sortField": [
+              { "field": "SentAt", "direction": "desc" }
+            ]
+          }
+        }
+      },
+      "id": "airtable-list-messages",
+      "name": "Airtable: последние сообщения",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "alwaysOutputData": true,
+      "position": [580, 120],
+      "credentials": {
+        "airtableTokenApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Airtable account" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst messages = items\n  .filter(i => i.json && i.json.id)\n  .map(i => ({\n    text: i.json.Text || i.json.fields?.Text || '',\n    sentBy: i.json.SentBy || i.json.fields?.SentBy || '',\n    sentAt: i.json.SentAt || i.json.fields?.SentAt || ''\n  }));\nreturn [{ json: { status: 'ok', messages } }];"
+      },
+      "id": "code-format",
+      "name": "Собрать список для ленты",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [840, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond-ok",
+      "name": "Ответ: успех",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [1080, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 401,
+        "responseBody": "={{ { status: \"error\", message: \"Неверный токен доступа к ленте\" } }}",
+        "options": {}
+      },
+      "id": "respond-error",
+      "name": "Ответ: ошибка",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [580, 320]
+    }
+  ],
+  "connections": {
+    "Webhook: team/board": {
+      "main": [[{ "node": "Проверить токен ленты", "type": "main", "index": 0 }]]
+    },
+    "Проверить токен ленты": {
+      "main": [[{ "node": "Токен верный?", "type": "main", "index": 0 }]]
+    },
+    "Токен верный?": {
+      "main": [
+        [{ "node": "Airtable: последние сообщения", "type": "main", "index": 0 }],
+        [{ "node": "Ответ: ошибка", "type": "main", "index": 0 }]
+      ]
+    },
+    "Airtable: последние сообщения": {
+      "main": [[{ "node": "Собрать список для ленты", "type": "main", "index": 0 }]]
+    },
+    "Собрать список для ленты": {
+      "main": [[{ "node": "Ответ: успех", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "staticData": null
+}

@@ -1,0 +1,124 @@
+{
+  "name": "Команда · Веб-форма рассылки (webhook)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "broadcast/send",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-compose",
+      "name": "Webhook: broadcast/send",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-160, 200],
+      "webhookId": "ЗАМЕНИТЬ_ПОСЛЕ_АКТИВАЦИИ"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Простой секретный токен формы (см. страницу komanda-rassylka-forma.html).\n// Замените на свой длинный случайный токен и используйте его же на странице.\nconst ADMIN_TOKEN = \"ЗАМЕНИТЬ_НА_СВОЙ_ТОКЕН\";\nconst body = $json.body || {};\nreturn [{\n  json: {\n    valid: body.token === ADMIN_TOKEN,\n    message: (body.message || '').trim(),\n    sender: body.sender || 'Ольга (сайт)'\n  }\n}];"
+      },
+      "id": "code-validate",
+      "name": "Проверить токен",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [80, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-valid",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            },
+            {
+              "id": "cond-nonempty",
+              "leftValue": "={{ $json.message }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "Токен верный и есть текст?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [320, 200]
+    },
+    {
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "ЗАМЕНИТЬ_ID_ВОРКФЛОУ_team-broadcast-fanout"
+        },
+        "workflowInputs": {
+          "value": {
+            "message": "={{ $json.message }}",
+            "sender": "={{ $json.sender }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "execute-fanout",
+      "name": "Разослать команде (fanout)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [580, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { status: \"ok\", sent_at: $now.toISO() } }}",
+        "options": {}
+      },
+      "id": "respond-ok",
+      "name": "Ответ: успех",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [840, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseCode": 401,
+        "responseBody": "={{ { status: \"error\", message: \"Неверный токен или пустое сообщение\" } }}",
+        "options": {}
+      },
+      "id": "respond-error",
+      "name": "Ответ: ошибка",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [580, 320]
+    }
+  ],
+  "connections": {
+    "Webhook: broadcast/send": {
+      "main": [[{ "node": "Проверить токен", "type": "main", "index": 0 }]]
+    },
+    "Проверить токен": {
+      "main": [[{ "node": "Токен верный и есть текст?", "type": "main", "index": 0 }]]
+    },
+    "Токен верный и есть текст?": {
+      "main": [
+        [{ "node": "Разослать команде (fanout)", "type": "main", "index": 0 }],
+        [{ "node": "Ответ: ошибка", "type": "main", "index": 0 }]
+      ]
+    },
+    "Разослать команде (fanout)": {
+      "main": [[{ "node": "Ответ: успех", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "staticData": null
+}

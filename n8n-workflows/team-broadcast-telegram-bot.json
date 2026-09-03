@@ -1,0 +1,273 @@
+{
+  "name": "Команда · Telegram-бот (compose + подключение)",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "telegram-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [-200, 260],
+      "credentials": {
+        "telegramApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Telegram Bot" }
+      },
+      "webhookId": "ЗАМЕНИТЬ_ПОСЛЕ_АКТИВАЦИИ"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-start",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "/start",
+              "operator": { "type": "string", "operation": "startsWith" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-is-start",
+      "name": "Это /start (подключение)?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [60, 260]
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $json.message.text || '';\nconst token = text.replace('/start', '').trim();\nreturn [{\n  json: {\n    token,\n    chatId: $json.message.chat.id,\n    username: $json.message.from.username || '',\n    firstName: $json.message.from.first_name || ''\n  }\n}];"
+      },
+      "id": "code-extract-token",
+      "name": "Извлечь токен",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 100]
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": { "__rl": true, "mode": "id", "value": "ЗАМЕНИТЬ_AIRTABLE_BASE_ID" },
+        "table": { "__rl": true, "mode": "name", "value": "Team" },
+        "filterByFormula": "={{ \"{SignupToken} = '\" + $json.token + \"'\" }}",
+        "options": {}
+      },
+      "id": "airtable-find-by-token",
+      "name": "Airtable: найти по токену",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "alwaysOutputData": true,
+      "position": [580, 100],
+      "credentials": {
+        "airtableTokenApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Airtable account" }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-found",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-token-found",
+      "name": "Заявка найдена?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [840, 100]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": { "__rl": true, "mode": "id", "value": "ЗАМЕНИТЬ_AIRTABLE_BASE_ID" },
+        "table": { "__rl": true, "mode": "name", "value": "Team" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": ["id"],
+          "value": {
+            "id": "={{ $json.id }}",
+            "TelegramChatID": "={{ $('Извлечь токен').item.json.chatId }}",
+            "TelegramUsername": "={{ $('Извлечь токен').item.json.username }}",
+            "Status": "active"
+          }
+        },
+        "options": {}
+      },
+      "id": "airtable-activate-member",
+      "name": "Airtable: активировать участника",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [1100, 20],
+      "credentials": {
+        "airtableTokenApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Airtable account" }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Извлечь токен').item.json.chatId }}",
+        "text": "✨ Готово! Вы подключены к рассылке команды — сообщения теперь будут приходить сюда.",
+        "additionalFields": {}
+      },
+      "id": "telegram-reply-connected",
+      "name": "Telegram: ответ (подключено)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1360, 20],
+      "credentials": {
+        "telegramApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Telegram Bot" }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Извлечь токен').item.json.chatId }}",
+        "text": "Не нашли вашу заявку на подключение. Сначала заполните форму на сайте, затем перейдите по ссылке из ответа формы.",
+        "additionalFields": {}
+      },
+      "id": "telegram-reply-not-found",
+      "name": "Telegram: ответ (не найдено)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1100, 180],
+      "credentials": {
+        "telegramApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Telegram Bot" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Список Telegram id администраторов, которым можно писать рассылку из бота.\n// Замените на реальные числовые id (узнать свой id можно у @userinfobot).\nconst adminIds = \"ЗАМЕНИТЬ_ID_1,ЗАМЕНИТЬ_ID_2\".split(',').map(s => s.trim());\nconst fromId = String($json.message.from.id);\nreturn [{\n  json: {\n    isAdmin: adminIds.includes(fromId),\n    chatId: $json.message.chat.id,\n    text: $json.message.text,\n    senderName: $json.message.from.first_name || $json.message.from.username || fromId\n  }\n}];"
+      },
+      "id": "code-check-admin",
+      "name": "Проверить админа",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 420]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-admin",
+              "leftValue": "={{ $json.isAdmin }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-is-admin",
+      "name": "isAdmin?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [580, 420]
+    },
+    {
+      "parameters": {
+        "source": "database",
+        "workflowId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "ЗАМЕНИТЬ_ID_ВОРКФЛОУ_team-broadcast-fanout"
+        },
+        "workflowInputs": {
+          "value": {
+            "message": "={{ $json.text }}",
+            "sender": "={{ $json.senderName }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "execute-fanout",
+      "name": "Разослать команде (fanout)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [840, 380]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Проверить админа').item.json.chatId }}",
+        "text": "✅ Разослано команде (Telegram + email) и добавлено в ленту на сайте.",
+        "additionalFields": {}
+      },
+      "id": "telegram-reply-sent",
+      "name": "Telegram: ответ (разослано)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1100, 380],
+      "credentials": {
+        "telegramApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Telegram Bot" }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Проверить админа').item.json.chatId }}",
+        "text": "🚫 Эта команда доступна только администратору рассылки.",
+        "additionalFields": {}
+      },
+      "id": "telegram-reply-not-admin",
+      "name": "Telegram: ответ (не админ)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [840, 560],
+      "credentials": {
+        "telegramApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Telegram Bot" }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [[{ "node": "Это /start (подключение)?", "type": "main", "index": 0 }]]
+    },
+    "Это /start (подключение)?": {
+      "main": [
+        [{ "node": "Извлечь токен", "type": "main", "index": 0 }],
+        [{ "node": "Проверить админа", "type": "main", "index": 0 }]
+      ]
+    },
+    "Извлечь токен": {
+      "main": [[{ "node": "Airtable: найти по токену", "type": "main", "index": 0 }]]
+    },
+    "Airtable: найти по токену": {
+      "main": [[{ "node": "Заявка найдена?", "type": "main", "index": 0 }]]
+    },
+    "Заявка найдена?": {
+      "main": [
+        [{ "node": "Airtable: активировать участника", "type": "main", "index": 0 }],
+        [{ "node": "Telegram: ответ (не найдено)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Airtable: активировать участника": {
+      "main": [[{ "node": "Telegram: ответ (подключено)", "type": "main", "index": 0 }]]
+    },
+    "Проверить админа": {
+      "main": [[{ "node": "isAdmin?", "type": "main", "index": 0 }]]
+    },
+    "isAdmin?": {
+      "main": [
+        [{ "node": "Разослать команде (fanout)", "type": "main", "index": 0 }],
+        [{ "node": "Telegram: ответ (не админ)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Разослать команде (fanout)": {
+      "main": [[{ "node": "Telegram: ответ (разослано)", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "staticData": null
+}
