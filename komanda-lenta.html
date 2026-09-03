@@ -119,6 +119,15 @@
   }
   .msg-sender{ font-weight:500; color:var(--lavender-ink); }
   .msg-text{ font-size:15px; white-space:pre-wrap; }
+  .msg-footer{ display:flex; justify-content:flex-end; margin-top:12px; }
+  .copy-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    background:#FDFCFE; border:1.5px solid var(--line); color:var(--lavender-ink);
+    border-radius:100px; padding:7px 14px; font-family:'Inter',sans-serif;
+    font-size:12.5px; font-weight:500; cursor:pointer; transition: all .15s ease;
+  }
+  .copy-btn:hover{ border-color:var(--lavender-deep); background:rgba(183,148,244,0.08); }
+  .copy-btn.copied{ border-color:var(--mint); color:#2F855A; background:rgba(104,211,145,0.10); }
   .empty-state{ color:var(--ink-soft); font-size:14px; padding:24px 0; }
 
   footer{ text-align:center; padding:20px; font-size:11.5px; color:var(--ink-soft); }
@@ -174,6 +183,23 @@
   const feedCount = document.getElementById('feedCount');
   const refreshBtn = document.getElementById('refreshBtn');
 
+  // Копирует текст в буфer обмена; в небезопасном контексте (не https/localhost)
+  // Clipboard API недоступен — тогда используем запасной способ через textarea.
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+
   function renderMessages(messages) {
     messagesEl.innerHTML = '';
     if (!messages || messages.length === 0) {
@@ -186,15 +212,32 @@
       const card = document.createElement('div');
       card.className = 'msg-card';
       const date = m.sentAt ? new Date(m.sentAt).toLocaleString('ru-RU') : '';
-      const sender = document.createElement('div');
-      const text = document.createElement('div');
       card.innerHTML = `
         <div class="msg-meta"><span class="msg-sender"></span><span></span></div>
         <div class="msg-text"></div>
+        <div class="msg-footer"><button type="button" class="copy-btn"><span class="copy-label">📋 Копировать</span></button></div>
       `;
       card.querySelector('.msg-sender').textContent = m.sentBy || '—';
       card.querySelectorAll('.msg-meta span')[1].textContent = date;
       card.querySelector('.msg-text').textContent = m.text || '';
+
+      const copyBtn = card.querySelector('.copy-btn');
+      const copyLabel = card.querySelector('.copy-label');
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await copyText(m.text || '');
+          copyBtn.classList.add('copied');
+          copyLabel.textContent = '✓ Скопировано';
+          setTimeout(() => {
+            copyBtn.classList.remove('copied');
+            copyLabel.textContent = '📋 Копировать';
+          }, 1500);
+        } catch (err) {
+          copyLabel.textContent = 'Не удалось скопировать';
+          setTimeout(() => { copyLabel.textContent = '📋 Копировать'; }, 1500);
+        }
+      });
+
       messagesEl.appendChild(card);
     });
   }

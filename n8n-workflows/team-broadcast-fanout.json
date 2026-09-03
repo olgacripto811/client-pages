@@ -74,18 +74,28 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $json.TelegramChatID }}",
-        "text": "={{ $('Prepare').item.json.message }}",
-        "additionalFields": {}
+        "jsCode": "// Собираем тело запроса к Telegram Bot API.\n// Кнопка \"Скопировать текст\" (copy_text) — нативная фича Telegram (Bot API 7.10+):\n// по нажатию текст копируется в буфер обмена получателя прямо в чате, без нашего бота.\n// У copy_text.text лимит 256 символов — если сообщение длиннее, кнопку не добавляем\n// (скопировать текст всё равно можно обычным long-press по сообщению в Telegram).\nconst message = $('Prepare').item.json.message;\nconst body = {\n  chat_id: $json.TelegramChatID,\n  text: message\n};\nif (message.length <= 256) {\n  body.reply_markup = {\n    inline_keyboard: [[\n      { text: '📋 Скопировать текст', copy_text: { text: message } }\n    ]]\n  };\n}\nreturn [{ json: { telegramBody: body } }];"
+      },
+      "id": "code-telegram-body",
+      "name": "Собрать тело Telegram (с кнопкой копировать)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.telegramBody }}",
+        "options": {}
       },
       "id": "telegram-send",
       "name": "Telegram: отправить",
-      "type": "n8n-nodes-base.telegram",
-      "typeVersion": 1.2,
-      "position": [860, 0],
-      "credentials": {
-        "telegramApi": { "id": "ЗАМЕНИТЬ_CREDENTIAL_ID", "name": "Telegram Bot" }
-      }
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0]
     },
     {
       "parameters": {
@@ -171,7 +181,10 @@
       ]
     },
     "IF есть Telegram": {
-      "main": [[{ "node": "Telegram: отправить", "type": "main", "index": 0 }], []]
+      "main": [[{ "node": "Собрать тело Telegram (с кнопкой копировать)", "type": "main", "index": 0 }], []]
+    },
+    "Собрать тело Telegram (с кнопкой копировать)": {
+      "main": [[{ "node": "Telegram: отправить", "type": "main", "index": 0 }]]
     },
     "IF есть Email": {
       "main": [[{ "node": "Gmail: отправить", "type": "main", "index": 0 }], []]
