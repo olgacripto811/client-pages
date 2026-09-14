@@ -28,19 +28,20 @@
   }
   a{color:inherit;}
   header.nav{ border-bottom:1px solid var(--line); background:rgba(251,249,252,0.85); backdrop-filter: blur(10px); position:sticky; top:0; z-index:10; }
-  .nav-inner{ max-width:820px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-inner{ max-width:900px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
   .brand{ font-family:'Playfair Display', serif; font-style:italic; font-size:18px; color:var(--lavender-ink); }
   .brand b{ font-style:normal; font-weight:600; }
   .nav-links button{ background:none; border:none; color:var(--ink-soft); font-family:'Inter',sans-serif; font-size:12.5px; cursor:pointer; }
 
-  main{ max-width:820px; margin:0 auto; padding:32px 20px 60px; }
+  main{ max-width:900px; margin:0 auto; padding:32px 20px 60px; }
   h1{ font-family:'Playfair Display', serif; font-weight:600; font-size:26px; margin-bottom:4px; }
   .lead{ color:var(--ink-soft); font-size:14px; margin-bottom:24px; }
 
   .section-title{ font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--lavender-ink); font-weight:500; margin:32px 0 14px; }
   .section-title:first-of-type{ margin-top:0; }
+  .section-hint{ font-size:12.5px; color:var(--ink-soft); margin:-8px 0 14px; }
 
-  .card{ background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px; margin-bottom:14px; box-shadow: 0 12px 24px -16px rgba(45,55,72,0.15); }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px; margin-bottom:14px; box-shadow: 0 12px 24px -16px rgba(45,55,72,0.15); overflow-x:auto; }
 
   .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:end; }
   .field{ display:flex; flex-direction:column; gap:6px; flex:1 1 140px; }
@@ -50,6 +51,7 @@
     font-family:'Inter',sans-serif; font-size:14px; background:#FDFCFE; color:var(--ink);
   }
   .field input:focus, .field select:focus{ outline:none; border-color:var(--lavender-deep); box-shadow:0 0 0 4px rgba(183,148,244,0.18); }
+  .checkbox-inline{ display:flex; align-items:center; gap:8px; font-size:13.5px; padding-bottom:10px; }
 
   .btn{
     border:1.5px solid var(--line); border-radius:100px; padding:10px 18px; font-family:'Inter',sans-serif;
@@ -62,12 +64,14 @@
   }
   .btn:disabled{ opacity:0.5; cursor:default; }
 
-  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
-  th{ text-align:left; color:var(--ink-soft); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; padding:8px 10px; border-bottom:1px solid var(--line); }
-  td{ padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th{ text-align:left; color:var(--ink-soft); font-weight:500; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; padding:8px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  td{ padding:8px 8px; border-bottom:1px solid var(--line); vertical-align:middle; white-space:nowrap; }
   .badge{ display:inline-block; padding:2px 9px; border-radius:100px; font-size:11.5px; }
   .badge.pending{ background:rgba(246,173,85,0.15); color:#B7791F; }
   .badge.active{ background:rgba(104,211,145,0.15); color:#2F855A; }
+  .badge.leader{ background:rgba(183,148,244,0.18); color:var(--lavender-ink); }
+  .badge.muted{ background:#F1EEF7; color:var(--ink-soft); }
 
   .checklist{ display:flex; flex-wrap:wrap; gap:8px 16px; }
   .checklist label{ display:flex; align-items:center; gap:6px; font-size:13.5px; }
@@ -101,7 +105,10 @@
   <div class="section-title">👥 Участники</div>
   <div class="card">
     <table>
-      <thead><tr><th>Имя</th><th>Email</th><th>Статус</th><th>Уровень</th><th></th></tr></thead>
+      <thead><tr>
+        <th>Имя</th><th>Email</th><th>UID биржи</th><th>Пригласил</th>
+        <th>Статус</th><th>Уровень</th><th>Лидер</th><th></th>
+      </tr></thead>
       <tbody id="usersBody"></tbody>
     </table>
   </div>
@@ -114,7 +121,7 @@
       <tbody id="levelsBody"></tbody>
     </table>
     <div class="row" style="margin-top:14px;">
-      <div class="field"><label>Название уровня</label><input type="text" id="levelName" placeholder="Например, Базовый"></div>
+      <div class="field"><label>Название уровня</label><input type="text" id="levelName" placeholder="Например, c3"></div>
       <div class="field"><label>Ставка, USDT за сигнал</label><input type="number" step="0.01" id="levelRate" placeholder="12"></div>
       <button type="button" class="btn primary" id="addLevelBtn">Добавить уровень</button>
     </div>
@@ -123,11 +130,12 @@
   <div class="section-title">📡 Слоты сигналов</div>
   <div class="card">
     <table>
-      <thead><tr><th>Название</th></tr></thead>
+      <thead><tr><th>Название</th><th>Только для лидеров</th></tr></thead>
       <tbody id="slotsBody"></tbody>
     </table>
     <div class="row" style="margin-top:14px;">
-      <div class="field"><label>Название слота</label><input type="text" id="slotName" placeholder="Например, Утренний сигнал"></div>
+      <div class="field"><label>Название слота</label><input type="text" id="slotName" placeholder="Например, 12:40"></div>
+      <div class="checkbox-inline"><input type="checkbox" id="slotLeaderOnly"><label for="slotLeaderOnly">Только для лидеров</label></div>
       <button type="button" class="btn primary" id="addSlotBtn">Добавить слот</button>
     </div>
   </div>
@@ -138,18 +146,20 @@
       <div class="field"><label>Слот</label><select id="dailySlot"></select></div>
       <div class="field"><label>Дата</label><input type="date" id="dailyDate"></div>
       <div class="field"><label>Код сигнала</label><input type="text" id="dailyCode" placeholder="Например, 482913"></div>
+      <div class="field"><label>Действует, мин</label><input type="number" id="dailyValidMinutes" value="30" min="1"></div>
       <button type="button" class="btn primary" id="publishDailyBtn">Опубликовать</button>
     </div>
     <div class="banner success" id="dailySuccess"></div>
   </div>
 
-  <div class="section-title">🔐 Доступ участника к слотам</div>
+  <div class="section-title">🔐 Слоты по уровню</div>
+  <p class="section-hint">Какие слоты входят в уровень — настраивается один раз на уровень, а не на каждого участника отдельно. Лидерские слоты видны участникам с флагом «Лидер» независимо от уровня — их не нужно добавлять сюда.</p>
   <div class="card">
     <div class="row">
-      <div class="field"><label>Участник</label><select id="accessUser"></select></div>
+      <div class="field"><label>Уровень</label><select id="accessLevel"></select></div>
     </div>
     <div class="checklist" id="accessSlots" style="margin-top:14px;"></div>
-    <button type="button" class="btn primary" id="saveAccessBtn" style="margin-top:14px;">Сохранить доступ</button>
+    <button type="button" class="btn primary" id="saveAccessBtn" style="margin-top:14px;">Сохранить</button>
     <div class="banner success" id="accessSuccess"></div>
   </div>
 
@@ -189,7 +199,7 @@
     const b = el(id);
     b.textContent = text;
     b.style.display = 'block';
-    setTimeout(() => { b.style.display = 'none'; }, 6000);
+    setTimeout(() => { b.style.display = 'none'; }, 8000);
   }
 
   let usersCache = [];
@@ -208,15 +218,22 @@
       const statusBadge = u.status === 'active'
         ? '<span class="badge active">активен</span>'
         : `<span class="badge pending">${u.status}</span>`;
-      const levelCell = u.level_name || '—';
+      const leaderBadge = u.is_leader ? '<span class="badge leader">лидер</span>' : '<span class="badge muted">нет</span>';
+      const levelOptions = levelsCache.map((l) =>
+        `<option value="${l.id}" ${l.id === u.level_id ? 'selected' : ''}>${l.name}</option>`
+      ).join('');
+      const levelCell = `<select class="level-select" data-id="${u.id}">${levelOptions}</select>`;
       const actionCell = u.status === 'active'
-        ? ''
+        ? `<button type="button" class="btn leader-toggle-btn" data-id="${u.id}" data-value="${!u.is_leader}">${u.is_leader ? 'Снять лидера' : 'Сделать лидером'}</button>`
         : `<button type="button" class="btn primary approve-btn" data-id="${u.id}">Одобрить</button>`;
       tr.innerHTML = `
-        <td>${u.name}</td>
+        <td>${u.first_name} ${u.last_name}</td>
         <td>${u.email}</td>
+        <td>${u.exchange_uid || '—'}</td>
+        <td>${u.referred_by_uid || '—'}</td>
         <td>${statusBadge}</td>
         <td>${levelCell}</td>
+        <td>${leaderBadge}</td>
         <td>${actionCell}</td>
       `;
       body.appendChild(tr);
@@ -228,10 +245,36 @@
         try {
           const res = await api(`/api/admin/users/${btn.dataset.id}/approve`, { method: 'POST' });
           const data = await res.json();
-          flash('approveSuccess', `Заявка одобрена. Ссылка для ${data.user.name}: ${data.link}`);
+          flash('approveSuccess', `Заявка одобрена. Ссылка для ${data.user.first_name} ${data.user.last_name}: ${data.link}`);
           await loadUsers();
-          fillAccessUserSelect();
         } catch (e) { btn.disabled = false; }
+      });
+    });
+
+    body.querySelectorAll('.leader-toggle-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try {
+          await api(`/api/admin/users/${btn.dataset.id}/leader`, {
+            method: 'POST',
+            body: JSON.stringify({ is_leader: btn.dataset.value === 'true' }),
+          });
+          await loadUsers();
+        } catch (e) { btn.disabled = false; }
+      });
+    });
+
+    body.querySelectorAll('.level-select').forEach((sel) => {
+      sel.addEventListener('change', async () => {
+        sel.disabled = true;
+        try {
+          await api(`/api/admin/users/${sel.dataset.id}/level`, {
+            method: 'POST',
+            body: JSON.stringify({ level_id: sel.value }),
+          });
+        } finally {
+          sel.disabled = false;
+        }
       });
     });
   }
@@ -248,6 +291,9 @@
       tr.innerHTML = `<td>${l.name}</td><td>${l.rate_usdt_per_signal}</td>`;
       body.appendChild(tr);
     });
+
+    el('accessLevel').innerHTML = data.levels.map((l) => `<option value="${l.id}">${l.name}</option>`).join('')
+      || '<option value="">сначала добавьте уровень</option>';
   }
 
   async function loadSlots() {
@@ -259,30 +305,25 @@
     body.innerHTML = '';
     data.slots.forEach((s) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${s.name}</td>`;
+      tr.innerHTML = `<td>${s.name}</td><td>${s.requires_leader ? '✓' : '—'}</td>`;
       body.appendChild(tr);
     });
 
     const select = el('dailySlot');
-    select.innerHTML = data.slots.map((s) => `<option value="${s.id}">${s.name}</option>`).join('');
+    select.innerHTML = data.slots.map((s) => `<option value="${s.id}">${s.name}${s.requires_leader ? ' (лидер)' : ''}</option>`).join('');
 
-    el('accessSlots').innerHTML = data.slots.map((s) => `
+    // Слоты для лидеров не назначаются на уровень — они и так доступны
+    // всем лидерам, поэтому не показываем их в чек-листе "слоты уровня".
+    const assignable = data.slots.filter((s) => !s.requires_leader);
+    el('accessSlots').innerHTML = assignable.map((s) => `
       <label><input type="checkbox" value="${s.id}" class="access-checkbox"> ${s.name}</label>
     `).join('') || '<span class="empty-state">Сначала добавьте хотя бы один слот.</span>';
   }
 
-  function fillAccessUserSelect() {
-    const select = el('accessUser');
-    select.innerHTML = usersCache
-      .filter((u) => u.status === 'active')
-      .map((u) => `<option value="${u.id}">${u.name} (${u.email})</option>`)
-      .join('') || '<option value="">нет активных участников</option>';
-  }
-
-  async function loadAccessForSelectedUser() {
-    const userId = el('accessUser').value;
-    if (!userId) return;
-    const res = await api(`/api/admin/signals/access?user_id=${userId}`);
+  async function loadAccessForSelectedLevel() {
+    const levelId = el('accessLevel').value;
+    if (!levelId) return;
+    const res = await api(`/api/admin/levels/${levelId}/slots`);
     const data = await res.json();
     document.querySelectorAll('.access-checkbox').forEach((cb) => {
       cb.checked = data.slot_ids.includes(cb.value);
@@ -309,8 +350,10 @@
   el('addSlotBtn').addEventListener('click', async () => {
     const name = el('slotName').value.trim();
     if (!name) return;
-    await api('/api/admin/signals/slots', { method: 'POST', body: JSON.stringify({ name }) });
+    const requires_leader = el('slotLeaderOnly').checked;
+    await api('/api/admin/signals/slots', { method: 'POST', body: JSON.stringify({ name, requires_leader }) });
     el('slotName').value = '';
+    el('slotLeaderOnly').checked = false;
     await loadSlots();
   });
 
@@ -318,20 +361,21 @@
     const slot_id = el('dailySlot').value;
     const date = el('dailyDate').value;
     const code = el('dailyCode').value.trim();
+    const valid_minutes = parseInt(el('dailyValidMinutes').value, 10) || 30;
     if (!slot_id || !date || !code) return;
-    await api('/api/admin/signals/daily', { method: 'POST', body: JSON.stringify({ slot_id, date, code }) });
-    flash('dailySuccess', 'Код опубликован.');
+    await api('/api/admin/signals/daily', { method: 'POST', body: JSON.stringify({ slot_id, date, code, valid_minutes }) });
+    flash('dailySuccess', `Код опубликован, действует ${valid_minutes} мин.`);
     el('dailyCode').value = '';
   });
 
-  el('accessUser').addEventListener('change', loadAccessForSelectedUser);
+  el('accessLevel').addEventListener('change', loadAccessForSelectedLevel);
 
   el('saveAccessBtn').addEventListener('click', async () => {
-    const user_id = el('accessUser').value;
-    if (!user_id) return;
+    const levelId = el('accessLevel').value;
+    if (!levelId) return;
     const slot_ids = Array.from(document.querySelectorAll('.access-checkbox:checked')).map((cb) => cb.value);
-    await api('/api/admin/signals/access', { method: 'POST', body: JSON.stringify({ user_id, slot_ids }) });
-    flash('accessSuccess', 'Доступ обновлён.');
+    await api(`/api/admin/levels/${levelId}/slots`, { method: 'POST', body: JSON.stringify({ slot_ids }) });
+    flash('accessSuccess', 'Слоты уровня обновлены.');
   });
 
   el('saveSettingsBtn').addEventListener('click', async () => {
@@ -352,8 +396,11 @@
   async function init() {
     el('dailyDate').value = new Date().toISOString().slice(0, 10);
     try {
-      await Promise.all([loadUsers(), loadLevels(), loadSlots(), loadSettings()]);
-      fillAccessUserSelect();
+      // Уровни нужны до рендера участников (в таблице — выбор уровня),
+      // поэтому грузим их первыми, не параллельно.
+      await loadLevels();
+      await Promise.all([loadUsers(), loadSlots(), loadSettings()]);
+      await loadAccessForSelectedLevel();
       el('loadingState').style.display = 'none';
       el('app').style.display = 'block';
     } catch (err) {

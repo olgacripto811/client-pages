@@ -8,5 +8,13 @@ module.exports = async (req, res) => {
   const user = await requireUser(req, res);
   if (!user) return;
 
-  return res.status(200).json({ id: user.id, name: user.name, email: user.email, role: user.role });
+  return res.status(200).json({
+    id: user.id,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    role: user.role,
+    is_leader: user.is_leader,
+    exchange_uid: user.exchange_uid,
+  });
 };

@@ -26,7 +26,7 @@
   }
   a{color:inherit;}
   header.nav{ border-bottom:1px solid var(--line); background:rgba(251,249,252,0.85); backdrop-filter: blur(10px); position:sticky; top:0; z-index:10; }
-  .nav-inner{ max-width:640px; margin:0 auto; padding:16px 24px; }
+  .nav-inner{ max-width:560px; margin:0 auto; padding:16px 24px; }
   .brand{ font-family:'Playfair Display', serif; font-style:italic; font-size:18px; color:var(--lavender-ink); }
   .brand b{ font-style:normal; font-weight:600; }
   main{ max-width:520px; margin:0 auto; padding:48px 20px 60px; }
@@ -38,13 +38,19 @@
     padding:36px 32px; box-shadow: 0 30px 60px -30px rgba(91,63,160,0.30);
   }
   .field{ margin-bottom:18px; }
+  .field.split{ display:flex; gap:12px; }
+  .field.split > div{ flex:1; }
   .field label{ display:block; font-size:13px; font-weight:500; margin-bottom:8px; }
-  .field input{
+  .field .hint{ display:block; font-size:12px; color:var(--ink-soft); font-weight:400; margin-top:6px; }
+  .field input, .field select{
     width:100%; border:1.5px solid var(--line); border-radius:14px;
     padding:14px 16px; font-family:'Inter',sans-serif; font-size:15px;
     background:#FDFCFE; color:var(--ink);
   }
-  .field input:focus{ outline:none; border-color:var(--lavender-deep); box-shadow:0 0 0 4px rgba(183,148,244,0.18); }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--lavender-deep); box-shadow:0 0 0 4px rgba(183,148,244,0.18); }
+  .checkbox-field{ display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .checkbox-field input{ width:18px; height:18px; }
+  .checkbox-field label{ font-size:14px; font-weight:400; }
   .submit-btn{
     width:100%; background: linear-gradient(100deg, var(--lavender-deep), #A579EF 55%, var(--peach-deep));
     color:#fff; border:none; border-radius:100px; padding:15px 26px;
@@ -68,20 +74,45 @@
 <main>
   <div class="kicker">✨ Личный кабинет</div>
   <h1>Заявка на подключение</h1>
-  <p class="lead">Оставьте имя и email — Ольга рассмотрит заявку и пришлёт вам персональную ссылку для входа.</p>
+  <p class="lead">Заполните данные — Ольга рассмотрит заявку и пришлёт вам персональную ссылку для входа.</p>
 
   <div class="card" id="formCard">
     <form id="signupForm">
-      <div class="field">
-        <label for="name">Имя</label>
-        <input type="text" id="name" name="name" required autocomplete="name">
+      <div class="field split">
+        <div>
+          <label for="firstName">Имя</label>
+          <input type="text" id="firstName" required autocomplete="given-name">
+        </div>
+        <div>
+          <label for="lastName">Фамилия</label>
+          <input type="text" id="lastName" required autocomplete="family-name">
+        </div>
       </div>
       <div class="field">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required autocomplete="email">
+        <input type="email" id="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="exchangeUid">UID на бирже</label>
+        <input type="text" id="exchangeUid" required>
+      </div>
+      <div class="field">
+        <label for="level">Уровень</label>
+        <select id="level" required>
+          <option value="" disabled selected>Выберите уровень…</option>
+        </select>
+      </div>
+      <div class="checkbox-field">
+        <input type="checkbox" id="isLeader">
+        <label for="isLeader">Я лидер</label>
+      </div>
+      <div class="field">
+        <label for="referredBy">UID лидера, который вас пригласил</label>
+        <input type="text" id="referredBy">
+        <span class="hint">Необязательно — если вас кто-то пригласил.</span>
       </div>
       <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
-      <div class="banner error" id="errorBanner">Не получилось отправить заявку. Попробуйте ещё раз чуть позже.</div>
+      <div class="banner error" id="errorBanner">Не получилось отправить заявку. Проверьте, что все обязательные поля заполнены, и попробуйте ещё раз.</div>
     </form>
   </div>
 
@@ -95,13 +126,28 @@
 <footer>Внутренний инструмент команды · Фея Автоматизации</footer>
 
 <script>
-  const API_URL = '/api/auth/signup';
+  const el = (id) => document.getElementById(id);
 
-  const form = document.getElementById('signupForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const errorBanner = document.getElementById('errorBanner');
-  const formCard = document.getElementById('formCard');
-  const successCard = document.getElementById('successCard');
+  async function loadLevels() {
+    try {
+      const res = await fetch('/api/levels');
+      const data = await res.json();
+      const select = el('level');
+      data.levels.forEach((l) => {
+        const opt = document.createElement('option');
+        opt.value = l.id;
+        opt.textContent = l.name;
+        select.appendChild(opt);
+      });
+    } catch (e) { /* форма всё равно покажет ошибку при отправке, если уровень не выбран */ }
+  }
+  loadLevels();
+
+  const form = el('signupForm');
+  const submitBtn = el('submitBtn');
+  const errorBanner = el('errorBanner');
+  const formCard = el('formCard');
+  const successCard = el('successCard');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -110,12 +156,17 @@
     submitBtn.textContent = 'Отправляем…';
 
     const payload = {
-      name: document.getElementById('name').value.trim(),
-      email: document.getElementById('email').value.trim(),
+      first_name: el('firstName').value.trim(),
+      last_name: el('lastName').value.trim(),
+      email: el('email').value.trim(),
+      exchange_uid: el('exchangeUid').value.trim(),
+      level_id: el('level').value,
+      is_leader: el('isLeader').checked,
+      referred_by_uid: el('referredBy').value.trim(),
     };
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

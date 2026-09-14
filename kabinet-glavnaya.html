@@ -51,6 +51,7 @@
     border-radius:12px; padding:9px 14px; min-width:110px; text-align:center; letter-spacing:0.03em;
   }
   .signal-row .code-empty{ color:var(--ink-soft); font-size:13px; font-style:italic; }
+  .signal-row .code-field.expired{ opacity:0.45; text-decoration:line-through; }
   .copy-btn, .ack-btn, .ghost-btn, .primary-btn{
     display:inline-flex; align-items:center; gap:6px; border-radius:100px; padding:8px 16px;
     font-family:'Inter',sans-serif; font-size:12.5px; font-weight:500; cursor:pointer; border:1.5px solid var(--line);
@@ -114,7 +115,7 @@
 
   <div class="section-title">📋 Сигналы на сегодня</div>
   <div id="weekendNotice" class="card" style="display:none;">
-    <span class="empty-state">Сегодня выходной на бирже — сигналов не будет.</span>
+    <span class="empty-state">Сегодня выходной на бирже, один сигнал в 18:40.</span>
   </div>
   <div id="signalsToday"></div>
 
@@ -225,11 +226,17 @@
     data.slots.forEach((s) => {
       const card = document.createElement('div');
       card.className = 'card';
+      card.dataset.expiresAt = s.expires_at || '';
 
-      const codeHtml = s.code
-        ? `<span class="code-field">${s.code}</span>
-           <button type="button" class="copy-btn" data-code="${s.code}">📋 Копировать</button>`
-        : `<span class="code-empty">код появится позже</span>`;
+      let codeHtml;
+      if (!s.daily_signal_id) {
+        codeHtml = `<span class="code-empty">код появится позже</span>`;
+      } else if (s.is_expired) {
+        codeHtml = `<span class="code-field expired">${s.code}</span><span class="code-empty">код устарел</span>`;
+      } else {
+        codeHtml = `<span class="code-field">${s.code}</span>
+           <button type="button" class="copy-btn" data-code="${s.code}">📋 Копировать</button>`;
+      }
 
       const ackHtml = s.daily_signal_id
         ? `<button type="button" class="ack-btn ${s.acked ? 'acked' : ''}" data-id="${s.daily_signal_id}" ${s.acked ? 'disabled' : ''}>
@@ -238,9 +245,9 @@
         : '';
 
       card.innerHTML = `
-        <div class="signal-row">
+        <div class="signal-row" data-role="signal-row">
           <span class="slot-name">${s.slot_name}</span>
-          ${codeHtml}
+          <span data-role="code-slot">${codeHtml}</span>
           ${ackHtml}
         </div>
       `;
@@ -370,8 +377,9 @@
   async function loadMe() {
     const res = await api('/api/auth/me');
     const me = await res.json();
-    el('userName').textContent = me.name;
-    document.querySelector('main h1').textContent = `Здравствуйте, ${me.name}!`;
+    const fullName = `${me.first_name} ${me.last_name}`.trim();
+    el('userName').textContent = fullName;
+    document.querySelector('main h1').textContent = `Здравствуйте, ${me.first_name}!`;
   }
 
   async function init() {
@@ -385,6 +393,11 @@
   }
 
   init();
+
+  // Код сигнала действует ограниченное время (обычно ~30 минут) — раз в
+  // минуту перепроверяем у сервера, не истёк ли он, чтобы не нужно было
+  // обновлять страницу вручную во время просмотра.
+  setInterval(() => { loadToday().catch(() => {}); }, 60000);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});

@@ -9,7 +9,9 @@ module.exports = async (req, res) => {
   if (!admin) return;
 
   const { rows } = await sql`
-    SELECT u.id, u.name, u.email, u.status, u.role, u.created_at, u.approved_at,
+    SELECT u.id, u.first_name, u.last_name, u.email, u.exchange_uid,
+           u.is_leader, u.referred_by_uid, u.status, u.role,
+           u.created_at, u.approved_at,
            u.level_id, l.name AS level_name, l.rate_usdt_per_signal
     FROM users u
     LEFT JOIN membership_levels l ON l.id = u.level_id

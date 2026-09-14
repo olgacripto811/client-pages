@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
     SET status = 'active', approved_at = now(),
         access_token_hash = ${tokenHash}, access_token_version = access_token_version + 1
     WHERE id = ${id} AND status <> 'active'
-    RETURNING id, email, name
+    RETURNING id, email, first_name, last_name
   `;
 
   if (!rows[0]) return res.status(404).json({ error: 'not_found_or_already_active' });

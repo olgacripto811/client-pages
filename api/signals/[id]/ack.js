@@ -11,11 +11,18 @@ module.exports = async (req, res) => {
 
   const { id } = req.query;
 
-  // Отмечать можно только сигнал, доступный этому участнику через его слоты.
+  // Отмечать можно только сигнал, доступный этому участнику через слоты
+  // его уровня или (для лидерских слотов) его лидерский статус.
   const { rows: accessRows } = await sql`
     SELECT ds.id
     FROM daily_signals ds
-    JOIN user_signal_access uas ON uas.slot_id = ds.slot_id AND uas.user_id = ${user.id}
+    JOIN signal_slots s
+      ON s.id = ds.slot_id
+      AND s.is_active
+      AND (
+        s.id IN (SELECT slot_id FROM level_signal_access WHERE level_id = ${user.level_id})
+        OR (s.requires_leader AND ${!!user.is_leader})
+      )
     WHERE ds.id = ${id}
   `;
   if (!accessRows[0]) return res.status(404).json({ error: 'not_found' });

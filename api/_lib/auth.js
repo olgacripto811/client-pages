@@ -38,7 +38,8 @@ async function getSessionUser(req) {
 
   const tokenHash = sha256(token);
   const { rows } = await sql`
-    SELECT u.id, u.name, u.email, u.status, u.role, u.level_id
+    SELECT u.id, u.first_name, u.last_name, u.email, u.status, u.role,
+           u.level_id, u.is_leader, u.exchange_uid
     FROM sessions s
     JOIN users u ON u.id = s.user_id
     WHERE s.session_token_hash = ${tokenHash} AND s.expires_at > now()
