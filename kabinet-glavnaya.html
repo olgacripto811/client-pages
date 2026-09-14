@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Личный кабинет · Фея Автоматизации</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8B5CF6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF9FC; --card: #FFFFFF;
+    --lavender: #B794F4; --lavender-deep: #8B5CF6; --lavender-ink: #5B3FA0;
+    --peach: #FBD38D; --peach-deep: #F6AD55;
+    --ink: #2D3748; --ink-soft: #718096; --line: #E8E3F5;
+    --mint: #68D391; --red: #C53030;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(60% 50% at 12% 0%, rgba(183,148,244,0.10), transparent 60%),
+      radial-gradient(50% 40% at 100% 20%, rgba(251,211,141,0.14), transparent 60%),
+      var(--bg);
+    color:var(--ink); font-family:'Inter', sans-serif; font-weight:300;
+    line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh;
+  }
+  a{color:inherit;}
+  header.nav{ border-bottom:1px solid var(--line); background:rgba(251,249,252,0.85); backdrop-filter: blur(10px); position:sticky; top:0; z-index:10; }
+  .nav-inner{ max-width:680px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-family:'Playfair Display', serif; font-style:italic; font-size:18px; color:var(--lavender-ink); }
+  .brand b{ font-style:normal; font-weight:600; }
+  .nav-links{ display:flex; gap:16px; font-size:12.5px; align-items:center; }
+  .nav-links button{ background:none; border:none; color:var(--ink-soft); font-family:'Inter',sans-serif; font-size:12.5px; cursor:pointer; }
+  .nav-links button:hover{ color:var(--lavender-ink); }
+
+  main{ max-width:680px; margin:0 auto; padding:32px 20px 60px; }
+  h1{ font-family:'Playfair Display', serif; font-weight:600; font-size:26px; margin-bottom:4px; }
+  .lead{ color:var(--ink-soft); font-size:14px; margin-bottom:24px; }
+
+  .section-title{ font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--lavender-ink); font-weight:500; margin:32px 0 14px; }
+  .section-title:first-of-type{ margin-top:0; }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px 22px; margin-bottom:12px; box-shadow: 0 12px 24px -16px rgba(45,55,72,0.15); }
+
+  .signal-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .signal-row .slot-name{ font-weight:500; flex:1 1 140px; min-width:120px; }
+  .signal-row .code-field{
+    font-family:monospace; font-size:15px; background:#FDFCFE; border:1.5px solid var(--line);
+    border-radius:12px; padding:9px 14px; min-width:110px; text-align:center; letter-spacing:0.03em;
+  }
+  .signal-row .code-empty{ color:var(--ink-soft); font-size:13px; font-style:italic; }
+  .copy-btn, .ack-btn, .ghost-btn, .primary-btn{
+    display:inline-flex; align-items:center; gap:6px; border-radius:100px; padding:8px 16px;
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:500; cursor:pointer; border:1.5px solid var(--line);
+    background:#FDFCFE; color:var(--lavender-ink); transition:all .15s ease;
+  }
+  .copy-btn:hover, .ghost-btn:hover{ border-color:var(--lavender-deep); background:rgba(183,148,244,0.08); }
+  .copy-btn.copied{ border-color:var(--mint); color:#2F855A; background:rgba(104,211,145,0.10); }
+  .ack-btn.acked{ border-color:var(--mint); color:#2F855A; background:rgba(104,211,145,0.10); cursor:default; }
+  .primary-btn{
+    border:none; color:#fff; background:linear-gradient(100deg, var(--lavender-deep), #A579EF 55%, var(--peach-deep));
+    box-shadow: 0 14px 30px -10px rgba(139,92,246,0.5); padding:12px 22px; font-size:14px;
+  }
+  .primary-btn:disabled{ opacity:0.55; cursor:default; box-shadow:none; }
+  .empty-state{ color:var(--ink-soft); font-size:14px; }
+
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; margin-bottom:16px; }
+  .stat-tile{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; }
+  .stat-tile .n{ font-family:'Playfair Display', serif; font-size:22px; font-weight:600; color:var(--lavender-ink); }
+  .stat-tile .l{ font-size:12px; color:var(--ink-soft); margin-top:2px; }
+
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th{ text-align:left; color:var(--ink-soft); font-weight:500; font-size:11.5px; text-transform:uppercase; letter-spacing:0.04em; padding:8px 10px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 10px; border-bottom:1px solid var(--line); }
+  .badge{ display:inline-block; padding:2px 9px; border-radius:100px; font-size:11.5px; }
+  .badge.yes{ background:rgba(104,211,145,0.15); color:#2F855A; }
+  .badge.no{ background:rgba(245,101,101,0.10); color:var(--red); }
+
+  .banner{ margin-top:12px; padding:12px 16px; border-radius:12px; font-size:13px; display:none; }
+  .banner.error{ background: rgba(245,101,101,0.10); color:var(--red); border:1px solid rgba(245,101,101,0.3); }
+  .banner.success{ background: rgba(104,211,145,0.12); color:#2F855A; border:1px solid rgba(104,211,145,0.3); }
+
+  .account-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+  footer{ text-align:center; padding:20px; font-size:11.5px; color:var(--ink-soft); }
+  #app{ display:none; }
+  #loadingState, #gateState{ max-width:440px; margin:60px auto; text-align:center; color:var(--ink-soft); font-size:14px; padding:0 20px; }
+  #gateState a{ color:var(--lavender-ink); font-weight:500; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Фея <b>Автоматизации</b> · кабинет</div>
+    <div class="nav-links">
+      <span id="userName"></span>
+      <button type="button" id="logoutBtn">Выйти</button>
+    </div>
+  </div>
+</header>
+
+<div id="loadingState">Загружаем ваш кабинет…</div>
+<div id="gateState" style="display:none;">
+  Не удалось войти — сессия истекла или ссылка недействительна.<br>
+  <a href="kabinet-zayavka.html">Оставить новую заявку</a> или перейдите заново по вашей персональной ссылке.
+</div>
+
+<main id="app">
+  <h1>Здравствуйте!</h1>
+  <p class="lead">Сегодняшние сигналы, статистика и заработок — всё в одном месте.</p>
+
+  <div class="section-title">📋 Сигналы на сегодня</div>
+  <div id="weekendNotice" class="card" style="display:none;">
+    <span class="empty-state">Сегодня выходной на бирже — сигналов не будет.</span>
+  </div>
+  <div id="signalsToday"></div>
+
+  <div class="section-title">📊 Статистика по сигналам</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Дата</th><th>Сигнал</th><th>Отметка</th></tr></thead>
+      <tbody id="historyBody"></tbody>
+    </table>
+    <div class="empty-state" id="historyEmpty" style="display:none; margin-top:10px;">История пока пуста.</div>
+  </div>
+
+  <div class="section-title">💰 Заработок</div>
+  <div class="stat-grid" id="earningsStats"></div>
+  <div class="card">
+    <p style="font-size:13.5px; color:var(--ink-soft); margin-bottom:14px;" id="earningsExplain"></p>
+    <button type="button" class="primary-btn" id="withdrawBtn">Вывести доступную сумму</button>
+    <div class="banner error" id="withdrawError"></div>
+    <div class="banner success" id="withdrawSuccess"></div>
+  </div>
+
+  <div class="section-title">🧾 История выводов</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Дата</th><th>Сигналов</th><th>USDT</th><th>Рубли</th></tr></thead>
+      <tbody id="withdrawalsBody"></tbody>
+    </table>
+    <div class="empty-state" id="withdrawalsEmpty" style="display:none; margin-top:10px;">Выводов пока не было.</div>
+  </div>
+
+  <div class="section-title">🔑 Доступ</div>
+  <div class="card">
+    <p style="font-size:13.5px; color:var(--ink-soft); margin-bottom:14px;">
+      Если считаете, что ваша персональная ссылка для входа могла кому-то
+      попасться на глаза — перевыпустите её. Старая перестанет работать сразу.
+    </p>
+    <div class="account-actions">
+      <button type="button" class="ghost-btn" id="reissueBtn">Перевыпустить мою ссылку</button>
+    </div>
+    <div class="banner success" id="reissueSuccess"></div>
+  </div>
+</main>
+
+<footer>Внутренний инструмент команды · Фея Автоматизации</footer>
+
+<script>
+  const el = (id) => document.getElementById(id);
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      credentials: 'same-origin',
+      headers: opts.body ? { 'Content-Type': 'application/json' } : undefined,
+      ...opts,
+    });
+    if (res.status === 401) { showGate(); throw new Error('unauthorized'); }
+    return res;
+  }
+
+  function showGate() {
+    el('loadingState').style.display = 'none';
+    el('app').style.display = 'none';
+    el('gateState').style.display = 'block';
+  }
+
+  // Копирование в буфер с фолбэком через textarea (небезопасный контекст /
+  // старые браузеры без Clipboard API) — тот же подход, что в komanda-lenta.html.
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('ru-RU');
+  }
+
+  function fmtNum(n, digits = 2) {
+    return Number(n || 0).toFixed(digits);
+  }
+
+  async function loadToday() {
+    const res = await api('/api/signals/today');
+    const data = await res.json();
+
+    el('weekendNotice').style.display = data.is_weekend ? 'block' : 'none';
+
+    const container = el('signalsToday');
+    container.innerHTML = '';
+
+    if (!data.slots.length) {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = '<span class="empty-state">Вам пока не назначены сигналы — обратитесь к Ольге.</span>';
+      container.appendChild(div);
+      return;
+    }
+
+    data.slots.forEach((s) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const codeHtml = s.code
+        ? `<span class="code-field">${s.code}</span>
+           <button type="button" class="copy-btn" data-code="${s.code}">📋 Копировать</button>`
+        : `<span class="code-empty">код появится позже</span>`;
+
+      const ackHtml = s.daily_signal_id
+        ? `<button type="button" class="ack-btn ${s.acked ? 'acked' : ''}" data-id="${s.daily_signal_id}" ${s.acked ? 'disabled' : ''}>
+             ${s.acked ? '✓ Отмечено' : 'Отметил'}
+           </button>`
+        : '';
+
+      card.innerHTML = `
+        <div class="signal-row">
+          <span class="slot-name">${s.slot_name}</span>
+          ${codeHtml}
+          ${ackHtml}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    container.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        try {
+          await copyText(btn.dataset.code);
+          btn.classList.add('copied');
+          btn.textContent = '✓ Скопировано';
+          setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 Копировать'; }, 1500);
+        } catch (e) { /* молча игнорируем — кнопка просто не подтвердит копирование */ }
+      });
+    });
+
+    container.querySelectorAll('.ack-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try {
+          await api(`/api/signals/${btn.dataset.id}/ack`, { method: 'POST' });
+          btn.classList.add('acked');
+          btn.textContent = '✓ Отмечено';
+          loadEarnings();
+        } catch (e) {
+          btn.disabled = false;
+        }
+      });
+    });
+  }
+
+  async function loadHistory() {
+    const res = await api('/api/signals/history');
+    const data = await res.json();
+    const body = el('historyBody');
+    body.innerHTML = '';
+    el('historyEmpty').style.display = data.items.length ? 'none' : 'block';
+
+    data.items.slice(0, 30).forEach((item) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${fmtDate(item.date)}</td>
+        <td>${item.slot_name}</td>
+        <td><span class="badge ${item.acked ? 'yes' : 'no'}">${item.acked ? 'отмечен' : 'пропущен'}</span></td>
+      `;
+      body.appendChild(tr);
+    });
+  }
+
+  async function loadEarnings() {
+    const res = await api('/api/earnings/summary');
+    const s = await res.json();
+
+    el('earningsStats').innerHTML = `
+      <div class="stat-tile"><div class="n">${s.signals_count}</div><div class="l">отмечено с прошлого вывода</div></div>
+      <div class="stat-tile"><div class="n">${fmtNum(s.net_usdt)}</div><div class="l">USDT доступно</div></div>
+      <div class="stat-tile"><div class="n">${fmtNum(s.net_rub, 0)} ₽</div><div class="l">в рублях по курсу</div></div>
+      <div class="stat-tile"><div class="n">${fmtNum(s.earned_total_usdt)}</div><div class="l">USDT заработано всего</div></div>
+    `;
+
+    el('earningsExplain').textContent =
+      `${s.signals_count} × ${fmtNum(s.rate_usdt_per_signal)} USDT − комиссия ${fmtNum(s.commission_pct, 0)}% ` +
+      `= ${fmtNum(s.net_usdt)} USDT (курс ${fmtNum(s.usdt_rub_rate)} ₽/USDT).`;
+
+    el('withdrawBtn').disabled = s.net_usdt <= 0;
+  }
+
+  async function loadWithdrawals() {
+    const res = await api('/api/withdrawals/history');
+    const data = await res.json();
+    const body = el('withdrawalsBody');
+    body.innerHTML = '';
+    el('withdrawalsEmpty').style.display = data.items.length ? 'none' : 'block';
+
+    data.items.forEach((w) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${fmtDate(w.requested_at)}</td>
+        <td>${w.signals_count}</td>
+        <td>${fmtNum(w.net_usdt)}</td>
+        <td>${fmtNum(w.net_rub, 0)} ₽</td>
+      `;
+      body.appendChild(tr);
+    });
+  }
+
+  el('withdrawBtn').addEventListener('click', async () => {
+    el('withdrawError').style.display = 'none';
+    el('withdrawSuccess').style.display = 'none';
+    el('withdrawBtn').disabled = true;
+
+    try {
+      const res = await api('/api/withdrawals', { method: 'POST', body: JSON.stringify({}) });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'error');
+      }
+      const data = await res.json();
+      el('withdrawSuccess').textContent = `Вывод на ${fmtNum(data.withdrawal.net_usdt)} USDT (${fmtNum(data.withdrawal.net_rub, 0)} ₽) зафиксирован.`;
+      el('withdrawSuccess').style.display = 'block';
+      await Promise.all([loadEarnings(), loadWithdrawals()]);
+    } catch (err) {
+      el('withdrawError').textContent = err.message === 'nothing_to_withdraw'
+        ? 'Пока нечего выводить — отметьте сигналы за этот период.'
+        : 'Не получилось создать вывод. Попробуйте ещё раз.';
+      el('withdrawError').style.display = 'block';
+      el('withdrawBtn').disabled = false;
+    }
+  });
+
+  el('reissueBtn').addEventListener('click', async () => {
+    if (!confirm('Старая ссылка сразу перестанет работать. Продолжить?')) return;
+    try {
+      const res = await api('/api/auth/reissue-link', { method: 'POST' });
+      const data = await res.json();
+      el('reissueSuccess').innerHTML = `Новая ссылка: <br><code style="word-break:break-all;">${data.link}</code><br>Сохраните её — показываем один раз.`;
+      el('reissueSuccess').style.display = 'block';
+    } catch (e) { /* обработано в api(): покажет gate при 401 */ }
+  });
+
+  el('logoutBtn').addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    location.href = 'kabinet-vhod.html';
+  });
+
+  async function loadMe() {
+    const res = await api('/api/auth/me');
+    const me = await res.json();
+    el('userName').textContent = me.name;
+    document.querySelector('main h1').textContent = `Здравствуйте, ${me.name}!`;
+  }
+
+  async function init() {
+    try {
+      await Promise.all([loadMe(), loadToday(), loadHistory(), loadEarnings(), loadWithdrawals()]);
+      el('loadingState').style.display = 'none';
+      el('app').style.display = 'block';
+    } catch (err) {
+      // showGate() уже вызван внутри api() при 401
+    }
+  }
+
+  init();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+
+</body>
+</html>

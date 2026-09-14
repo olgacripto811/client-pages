@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Вход в кабинет · Фея Автоматизации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF9FC; --card: #FFFFFF;
+    --lavender-deep: #8B5CF6; --lavender-ink: #5B3FA0; --peach-deep: #F6AD55;
+    --ink: #2D3748; --ink-soft: #718096; --line: #E8E3F5; --red: #C53030;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: radial-gradient(60% 50% at 12% 0%, rgba(183,148,244,0.10), transparent 60%), var(--bg);
+    color:var(--ink); font-family:'Inter', sans-serif; font-weight:300; line-height:1.6;
+    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  a{color:inherit;}
+  .card{
+    max-width:440px; width:100%; background:var(--card); border:1px solid var(--line);
+    border-radius:24px; padding:36px 32px; text-align:center;
+    box-shadow: 0 30px 60px -30px rgba(91,63,160,0.30);
+  }
+  .emoji{ font-size:34px; margin-bottom:14px; }
+  h1{ font-family:'Playfair Display', serif; font-weight:600; font-size:22px; margin-bottom:10px; }
+  p{ color:var(--ink-soft); font-size:14.5px; margin-bottom:18px; }
+  .link-btn{
+    display:inline-block; background: linear-gradient(100deg, var(--lavender-deep), #A579EF 55%, var(--peach-deep));
+    color:#fff; text-decoration:none; border-radius:100px; padding:13px 26px;
+    font-size:14.5px; font-weight:500; box-shadow: 0 14px 30px -10px rgba(139,92,246,0.5);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="emoji">🔒</div>
+    <h1 id="title">Ссылка не сработала</h1>
+    <p id="text">
+      Ваша персональная ссылка недействительна, устарела (была перевыпущена)
+      или заявка ещё не одобрена. Если это ошибка — напишите Ольге, она
+      пришлёт ссылку заново.
+    </p>
+    <a class="link-btn" href="kabinet-zayavka.html">Оставить заявку</a>
+  </div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const reason = params.get('error');
+  const title = document.getElementById('title');
+  const text = document.getElementById('text');
+
+  if (reason === 'rate_limited') {
+    title.textContent = 'Слишком много попыток';
+    text.textContent = 'Подождите немного и перейдите по ссылке ещё раз.';
+  } else if (reason === 'missing_token') {
+    title.textContent = 'Не хватает ссылки целиком';
+    text.textContent = 'Похоже, ссылка скопировалась не полностью — попробуйте перейти по ней ещё раз.';
+  }
+</script>
+</body>
+</html>

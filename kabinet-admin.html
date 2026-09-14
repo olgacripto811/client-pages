@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Админка кабинета · Фея Автоматизации</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8B5CF6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF9FC; --card: #FFFFFF;
+    --lavender: #B794F4; --lavender-deep: #8B5CF6; --lavender-ink: #5B3FA0;
+    --peach: #FBD38D; --peach-deep: #F6AD55;
+    --ink: #2D3748; --ink-soft: #718096; --line: #E8E3F5;
+    --mint: #68D391; --red: #C53030;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(60% 50% at 12% 0%, rgba(183,148,244,0.10), transparent 60%),
+      radial-gradient(50% 40% at 100% 20%, rgba(251,211,141,0.14), transparent 60%),
+      var(--bg);
+    color:var(--ink); font-family:'Inter', sans-serif; font-weight:300;
+    line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh;
+  }
+  a{color:inherit;}
+  header.nav{ border-bottom:1px solid var(--line); background:rgba(251,249,252,0.85); backdrop-filter: blur(10px); position:sticky; top:0; z-index:10; }
+  .nav-inner{ max-width:820px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .brand{ font-family:'Playfair Display', serif; font-style:italic; font-size:18px; color:var(--lavender-ink); }
+  .brand b{ font-style:normal; font-weight:600; }
+  .nav-links button{ background:none; border:none; color:var(--ink-soft); font-family:'Inter',sans-serif; font-size:12.5px; cursor:pointer; }
+
+  main{ max-width:820px; margin:0 auto; padding:32px 20px 60px; }
+  h1{ font-family:'Playfair Display', serif; font-weight:600; font-size:26px; margin-bottom:4px; }
+  .lead{ color:var(--ink-soft); font-size:14px; margin-bottom:24px; }
+
+  .section-title{ font-size:12.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--lavender-ink); font-weight:500; margin:32px 0 14px; }
+  .section-title:first-of-type{ margin-top:0; }
+
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px; margin-bottom:14px; box-shadow: 0 12px 24px -16px rgba(45,55,72,0.15); }
+
+  .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:end; }
+  .field{ display:flex; flex-direction:column; gap:6px; flex:1 1 140px; }
+  .field label{ font-size:12px; font-weight:500; color:var(--ink-soft); }
+  .field input, .field select{
+    border:1.5px solid var(--line); border-radius:12px; padding:10px 12px;
+    font-family:'Inter',sans-serif; font-size:14px; background:#FDFCFE; color:var(--ink);
+  }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--lavender-deep); box-shadow:0 0 0 4px rgba(183,148,244,0.18); }
+
+  .btn{
+    border:1.5px solid var(--line); border-radius:100px; padding:10px 18px; font-family:'Inter',sans-serif;
+    font-size:13px; font-weight:500; cursor:pointer; background:#FDFCFE; color:var(--lavender-ink); white-space:nowrap;
+  }
+  .btn:hover{ border-color:var(--lavender-deep); background:rgba(183,148,244,0.08); }
+  .btn.primary{
+    border:none; color:#fff; background:linear-gradient(100deg, var(--lavender-deep), #A579EF 55%, var(--peach-deep));
+    box-shadow: 0 14px 30px -10px rgba(139,92,246,0.5);
+  }
+  .btn:disabled{ opacity:0.5; cursor:default; }
+
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th{ text-align:left; color:var(--ink-soft); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; padding:8px 10px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  .badge{ display:inline-block; padding:2px 9px; border-radius:100px; font-size:11.5px; }
+  .badge.pending{ background:rgba(246,173,85,0.15); color:#B7791F; }
+  .badge.active{ background:rgba(104,211,145,0.15); color:#2F855A; }
+
+  .checklist{ display:flex; flex-wrap:wrap; gap:8px 16px; }
+  .checklist label{ display:flex; align-items:center; gap:6px; font-size:13.5px; }
+
+  .banner{ margin-top:10px; padding:10px 14px; border-radius:12px; font-size:13px; display:none; word-break:break-all; }
+  .banner.error{ background: rgba(245,101,101,0.10); color:var(--red); border:1px solid rgba(245,101,101,0.3); }
+  .banner.success{ background: rgba(104,211,145,0.12); color:#2F855A; border:1px solid rgba(104,211,145,0.3); }
+  .empty-state{ color:var(--ink-soft); font-size:13.5px; }
+
+  footer{ text-align:center; padding:20px; font-size:11.5px; color:var(--ink-soft); }
+  #app{ display:none; }
+  #loadingState, #gateState{ max-width:440px; margin:60px auto; text-align:center; color:var(--ink-soft); font-size:14px; padding:0 20px; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Фея <b>Автоматизации</b> · админка</div>
+    <div class="nav-links"><button type="button" id="logoutBtn">Выйти</button></div>
+  </div>
+</header>
+
+<div id="loadingState">Загружаем…</div>
+<div id="gateState" style="display:none;">Нет доступа — войдите как администратор по своей персональной ссылке.</div>
+
+<main id="app">
+  <h1>Админка</h1>
+  <p class="lead">Заявки, уровни, сигналы и курс — всё для ведения кабинета команды.</p>
+
+  <div class="section-title">👥 Участники</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Имя</th><th>Email</th><th>Статус</th><th>Уровень</th><th></th></tr></thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+  </div>
+  <div class="banner success" id="approveSuccess"></div>
+
+  <div class="section-title">🏷️ Уровни / ставки за сигнал</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Название</th><th>Ставка, USDT/сигнал</th></tr></thead>
+      <tbody id="levelsBody"></tbody>
+    </table>
+    <div class="row" style="margin-top:14px;">
+      <div class="field"><label>Название уровня</label><input type="text" id="levelName" placeholder="Например, Базовый"></div>
+      <div class="field"><label>Ставка, USDT за сигнал</label><input type="number" step="0.01" id="levelRate" placeholder="12"></div>
+      <button type="button" class="btn primary" id="addLevelBtn">Добавить уровень</button>
+    </div>
+  </div>
+
+  <div class="section-title">📡 Слоты сигналов</div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Название</th></tr></thead>
+      <tbody id="slotsBody"></tbody>
+    </table>
+    <div class="row" style="margin-top:14px;">
+      <div class="field"><label>Название слота</label><input type="text" id="slotName" placeholder="Например, Утренний сигнал"></div>
+      <button type="button" class="btn primary" id="addSlotBtn">Добавить слот</button>
+    </div>
+  </div>
+
+  <div class="section-title">🔢 Ввести код на сегодня</div>
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>Слот</label><select id="dailySlot"></select></div>
+      <div class="field"><label>Дата</label><input type="date" id="dailyDate"></div>
+      <div class="field"><label>Код сигнала</label><input type="text" id="dailyCode" placeholder="Например, 482913"></div>
+      <button type="button" class="btn primary" id="publishDailyBtn">Опубликовать</button>
+    </div>
+    <div class="banner success" id="dailySuccess"></div>
+  </div>
+
+  <div class="section-title">🔐 Доступ участника к слотам</div>
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>Участник</label><select id="accessUser"></select></div>
+    </div>
+    <div class="checklist" id="accessSlots" style="margin-top:14px;"></div>
+    <button type="button" class="btn primary" id="saveAccessBtn" style="margin-top:14px;">Сохранить доступ</button>
+    <div class="banner success" id="accessSuccess"></div>
+  </div>
+
+  <div class="section-title">💱 Курс и комиссия</div>
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>Курс USDT → RUB</label><input type="number" step="0.01" id="rateInput"></div>
+      <div class="field"><label>Комиссия на вывод, %</label><input type="number" step="0.1" id="commissionInput"></div>
+      <button type="button" class="btn primary" id="saveSettingsBtn">Сохранить</button>
+    </div>
+    <div class="banner success" id="settingsSuccess"></div>
+  </div>
+</main>
+
+<footer>Внутренний инструмент команды · Фея Автоматизации</footer>
+
+<script>
+  const el = (id) => document.getElementById(id);
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, {
+      credentials: 'same-origin',
+      headers: opts.body ? { 'Content-Type': 'application/json' } : undefined,
+      ...opts,
+    });
+    if (res.status === 401 || res.status === 403) { showGate(); throw new Error('unauthorized'); }
+    return res;
+  }
+
+  function showGate() {
+    el('loadingState').style.display = 'none';
+    el('app').style.display = 'none';
+    el('gateState').style.display = 'block';
+  }
+
+  function flash(id, text) {
+    const b = el(id);
+    b.textContent = text;
+    b.style.display = 'block';
+    setTimeout(() => { b.style.display = 'none'; }, 6000);
+  }
+
+  let usersCache = [];
+  let levelsCache = [];
+  let slotsCache = [];
+
+  async function loadUsers() {
+    const res = await api('/api/admin/users');
+    const data = await res.json();
+    usersCache = data.users;
+
+    const body = el('usersBody');
+    body.innerHTML = '';
+    data.users.forEach((u) => {
+      const tr = document.createElement('tr');
+      const statusBadge = u.status === 'active'
+        ? '<span class="badge active">активен</span>'
+        : `<span class="badge pending">${u.status}</span>`;
+      const levelCell = u.level_name || '—';
+      const actionCell = u.status === 'active'
+        ? ''
+        : `<button type="button" class="btn primary approve-btn" data-id="${u.id}">Одобрить</button>`;
+      tr.innerHTML = `
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td>${statusBadge}</td>
+        <td>${levelCell}</td>
+        <td>${actionCell}</td>
+      `;
+      body.appendChild(tr);
+    });
+
+    body.querySelectorAll('.approve-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        try {
+          const res = await api(`/api/admin/users/${btn.dataset.id}/approve`, { method: 'POST' });
+          const data = await res.json();
+          flash('approveSuccess', `Заявка одобрена. Ссылка для ${data.user.name}: ${data.link}`);
+          await loadUsers();
+          fillAccessUserSelect();
+        } catch (e) { btn.disabled = false; }
+      });
+    });
+  }
+
+  async function loadLevels() {
+    const res = await api('/api/admin/levels');
+    const data = await res.json();
+    levelsCache = data.levels;
+
+    const body = el('levelsBody');
+    body.innerHTML = '';
+    data.levels.forEach((l) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${l.name}</td><td>${l.rate_usdt_per_signal}</td>`;
+      body.appendChild(tr);
+    });
+  }
+
+  async function loadSlots() {
+    const res = await api('/api/admin/signals/slots');
+    const data = await res.json();
+    slotsCache = data.slots;
+
+    const body = el('slotsBody');
+    body.innerHTML = '';
+    data.slots.forEach((s) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${s.name}</td>`;
+      body.appendChild(tr);
+    });
+
+    const select = el('dailySlot');
+    select.innerHTML = data.slots.map((s) => `<option value="${s.id}">${s.name}</option>`).join('');
+
+    el('accessSlots').innerHTML = data.slots.map((s) => `
+      <label><input type="checkbox" value="${s.id}" class="access-checkbox"> ${s.name}</label>
+    `).join('') || '<span class="empty-state">Сначала добавьте хотя бы один слот.</span>';
+  }
+
+  function fillAccessUserSelect() {
+    const select = el('accessUser');
+    select.innerHTML = usersCache
+      .filter((u) => u.status === 'active')
+      .map((u) => `<option value="${u.id}">${u.name} (${u.email})</option>`)
+      .join('') || '<option value="">нет активных участников</option>';
+  }
+
+  async function loadAccessForSelectedUser() {
+    const userId = el('accessUser').value;
+    if (!userId) return;
+    const res = await api(`/api/admin/signals/access?user_id=${userId}`);
+    const data = await res.json();
+    document.querySelectorAll('.access-checkbox').forEach((cb) => {
+      cb.checked = data.slot_ids.includes(cb.value);
+    });
+  }
+
+  async function loadSettings() {
+    const res = await api('/api/admin/settings');
+    const data = await res.json();
+    el('rateInput').value = data.usdt_rub_rate;
+    el('commissionInput').value = data.withdrawal_commission_pct;
+  }
+
+  el('addLevelBtn').addEventListener('click', async () => {
+    const name = el('levelName').value.trim();
+    const rate = parseFloat(el('levelRate').value);
+    if (!name || Number.isNaN(rate)) return;
+    await api('/api/admin/levels', { method: 'POST', body: JSON.stringify({ name, rate_usdt_per_signal: rate }) });
+    el('levelName').value = '';
+    el('levelRate').value = '';
+    await loadLevels();
+  });
+
+  el('addSlotBtn').addEventListener('click', async () => {
+    const name = el('slotName').value.trim();
+    if (!name) return;
+    await api('/api/admin/signals/slots', { method: 'POST', body: JSON.stringify({ name }) });
+    el('slotName').value = '';
+    await loadSlots();
+  });
+
+  el('publishDailyBtn').addEventListener('click', async () => {
+    const slot_id = el('dailySlot').value;
+    const date = el('dailyDate').value;
+    const code = el('dailyCode').value.trim();
+    if (!slot_id || !date || !code) return;
+    await api('/api/admin/signals/daily', { method: 'POST', body: JSON.stringify({ slot_id, date, code }) });
+    flash('dailySuccess', 'Код опубликован.');
+    el('dailyCode').value = '';
+  });
+
+  el('accessUser').addEventListener('change', loadAccessForSelectedUser);
+
+  el('saveAccessBtn').addEventListener('click', async () => {
+    const user_id = el('accessUser').value;
+    if (!user_id) return;
+    const slot_ids = Array.from(document.querySelectorAll('.access-checkbox:checked')).map((cb) => cb.value);
+    await api('/api/admin/signals/access', { method: 'POST', body: JSON.stringify({ user_id, slot_ids }) });
+    flash('accessSuccess', 'Доступ обновлён.');
+  });
+
+  el('saveSettingsBtn').addEventListener('click', async () => {
+    const usdt_rub_rate = parseFloat(el('rateInput').value);
+    const withdrawal_commission_pct = parseFloat(el('commissionInput').value);
+    await api('/api/admin/settings', {
+      method: 'POST',
+      body: JSON.stringify({ usdt_rub_rate, withdrawal_commission_pct }),
+    });
+    flash('settingsSuccess', 'Настройки сохранены.');
+  });
+
+  el('logoutBtn').addEventListener('click', async () => {
+    await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    location.href = 'kabinet-vhod.html';
+  });
+
+  async function init() {
+    el('dailyDate').value = new Date().toISOString().slice(0, 10);
+    try {
+      await Promise.all([loadUsers(), loadLevels(), loadSlots(), loadSettings()]);
+      fillAccessUserSelect();
+      el('loadingState').style.display = 'none';
+      el('app').style.display = 'block';
+    } catch (err) {
+      // showGate() уже вызван внутри api() при 401/403
+    }
+  }
+
+  init();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+
+</body>
+</html>

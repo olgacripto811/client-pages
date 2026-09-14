@@ -1,0 +1,8 @@
+{
+  "name": "client-pages",
+  "private": true,
+  "description": "Статический сайт + API личного кабинета команды (Vercel Serverless Functions).",
+  "dependencies": {
+    "@vercel/postgres": "^0.10.0"
+  }
+}

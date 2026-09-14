@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Заявка на личный кабинет · Фея Автоматизации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FBF9FC; --card: #FFFFFF;
+    --lavender: #B794F4; --lavender-deep: #8B5CF6; --lavender-ink: #5B3FA0;
+    --peach: #FBD38D; --peach-deep: #F6AD55;
+    --ink: #2D3748; --ink-soft: #718096; --line: #E8E3F5;
+    --mint: #68D391; --red: #C53030;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(60% 50% at 12% 0%, rgba(183,148,244,0.10), transparent 60%),
+      radial-gradient(50% 40% at 100% 20%, rgba(251,211,141,0.14), transparent 60%),
+      var(--bg);
+    color:var(--ink); font-family:'Inter', sans-serif; font-weight:300;
+    line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh;
+  }
+  a{color:inherit;}
+  header.nav{ border-bottom:1px solid var(--line); background:rgba(251,249,252,0.85); backdrop-filter: blur(10px); position:sticky; top:0; z-index:10; }
+  .nav-inner{ max-width:640px; margin:0 auto; padding:16px 24px; }
+  .brand{ font-family:'Playfair Display', serif; font-style:italic; font-size:18px; color:var(--lavender-ink); }
+  .brand b{ font-style:normal; font-weight:600; }
+  main{ max-width:520px; margin:0 auto; padding:48px 20px 60px; }
+  .kicker{ font-size:12.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--lavender-ink); font-weight:500; margin-bottom:10px; }
+  h1{ font-family:'Playfair Display', serif; font-weight:600; font-size:28px; margin-bottom:8px; }
+  .lead{ color:var(--ink-soft); font-size:14.5px; margin-bottom:28px; }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:24px;
+    padding:36px 32px; box-shadow: 0 30px 60px -30px rgba(91,63,160,0.30);
+  }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:13px; font-weight:500; margin-bottom:8px; }
+  .field input{
+    width:100%; border:1.5px solid var(--line); border-radius:14px;
+    padding:14px 16px; font-family:'Inter',sans-serif; font-size:15px;
+    background:#FDFCFE; color:var(--ink);
+  }
+  .field input:focus{ outline:none; border-color:var(--lavender-deep); box-shadow:0 0 0 4px rgba(183,148,244,0.18); }
+  .submit-btn{
+    width:100%; background: linear-gradient(100deg, var(--lavender-deep), #A579EF 55%, var(--peach-deep));
+    color:#fff; border:none; border-radius:100px; padding:15px 26px;
+    font-family:'Inter',sans-serif; font-size:14.5px; font-weight:500; cursor:pointer;
+    box-shadow: 0 14px 30px -10px rgba(139,92,246,0.5);
+  }
+  .submit-btn:disabled{ opacity:0.6; cursor:default; }
+  .banner{ margin-top:16px; padding:12px 16px; border-radius:12px; font-size:13px; display:none; }
+  .banner.error{ background: rgba(245,101,101,0.10); color:var(--red); border:1px solid rgba(245,101,101,0.3); }
+  .success-card{ display:none; text-align:center; }
+  .success-card .emoji{ font-size:34px; margin-bottom:12px; }
+  .success-card h2{ font-family:'Playfair Display', serif; font-size:22px; margin-bottom:10px; }
+  .success-card p{ color:var(--ink-soft); font-size:14.5px; }
+  footer{ text-align:center; padding:20px; font-size:11.5px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="nav"><div class="nav-inner"><div class="brand">Фея <b>Автоматизации</b> · кабинет</div></div></header>
+
+<main>
+  <div class="kicker">✨ Личный кабинет</div>
+  <h1>Заявка на подключение</h1>
+  <p class="lead">Оставьте имя и email — Ольга рассмотрит заявку и пришлёт вам персональную ссылку для входа.</p>
+
+  <div class="card" id="formCard">
+    <form id="signupForm">
+      <div class="field">
+        <label for="name">Имя</label>
+        <input type="text" id="name" name="name" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Отправить заявку</button>
+      <div class="banner error" id="errorBanner">Не получилось отправить заявку. Попробуйте ещё раз чуть позже.</div>
+    </form>
+  </div>
+
+  <div class="card success-card" id="successCard">
+    <div class="emoji">🌿</div>
+    <h2>Заявка отправлена</h2>
+    <p>Ольга рассмотрит её и пришлёт вам персональную ссылку для входа в личный кабинет — на указанный email или лично.</p>
+  </div>
+</main>
+
+<footer>Внутренний инструмент команды · Фея Автоматизации</footer>
+
+<script>
+  const API_URL = '/api/auth/signup';
+
+  const form = document.getElementById('signupForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const errorBanner = document.getElementById('errorBanner');
+  const formCard = document.getElementById('formCard');
+  const successCard = document.getElementById('successCard');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBanner.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправляем…';
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+    };
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error('bad_response');
+
+      formCard.style.display = 'none';
+      successCard.style.display = 'block';
+    } catch (err) {
+      errorBanner.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Отправить заявку';
+    }
+  });
+</script>
+
+</body>
+</html>

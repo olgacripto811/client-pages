@@ -1,0 +1,15 @@
+{
+  "name": "Личный кабинет · Фея Автоматизации",
+  "short_name": "Кабинет",
+  "description": "Сигналы на сегодня, статистика и заработок команды.",
+  "start_url": "/kabinet-glavnaya.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FBF9FC",
+  "theme_color": "#8B5CF6",
+  "lang": "ru",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
